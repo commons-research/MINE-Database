@@ -10,7 +10,7 @@ For general information on MINE Databases, please consult [JJeffryes et al. 2015
 
 Documentation is hosted at https://mine-database.readthedocs.io/en/latest/. It gives more detailed descriptions and example uses of the software.
 
-## Installation
+## Installation (legacy)
 If a conda environment is desired to be used:
 
 `conda create -n mine`
@@ -21,6 +21,12 @@ If a conda environment is desired to be used:
 Then, use pip (with or without conda) to install minedatabase:
 
 `pip install minedatabase`
+
+## Installation (current)
+
+You need Poetry (https://python-poetry.org/)
+
+`poetry install`
 
 
 ## Running Pickaxe
