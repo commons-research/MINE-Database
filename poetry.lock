@@ -794,6 +794,30 @@ files = [
 ]
 
 [[package]]
+name = "minedatabase"
+version = "2.2.0"
+description = "Metabolic In silico Network Expansions"
+optional = false
+python-versions = "<3.10,>=3.7"
+files = [
+    {file = "minedatabase-2.2.0-py3-none-any.whl", hash = "sha256:79d927142617a80e746dbae1cf7d6195dedd8062e75cf0da2103a95e53d61cbf"},
+    {file = "minedatabase-2.2.0.tar.gz", hash = "sha256:1e15c26971af93ecdaa0d34eb94b1214507bdf6f1deead0d2713329b6c70d223"},
+]
+
+[package.dependencies]
+keras = "*"
+lxml = "4.9"
+mordred = "1.2"
+pandas = "*"
+pymongo = "*"
+python-libsbml = "*"
+rdkit = "*"
+scikit-learn = "*"
+
+[package.extras]
+test = ["pytest"]
+
+[[package]]
 name = "ml-dtypes"
 version = "0.3.2"
 description = ""
@@ -820,12 +844,7 @@ files = [
 ]
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.21.2", markers = "python_version >= \"3.10\" and python_version < \"3.11\""},
-    {version = ">1.20", markers = "python_version < \"3.10\""},
-    {version = ">=1.23.3", markers = "python_version >= \"3.11\" and python_version < \"3.12\""},
-    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
-]
+numpy = ">1.20"
 
 [package.extras]
 dev = ["absl-py", "pyink", "pylint (>=2.6.0)", "pytest", "pytest-xdist"]
@@ -1231,11 +1250,7 @@ files = [
 ]
 
 [package.dependencies]
-numpy = [
-    {version = ">=1.22.4,<2", markers = "python_version < \"3.11\""},
-    {version = ">=1.23.2,<2", markers = "python_version == \"3.11\""},
-    {version = ">=1.26.0,<2", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1.22.4,<2", markers = "python_version < \"3.11\""}
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -2094,10 +2109,7 @@ h5py = ">=3.10.0"
 keras = ">=3.0.0"
 libclang = ">=13.0.0"
 ml-dtypes = ">=0.3.1,<0.4.0"
-numpy = [
-    {version = ">=1.23.5,<2.0.0", markers = "python_version <= \"3.11\""},
-    {version = ">=1.26.0,<2.0.0", markers = "python_version >= \"3.12\""},
-]
+numpy = {version = ">=1.23.5,<2.0.0", markers = "python_version <= \"3.11\""}
 opt-einsum = ">=2.3.2"
 packaging = "*"
 protobuf = ">=3.20.3,<4.21.0 || >4.21.0,<4.21.1 || >4.21.1,<4.21.2 || >4.21.2,<4.21.3 || >4.21.3,<4.21.4 || >4.21.4,<4.21.5 || >4.21.5,<5.0.0dev"
@@ -2425,5 +2437,5 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.9"
-content-hash = "29c5e9f42ea83861b86db1dabaac199a6fd5c4eda8078da06ecfd0f027fb93d2"
+python-versions = "^3.9,<3.10.0"
+content-hash = "24acd855efaaffd50608d7e7cde69857a968a8dce03c6d9f4bd34e0f49d4b844"
