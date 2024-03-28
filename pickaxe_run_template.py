@@ -47,7 +47,7 @@ start = time.time()
 
 
 # Database writing options
-write_db = False
+write_db = True
 # Database name and message to print in metadata
 database = "example_db"
 message = "Example run to show how pickaxe is run."
