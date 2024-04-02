@@ -2,7 +2,7 @@ import pandas
 import seaborn
 import matplotlib.pyplot as plt
 import numpy
-from minedatabase.databases import MINE
+from mine_database.databases import MINE
 import sys
 
 db = MINE(sys.argv[1])

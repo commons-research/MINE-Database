@@ -4,8 +4,8 @@
 import json
 from pathlib import Path
 
-from minedatabase import pickaxe
-from minedatabase.rules import BNICE, metacyc_generalized, metacyc_intermediate
+from mine_database import pickaxe
+from mine_database.rules import BNICE, metacyc_generalized, metacyc_intermediate
 
 
 file_path = Path(__file__)

@@ -5,8 +5,8 @@ import sys
 import platform
 import time
 from optparse import OptionParser
-from minedatabase.queries import quick_search
-from minedatabase.databases import establish_db_client
+from mine_database.queries import quick_search
+from mine_database.databases import establish_db_client
 
 """
 def write_pathway_html(db, path, outfile):

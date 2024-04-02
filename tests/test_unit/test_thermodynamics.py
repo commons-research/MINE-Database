@@ -15,7 +15,7 @@ if sqlite_loc.is_file():
     try:
         from equilibrator_api import Q_
 
-        from minedatabase.thermodynamics import Thermodynamics
+        from mine_database.thermodynamics import Thermodynamics
 
         thermo = Thermodynamics()
 

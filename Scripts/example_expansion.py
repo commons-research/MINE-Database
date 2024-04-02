@@ -21,8 +21,8 @@ import pymongo
 # from minedatabase.filters import ThermoFilter
 # from minedatabase.filters import ReactionFeasibilityFilter
 
-from minedatabase.pickaxe import Pickaxe
-from minedatabase.rules import metacyc_generalized, metacyc_intermediate
+from mine_database.pickaxe import Pickaxe
+from mine_database.rules import metacyc_generalized, metacyc_intermediate
 
 start = time.time()
 

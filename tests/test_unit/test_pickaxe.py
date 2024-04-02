@@ -14,8 +14,8 @@ import pytest
 from pymongo.errors import ServerSelectionTimeoutError
 from rdkit.Chem import AllChem
 
-from minedatabase import pickaxe
-from minedatabase.databases import MINE
+from mine_database import pickaxe
+from mine_database.databases import MINE
 
 
 try:

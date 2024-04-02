@@ -1,5 +1,5 @@
-from minedatabase.compound_io import export_inchi_rxns
-from minedatabase.databases import MINE
+from mine_database.compound_io import export_inchi_rxns
+from mine_database.databases import MINE
 
 top_30 = [
     'cpd00229',

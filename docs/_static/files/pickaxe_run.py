@@ -17,14 +17,14 @@ import time
 
 import pymongo
 
-from minedatabase.filters import (
+from mine_database.filters import (
     MCSFilter,
     MetabolomicsFilter,
     TanimotoFilter,
     TanimotoSamplingFilter,
 )
-from minedatabase.pickaxe import Pickaxe
-from minedatabase.rules import metacyc_generalized, metacyc_intermediate_uniprot
+from mine_database.pickaxe import Pickaxe
+from mine_database.rules import metacyc_generalized, metacyc_intermediate_uniprot
 
 
 start = time.time()

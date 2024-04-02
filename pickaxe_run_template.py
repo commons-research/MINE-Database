@@ -18,7 +18,7 @@ import time
 import pymongo
 
 # Make sure you have minedatabase installed! (either from GitHub or via pip)
-from minedatabase.filters import (
+from mine_database.filters import (
     AtomicCompositionFilter,
     MCSFilter,
     MetabolomicsFilter,
@@ -26,8 +26,8 @@ from minedatabase.filters import (
     SimilarityFilter,
     SimilaritySamplingFilter,
 )
-from minedatabase.pickaxe import Pickaxe
-from minedatabase.rules import metacyc_generalized, metacyc_intermediate
+from mine_database.pickaxe import Pickaxe
+from mine_database.rules import metacyc_generalized, metacyc_intermediate
 
 
 # Uncomment to use these. Pickaxe doesn't come packaged with dependencies by default.

@@ -6,8 +6,8 @@ from pathlib import Path
 import pytest
 from pymongo.errors import ServerSelectionTimeoutError
 
-from minedatabase.databases import MINE
-from minedatabase.pickaxe import Pickaxe
+from mine_database.databases import MINE
+from mine_database.pickaxe import Pickaxe
 
 
 file_path = Path(__file__)

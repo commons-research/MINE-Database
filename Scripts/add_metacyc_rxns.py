@@ -3,8 +3,8 @@ import re
 import collections
 
 import csv
-from minedatabase import utils
-from minedatabase.databases import MINE
+from mine_database import utils
+from mine_database.databases import MINE
 from rdkit.Chem import AllChem
 
 

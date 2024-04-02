@@ -6,7 +6,7 @@ from pathlib import Path
 
 from rdkit.DataStructs.cDataStructs import ExplicitBitVect
 
-import minedatabase.utils as utils
+import mine_database.utils as utils
 
 
 file_path = Path(__file__)

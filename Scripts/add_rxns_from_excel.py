@@ -3,8 +3,8 @@ import subprocess
 import sys
 
 import pandas as pd
-from minedatabase import utils
-from minedatabase.databases import MINE
+from mine_database import utils
+from mine_database.databases import MINE
 from rdkit.Chem import AllChem
 
 

@@ -6,7 +6,7 @@ import pymongo
 import pytest
 from pymongo.errors import ServerSelectionTimeoutError
 
-from minedatabase.metabolomics import (
+from mine_database.metabolomics import (
     MetabolomicsDataset,
     Peak,
     dot_product,

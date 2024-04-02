@@ -3,7 +3,7 @@ matplotlib.use('Agg')
 import seaborn
 import pandas
 import matplotlib.pyplot as plt
-from minedatabase.databases import MINE
+from mine_database.databases import MINE
 from collections import defaultdict, Counter
 import sys
 

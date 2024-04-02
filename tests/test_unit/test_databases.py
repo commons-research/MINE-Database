@@ -13,8 +13,8 @@ import pymongo
 import pytest
 from pymongo.errors import ServerSelectionTimeoutError
 
-from minedatabase import utils
-from minedatabase.databases import (
+from mine_database import utils
+from mine_database.databases import (
     MINE,
     write_compounds_to_mine,
     write_core_compounds,

@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest
 
-from minedatabase.filters import (
+from mine_database.filters import (
     AtomicCompositionFilter,
     MCSFilter,
     MetabolomicsFilter,
@@ -26,8 +26,8 @@ if sqlite_loc.is_file():
     try:
         from equilibrator_api import Q_
 
-        from minedatabase.filters.thermodynamics import ThermoFilter
-        from minedatabase.thermodynamics import Thermodynamics
+        from mine_database.filters.thermodynamics import ThermoFilter
+        from mine_database.thermodynamics import Thermodynamics
 
         thermo = Thermodynamics()
         try:
