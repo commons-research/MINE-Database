@@ -24,7 +24,9 @@ sphinxcontrib-napoleon = "^0.7"
 tensorflow = "^2.16.1"
 torch = "^2.2.1"
 numpydoc = "^1.6.0"
-minedatabase = "^2.2.0"
+polars = "^0.20.16"
+equilibrator-assets = "^0.6.0"
+equilibrator-api = "^0.6.0"
 
 
 [build-system]

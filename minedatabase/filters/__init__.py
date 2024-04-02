@@ -1,4 +1,4 @@
-# from minedatabase.filters.feasibility import ReactionFeasibilityFilter
+from minedatabase.filters.feasibility import ReactionFeasibilityFilter
 from minedatabase.filters.metabolomics import MetabolomicsFilter
 from minedatabase.filters.property import AtomicCompositionFilter, MWFilter
 from minedatabase.filters.similarity import (
@@ -7,5 +7,5 @@ from minedatabase.filters.similarity import (
     SimilaritySamplingFilter,
 )
 
-# from minedatabase.filters.thermodynamics import ThermoFilter
+from minedatabase.filters.thermodynamics import ThermoFilter
 # from minedatabase.filters.toxicity import ToxicityFilter
