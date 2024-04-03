@@ -30,7 +30,7 @@ You need Poetry (https://python-poetry.org/)
 
 Also be sure to install MongoDB (https://docs.mongodb.com/manual/installation/) if you are using the `write_db = True` option in Pickaxe.
  
-
+This should work without any errors.
 
 ## Running Pickaxe
 ### Running Pickaxe through a python file (recommended)
