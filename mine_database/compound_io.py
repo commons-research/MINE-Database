@@ -229,9 +229,9 @@ def export_tsv(
                     return [f"({x['stoich']}) {x['c_id']}" for x in half_rxn]
 
                 rxn["C_id_rxn"] = (
-                    " + ".join(to_str(rxn["Reactants"]))
-                    + " => "
-                    + " + ".join(to_str(rxn["Products"]))
+                    ".".join(to_str(rxn["Reactants"]))
+                    + ">>"
+                    + ".".join(to_str(rxn["Products"]))
                 )
             if "Reactants" not in reaction_fields:
                 del rxn["Reactants"]
@@ -335,9 +335,9 @@ def export_kbase(mine_db: MINE, target: str) -> None:
                     ]
 
                 rxn["equation"] = (
-                    " + ".join(to_str(rxn["Reactants"]))
-                    + " => "
-                    + " + ".join(to_str(rxn["Products"]))
+                    ".".join(to_str(rxn["Reactants"]))
+                    + ">>"
+                    + ".".join(to_str(rxn["Products"]))
                 )
             if "Reactants" not in reaction_fields:
                 del rxn["Reactants"]
@@ -409,9 +409,9 @@ def export_inchi_rxns(
                     del rxn[v]
             if "Equation" in reaction_fields:
                 rxn["Equation"] = (
-                    " + ".join(to_str(rxn["Reactants"]))
-                    + " => "
-                    + " + ".join(to_str(rxn["Products"]))
+                    ".".join(to_str(rxn["Reactants"]))
+                    + ">>"
+                    + ".".join(to_str(rxn["Products"]))
                 )
             if "Reactants" not in reaction_fields:
                 del rxn["Reactants"]

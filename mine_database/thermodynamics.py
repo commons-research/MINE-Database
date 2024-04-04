@@ -237,9 +237,9 @@ class Thermodynamics:
         reactants = reaction_info["Reactants"]
         products = reaction_info["Products"]
 
-        lhs = " + ".join(f"{r[0]} {r[1]}" for r in reactants)
-        rhs = " + ".join(f"{p[0]} {p[1]}" for p in products)
-        reaction_string = " => ".join([lhs, rhs])
+        lhs = ".".join(f"{r[0]} {r[1]}" for r in reactants)
+        rhs = ".".join(f"{p[0]} {p[1]}" for p in products)
+        reaction_string = ">>".join([lhs, rhs])
 
         compounds = set([r[1] for r in reactants])
         compounds.update(tuple(p[1] for p in products))

@@ -349,6 +349,15 @@ def get_reaction_hash(
             else f"(1) {x}"
             for x in sorted(half_rxn)
         ]
+    
+    # # modified version
+    # def to_str(half_rxn):
+    #     return [
+    #         f"{x[1]})"
+    #         if (len(x) == 2 and not isinstance(x, str))
+    #         else f"{x}"
+    #         for x in sorted(half_rxn)
+    #     ]
 
     def get_smiles(cpds):
         cpd_tups = [
@@ -357,15 +366,18 @@ def get_reaction_hash(
         cpd_tups.sort(key=lambda x: x[1])
         smiles = []
         for cpd in cpd_tups:
-            smiles.append(f"({cpd[0]}) {cpd[2]}")
-        return " + ".join(smiles)
+            #smiles.append(f"({cpd[0]}) {cpd[2]}")
+
+            # remove the amount of molecules
+            smiles.append(f"{cpd[2]}")
+        return ".".join(smiles)
 
     reactant_ids = [reactant[1]["_id"] for reactant in reactants]
     product_ids = [product[1]["_id"] for product in products]
     reactant_ids.sort()
     product_ids.sort()
     text_ids_rxn = (
-        " + ".join(to_str(reactant_ids)) + " => " + " + ".join(to_str(product_ids))
+        ".".join(to_str(reactant_ids)) + ">>" + ".".join(to_str(product_ids))
     )
     # Hash text reaction
     rhash = "R" + hashlib.sha256(text_ids_rxn.encode()).hexdigest()
@@ -374,7 +386,7 @@ def get_reaction_hash(
     reactant_smiles = get_smiles(reactants)
     product_smiles = get_smiles(products)
 
-    text_smiles_rxn = reactant_smiles + " => " + product_smiles
+    text_smiles_rxn = reactant_smiles + ">>" + product_smiles
 
     return rhash, text_smiles_rxn
 

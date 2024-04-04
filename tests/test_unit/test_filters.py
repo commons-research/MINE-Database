@@ -129,7 +129,7 @@ def test_similarity_no_targets(pk_target):
 def test_similarity_sample_default_weight(pk_target):
     """Test similarity cutoff filter"""
     _filter = SimilaritySamplingFilter(sample_size=10, weight=None)
-    pk_target.filters.append(_filter)
+    pk_target.filters.add(_filter)
     pk_target.transform_all(generations=2)
 
     # Filter must return less compounds than non-filter

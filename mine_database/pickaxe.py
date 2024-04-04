@@ -1080,14 +1080,14 @@ class Pickaxe:
         i = 1
         for rxn in sorted(self.reactions.values(), key=lambda x: x["_id"]):
             rxn["ID_rxn"] = (
-                " + ".join(
+                ".".join(
                     [
                         f"({x[0]}) {self.compounds[x[1]]['ID']}[c0]"
                         for x in rxn["Reactants"]
                     ]
                 )
-                + " => "
-                + " + ".join(
+                + ">>"
+                + ".".join(
                     [
                         f"({x[0]}) {self.compounds[x[1]]['ID']}[c0]"
                         for x in rxn["Products"]
