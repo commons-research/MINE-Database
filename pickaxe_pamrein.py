@@ -36,8 +36,8 @@ from mine_database.rules import metacyc_generalized, metacyc_intermediate
 
 
 # Uncomment to use these. Pickaxe doesn't come packaged with dependencies by default.
-# from mine_database.filters import ThermoFilter
-# from mine_database.filters import ReactionFeasibilityFilter
+from mine_database.filters import ThermoFilter
+from mine_database.filters import ReactionFeasibilityFilter
 
 
 start = time.time()
@@ -92,13 +92,13 @@ rule_list, coreactant_list, rule_name = metacyc_intermediate(
 # Core Pickaxe Run Options
 generations = generations #1              # Total rounds of rule applications
 processes = 1                # Number of processes for parallelization
-verbose = False              # Display RDKit warnings and errors
+verbose = True #False              # Display RDKit warnings and errors
 
 # These are for MINE-Database generation and advanced options.
 # Be careful changing these.
 inchikey_blocks_for_cid = 1  # Number of inchi key blocks to gen cid
 explicit_h = False           # use explicit hydrogens in rules
-kekulize = False             # kekulize molecules
+kekulize = True #False             # kekulize molecules
 neutralise = True            # Neutralise all molecules when loading
 quiet = False #True                 # Silence errors
 indexing = False             #
@@ -203,9 +203,10 @@ feasibility_filter = None
 ##########################################
 # Similarity Filtering options.
 # Filters by similarity score, uses default RDKit fingerprints and tanimoto by default
+# compares the tanimoto distance from the target to the compound!!!
 
 # Apply this filter?
-similarity_filter = False
+similarity_filter = True # False
 
 # Methods to calculate similarity by, default is RDkit and Tanimoto
 # Supports Morgan Fingerprints and Dice similarity as well.
@@ -215,8 +216,8 @@ cutoff_fingerprint_args = {"radius": 2}
 cutoff_similarity_method = "Tanimoto"
 
 # Similarity filter threshold. Can be single number or a list with length at least
-# equal to the number of generations (+1 if filtering after expansion)
-similarity_threshold = [0.5]
+# equal to the number of generations (+1 if filtering after expansion). [0 , ...] means first will be taken all of the samples.
+similarity_threshold = [0, 0.9]
 
 # Only accepts compounds whose similarity is increased in comparison to their parent
 increasing_similarity = False
@@ -228,7 +229,7 @@ increasing_similarity = False
 # Morgan and dice
 
 # Apply this sampler?
-similarity_sample = False
+similarity_sample = True #False
 # Number of compounds per generation to sample
 sample_size = 100
 
