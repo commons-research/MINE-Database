@@ -1,4 +1,5 @@
 input_cpds = "./data/top_10_smiles.csv" #"./example_data/Agaricomycetes_20.csv"
+target_cpds = "./example_data/target_list_many_pam.csv" #"./data/top_10_smiles.csv"
 generations = 1
 fraction_coverage = 0.2
 
@@ -111,7 +112,8 @@ indexing = False             #
 # Global Filtering Options
 
 # Path to target cpds file (not required for all filters)
-target_cpds = "./example_data/target_list_many.csv"
+#
+# target_cpds = "./example_data/target_list_many_pam.csv"
 
 # Load compounds even without a filter
 # Can be paired with prune_to_targets to reduce end network
@@ -217,7 +219,7 @@ cutoff_similarity_method = "Tanimoto"
 
 # Similarity filter threshold. Can be single number or a list with length at least
 # equal to the number of generations (+1 if filtering after expansion). [0 , ...] means first will be taken all of the samples.
-similarity_threshold = [0, 0.9]
+similarity_threshold = [0, 0.1]
 
 # Only accepts compounds whose similarity is increased in comparison to their parent
 increasing_similarity = False
@@ -231,7 +233,7 @@ increasing_similarity = False
 # Apply this sampler?
 similarity_sample = True #False
 # Number of compounds per generation to sample
-sample_size = 100
+sample_size = 42 #100
 
 # Default is RDKit
 sample_fingerprint_method = "Morgan"
