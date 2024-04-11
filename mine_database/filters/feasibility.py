@@ -301,17 +301,7 @@ class ReactionFeasibilityFilter(Filter):
 def _get_feasibility(input_info, feas_threshold=0.32):
     # inputs
     # Load Model
-
-    # weight_file = cwd.parent / "data/feasibility/final_model.h5"  # weights
     vae_model_file = cwd.parent / "data/feasibility/vae_model.pth"
-    # model_file = cwd.parent / "data/feasibility/final_model.json"
-
-    # json_file = open(model_file, "r")
-    # loaded_model_json = json_file.read()
-    # json_file.close()
-
-    # loaded_model = model_from_json(loaded_model_json)
-    # loaded_model.load_weights(weight_file)
 
     loaded_model = load_model(cwd.parent / "data/feasibility/final_model.keras")
 
