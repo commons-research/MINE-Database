@@ -1,7 +1,7 @@
-input_cpds = "./data/top_10_smiles.csv" #"./example_data/Agaricomycetes_20.csv"
-target_cpds = "./example_data/target_list_many_pam.csv" #"./data/top_10_smiles.csv"
+input_cpds = "./data/top_10_smiles_2D.csv"  # "./example_data/Agaricomycetes_20.csv"
+target_cpds = "./data/top_10_smiles_2D.csv"  # "./example_data/target_list_many_pam.csv"  # "./data/top_10_smiles.csv"
 generations = 1
-fraction_coverage = 0.2
+fraction_coverage = 0.5
 
 """Template for a pickaxe run.
 
@@ -82,7 +82,7 @@ output_dir = "."
 # See the documentation for description of options.
 rule_list, coreactant_list, rule_name = metacyc_intermediate(
     n_rules=None,
-    fraction_coverage=fraction_coverage,#0.2,
+    fraction_coverage=fraction_coverage,  # 0.2,
     anaerobic=True,
     # exclude_containing = ["aromatic", "halogen"]
 )
@@ -91,18 +91,18 @@ rule_list, coreactant_list, rule_name = metacyc_intermediate(
 
 ###############################################################################
 # Core Pickaxe Run Options
-generations = generations #1              # Total rounds of rule applications
-processes = 1                # Number of processes for parallelization
-verbose = True #False              # Display RDKit warnings and errors
+generations = generations  # 1              # Total rounds of rule applications
+processes = 1  # Number of processes for parallelization
+verbose = True  # False              # Display RDKit warnings and errors
 
 # These are for MINE-Database generation and advanced options.
 # Be careful changing these.
 inchikey_blocks_for_cid = 1  # Number of inchi key blocks to gen cid
-explicit_h = False           # use explicit hydrogens in rules
-kekulize = True #False             # kekulize molecules
-neutralise = True            # Neutralise all molecules when loading
-quiet = False #True                 # Silence errors
-indexing = False             #
+explicit_h = False  # use explicit hydrogens in rules
+kekulize = True  # False             # kekulize molecules
+neutralise = True  # Neutralise all molecules when loading
+quiet = False  # True                 # Silence errors
+indexing = False  #
 ###############################################################################
 
 ###############################################################################
@@ -151,10 +151,7 @@ max_MW = 150
 atomic_composition_filter = False
 
 # Atomic composition constraint specification
-atomic_composition_constraints = {
-    "C": [4, 7],
-    "O": [5, 5]
-}
+atomic_composition_constraints = {"C": [4, 7], "O": [5, 5]}
 
 ##########################################
 # Thermodynamics Filter options.
@@ -208,18 +205,18 @@ feasibility_filter = None
 # compares the tanimoto distance from the target to the compound!!!
 
 # Apply this filter?
-similarity_filter = True # False
+similarity_filter = True
 
 # Methods to calculate similarity by, default is RDkit and Tanimoto
 # Supports Morgan Fingerprints and Dice similarity as well.
-cutoff_fingerprint_method = "Morgan"
+cutoff_fingerprint_method = "Morgan"  # "Morgan"
 # arguments to pass to fingerprint_method
 cutoff_fingerprint_args = {"radius": 2}
 cutoff_similarity_method = "Tanimoto"
 
 # Similarity filter threshold. Can be single number or a list with length at least
 # equal to the number of generations (+1 if filtering after expansion). [0 , ...] means first will be taken all of the samples.
-similarity_threshold = [0, 0.1]
+similarity_threshold = [0, 0.2, 0.8]
 
 # Only accepts compounds whose similarity is increased in comparison to their parent
 increasing_similarity = False
@@ -231,9 +228,9 @@ increasing_similarity = False
 # Morgan and dice
 
 # Apply this sampler?
-similarity_sample = True #False
+similarity_sample = False  # False
 # Number of compounds per generation to sample
-sample_size = 42 #100
+sample_size = 42  # 100
 
 # Default is RDKit
 sample_fingerprint_method = "Morgan"
@@ -241,11 +238,13 @@ sample_fingerprint_method = "Morgan"
 sample_fingerprint_args = {"radius": 2}
 sample_similarity_method = "Tanimoto"
 
+
 def weight(score):
     """weight is a function that accepts a similarity score as the sole argument
-    and returns a scaled value. 
+    and returns a scaled value.
     """
     return score**4
+
 
 # How to represent the function in text for database entry
 weight_representation = "score^4"
@@ -258,7 +257,11 @@ mcs_filter = False
 
 # Finds the MCS of the target and compound and identifies fraction of target
 # the MCS composes
-crit_mcs = [0.3, 0.8, 0.95]
+crit_mcs = [
+    0.3,
+    0.8,
+    0.95,
+]
 
 ##########################################
 # Metabolomics Filter Options
@@ -307,6 +310,7 @@ print_parameters = True
 
 def print_run_parameters():
     """Write relevant parameters."""
+
     def print_parameter_list(plist):
         for i in plist:
             print(f"--{i}: {eval(i)}")
@@ -336,7 +340,7 @@ def print_run_parameters():
                 "weight_representation",
                 "sample_fingerprint_args",
                 "sample_fingerprint_method",
-                "sample_similarity_method"
+                "sample_similarity_method",
             ]
         )
 
@@ -348,7 +352,7 @@ def print_run_parameters():
                 "increasing_similarity",
                 "cutoff_fingerprint_args",
                 "cutoff_fingerprint_method",
-                "cutoff_similarity_method"
+                "cutoff_similarity_method",
             ]
         )
 
@@ -358,8 +362,9 @@ def print_run_parameters():
 
     if metabolomics_filter:
         print("\nMetabolomics Filter Options")
-        print_parameter_list(["met_data_path", "met_data_name",
-                              "possible_adducts", "mass_tolerance"])
+        print_parameter_list(
+            ["met_data_path", "met_data_name", "possible_adducts", "mass_tolerance"]
+        )
 
     if MW_filter:
         print("\nMolecular Weight Filter Options")
@@ -371,16 +376,11 @@ def print_run_parameters():
 
     print("\nPickaxe Options")
     print_parameter_list(
-        [
-            "verbose",
-            "explicit_h",
-            "kekulize",
-            "neutralise",
-            "quiet",
-            "indexing"
-        ]
+        ["verbose", "explicit_h", "kekulize", "neutralise", "quiet", "indexing"]
     )
     print("----------------------------------------\n")
+
+
 ###############################################################################
 
 
@@ -388,7 +388,7 @@ def print_run_parameters():
 #   Running pickaxe, don"t touch unless you know what you are doing
 if __name__ == "__main__":
     # Use "spawn" for multiprocessing
-    multiprocessing.set_start_method("fork") #spawn")
+    multiprocessing.set_start_method("fork")  # spawn")
 
     # Define mongo_uri
     # mongo_uri definition, don't modify
@@ -422,7 +422,7 @@ if __name__ == "__main__":
         mongo_uri=mongo_uri,
         quiet=quiet,
         react_targets=react_targets,
-        filter_after_final_gen=filter_after_final_gen
+        filter_after_final_gen=filter_after_final_gen,
     )
 
     # Load compounds
@@ -430,9 +430,13 @@ if __name__ == "__main__":
 
     # Load target compounds for filters
     if (
-        similarity_filter or mcs_filter or similarity_sample
-        or load_targets_without_filter or MW_filter
-        or atomic_composition_filter or thermo_filter
+        similarity_filter
+        or mcs_filter
+        or similarity_sample
+        or load_targets_without_filter
+        or MW_filter
+        or atomic_composition_filter
+        or thermo_filter
         or feasibility_filter
     ):
         pk.load_targets(target_cpds)
@@ -450,7 +454,7 @@ if __name__ == "__main__":
             increasing_similarity=increasing_similarity,
             fingerprint_method=cutoff_fingerprint_args,
             fingerprint_args=cutoff_fingerprint_args,
-            similarity_method=cutoff_similarity_method
+            similarity_method=cutoff_similarity_method,
         )
         pk.filters.append(taniFilter)
 
@@ -460,7 +464,8 @@ if __name__ == "__main__":
             weight=weight,
             fingerprint_method=sample_fingerprint_method,
             fingerprint_args=sample_fingerprint_args,
-            similarity_method=sample_similarity_method)
+            similarity_method=sample_similarity_method,
+        )
         pk.filters.append(taniSampleFilter)
 
     if mcs_filter:
@@ -482,7 +487,7 @@ if __name__ == "__main__":
             mass_tolerance=mass_tolerance,
             rt_predictor=rt_predictor,
             rt_threshold=rt_threshold,
-            rt_important_features=rt_important_features
+            rt_important_features=rt_important_features,
         )
         pk.filters.append(metFilter)
 
@@ -503,17 +508,21 @@ if __name__ == "__main__":
         pk.save_to_mine(processes=processes, indexing=indexing, write_core=write_core)
         client = pymongo.MongoClient(mongo_uri)
         db = client[database]
-        db.meta_data.insert_one({"Timestamp": datetime.datetime.now(),
-                                 "Run Time": f"{round(time.time() - start, 2)}",
-                                 "Generations": f"{generations}",
-                                 "Rule Name": f"{rule_name}",
-                                 "Input compound file": f"{input_cpds}"
-                                 })
+        db.meta_data.insert_one(
+            {
+                "Timestamp": datetime.datetime.now(),
+                "Run Time": f"{round(time.time() - start, 2)}",
+                "Generations": f"{generations}",
+                "Rule Name": f"{rule_name}",
+                "Input compound file": f"{input_cpds}",
+            }
+        )
 
-        db.meta_data.insert_one({"Timestamp": datetime.datetime.now(),
-                                 "Message": message})
+        db.meta_data.insert_one(
+            {"Timestamp": datetime.datetime.now(), "Message": message}
+        )
 
-        if (similarity_filter or mcs_filter or similarity_sample):
+        if similarity_filter or mcs_filter or similarity_sample:
             db.meta_data.insert_one(
                 {
                     "Timestamp": datetime.datetime.now(),
@@ -525,7 +534,7 @@ if __name__ == "__main__":
                     "Sample By": similarity_sample,
                     "Sample Size": sample_size,
                     "Sample Weight": weight_representation,
-                    "Pruned": prune_to_targets
+                    "Pruned": prune_to_targets,
                 }
             )
 

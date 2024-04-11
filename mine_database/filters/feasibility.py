@@ -7,7 +7,9 @@ import rdkit.rdBase as rkrb
 import rdkit.RDLogger as rkl
 import torch
 import torch.utils.data
-from keras.models import model_from_json
+
+# from keras.models import model_from_json
+from keras.models import load_model
 from rdkit.Chem import AllChem, MolFromSmiles, MolToSmiles, RemoveHs
 from torch import nn
 from torch.nn import functional as F
@@ -164,6 +166,7 @@ class ReactionFeasibilityFilter(Filter):
 
     def _get_inputs(self, rxn_list, pickaxe):
         """rxn_list will be pickaxe eventually"""
+
         # Get reactions information
         def get_cpd_smiles(cpd_id):
             return pickaxe.compounds[cpd_id]["SMILES"]
@@ -299,16 +302,18 @@ def _get_feasibility(input_info, feas_threshold=0.32):
     # inputs
     # Load Model
 
-    weight_file = cwd.parent / "data/feasibility/final_model.h5"
+    # weight_file = cwd.parent / "data/feasibility/final_model.h5"  # weights
     vae_model_file = cwd.parent / "data/feasibility/vae_model.pth"
-    model_file = cwd.parent / "data/feasibility/final_model.json"
+    # model_file = cwd.parent / "data/feasibility/final_model.json"
 
-    json_file = open(model_file, "r")
-    loaded_model_json = json_file.read()
-    json_file.close()
+    # json_file = open(model_file, "r")
+    # loaded_model_json = json_file.read()
+    # json_file.close()
 
-    loaded_model = model_from_json(loaded_model_json)
-    loaded_model.load_weights(weight_file)
+    # loaded_model = model_from_json(loaded_model_json)
+    # loaded_model.load_weights(weight_file)
+
+    loaded_model = load_model(cwd.parent / "data/feasibility/final_model.keras")
 
     vae_model = MolecularVAE()
     vae_model.load_state_dict(torch.load(vae_model_file, map_location=device))
