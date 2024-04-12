@@ -89,7 +89,7 @@ rule_list, coreactant_list, rule_name = metacyc_intermediate(
 ###############################################################################
 # Core Pickaxe Run Options
 generations = 1  # Total rounds of rule applications
-processes = 1  # Number of processes for parallelization
+processes = multiprocessing.cpu_count()  # 1
 verbose = False  # Display RDKit warnings and errors
 
 # These are for MINE-Database generation and advanced options.
@@ -380,8 +380,6 @@ def print_run_parameters():
 ###############################################################################
 #   Running pickaxe, don"t touch unless you know what you are doing
 if __name__ == "__main__":
-    # Use "spawn" for multiprocessing
-    multiprocessing.set_start_method("spawn")
 
     # Define mongo_uri
     # mongo_uri definition, don't modify

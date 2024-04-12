@@ -318,27 +318,41 @@ def _get_feasibility(input_info, feas_threshold=0.32):
 
 def _predict_reaction_feasibility(feature_info, model, feas_threshold):
     results = {}
-    for each_label in feature_info:
-        if all([type(a) == type(None) for a in feature_info[each_label]]):
+
+    # Prepare lists to collect each input part
+    batch_inputs_X1 = []
+    batch_inputs_X2 = []
+    labels = []
+
+    for each_label, values in feature_info.items():
+        if all(x is None for x in values):
             continue
+        X1, X2 = values
+        # Append X1 and X2 assuming they are already correctly shaped as (1, 1316)
+        batch_inputs_X1.append(X1[0])  # X1[0] to change (1, 1316) to (1316,)
+        batch_inputs_X2.append(X2[0])  # Similar for X2
 
-        X1 = feature_info[each_label][0]
-        X2 = feature_info[each_label][1]
+        labels.append(each_label)
 
-        val_list = []
-        for i in range(10):
-            pred_result = model.predict([X1, X2])
-            val = pred_result[0][0]
-            val_list.append(val)
-        mean_val = np.mean(val_list)
-        std_val = np.std(val_list)
-        final_val = mean_val - (std_val * 0.5)
-        if final_val >= feas_threshold:
-            feasibility = "feasible"
-        else:
-            feasibility = "infeasible"
+    # Convert lists to numpy arrays; now each will be (n, 1316) where n is the number of items
+    batch_inputs_X1 = np.array(batch_inputs_X1)
+    batch_inputs_X2 = np.array(batch_inputs_X2)
 
-        results[each_label] = [mean_val, std_val, feasibility]
+    # Predict in one batch if there are inputs to process
+    if batch_inputs_X1.size > 0:
+        batch_preds = model.predict([batch_inputs_X1, batch_inputs_X2])
+
+        # Process predictions
+        for i, val in enumerate(batch_preds):
+            final_val = val[
+                0
+            ]  # Assuming model.predict returns predictions as a list of floats
+            feasibility = "feasible" if final_val >= feas_threshold else "infeasible"
+            results[labels[i]] = [
+                final_val,
+                0,
+                feasibility,
+            ]  # std is 0 in deterministic case
 
     return results
 
