@@ -1,3 +1,6 @@
+#ignore the lock file of poetry
+poetry.lock
+
 #ignore only our files
 data/
 !mine_database/data

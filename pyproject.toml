@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9,<3.10.0"
+python = "^3.10"
 keras = "^3.1.1"
 lxml = "4.9"
 mordred = "1.2"
@@ -25,6 +25,7 @@ numpydoc = "^1.6.0"
 rdkit = "^2023.9.5"
 equilibrator-api = "^0.6.0"
 equilibrator-assets = "^0.6.0"
+ipython = "^8.23.0"
 
 
 [build-system]
