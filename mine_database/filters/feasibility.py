@@ -8,7 +8,6 @@ import rdkit.RDLogger as rkl
 import torch
 import torch.utils.data
 
-# from keras.models import model_from_json
 from keras.models import load_model
 from rdkit.Chem import AllChem, MolFromSmiles, MolToSmiles, RemoveHs
 from torch import nn
@@ -266,6 +265,8 @@ class ReactionFeasibilityFilter(Filter):
             elif rxn_id not in feasibility_dict:
                 feasibility_dict[rxn_id] = False
 
+        print(feasibility_dict.items())
+
         # Assign values for unpredicted
         for rxn_id in reactions_to_check:
             rxn = pickaxe.reactions[rxn_id]
@@ -348,6 +349,7 @@ def _predict_reaction_feasibility(feature_info, model, feas_threshold):
                 0
             ]  # Assuming model.predict returns predictions as a list of floats
             feasibility = "feasible" if final_val >= feas_threshold else "infeasible"
+
             results[labels[i]] = [
                 final_val,
                 0,
