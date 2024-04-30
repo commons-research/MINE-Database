@@ -128,12 +128,40 @@ prune_to_targets = False
 # Apply filter after final generation, before pruning
 filter_after_final_gen = True
 
+
+####
+# Here we move all the filters up
+
+# Molecular Weight Filter
+MW_filter = False
+
+# Atomic Composition Filter
+atomic_composition_filter = False
+
+# Thermodynamics Filter
+thermo_filter = False
+
+# Feasibility Filter
+feasibility_filter = False
+
+# Maximum common substructure (MCS) filter
+mcs_filter = False
+
+# Similarity Filtering
+similarity_filter = False
+
+# Metabolomics Filtering
+metabolomics_filter = False
+
+# Verbose output
+print_parameters = True
+
 ##########################################
 # Molecular Weight Filter options.
 # Removes compounds not in range of [min_MW, max_MW]
 
 # Apply this filter?
-MW_filter = False
+MW_filter = MW_filter
 
 # Minimum MW in g/mol. None gives no lower bound.
 min_MW = 100
@@ -147,7 +175,7 @@ max_MW = 150
 # Only elements specified will be filtered
 
 # Apply this filter?
-atomic_composition_filter = False
+atomic_composition_filter = atomic_composition_filter
 
 # Atomic composition constraint specification
 atomic_composition_constraints = {"C": [4, 7], "O": [5, 5]}
@@ -168,33 +196,41 @@ p_h = 7
 p_mg = 3
 ionic_strength = 0.15
 
+
 # comment below line and uncomment other definition if using thermo filter
-thermo_filter = None
-# thermo_filter = ThermoFilter(
-#             eq_uri=eq_uri,
-#             dg_max=dg_max,
-#             p_h=p_h,
-#             p_mg=p_mg,
-#             ionic_strength=ionic_strength
-#         )
+
+if thermo_filter == False:
+    thermo_filter = None
+else:
+    thermo_filter = ThermoFilter(
+        eq_uri=eq_uri,
+        dg_max=dg_max,
+        p_h=p_h,
+        p_mg=p_mg,
+        ionic_strength=ionic_strength,
+    )
 
 ##########################################
 # Feasibility Filter options.
 # Checks Feasibility of reaction
 
 # Apply this filter?
-feasibility_filter = True
+feasibility_filter = feasibility_filter
 
-# Which generations to filter, empty list filtters all
+# Which generations to filter, empty list filters all
 generation_list = []
 last_generation_only = True
 
 # comment below line and uncomment other definition if using thermo filter
-# feasibility_filter = None
-# uncomment below if using feasibility filter (note this requires extra dependencies)
-feasibility_filter = ReactionFeasibilityFilter(
-    generation_list=generation_list, last_generation_only=last_generation_only
-)
+
+
+if feasibility_filter == False:
+    feasibility_filter = None
+else:
+    feasibility_filter = ReactionFeasibilityFilter(
+        generation_list=generation_list, last_generation_only=last_generation_only
+    )
+
 
 
 ##########################################
@@ -202,7 +238,7 @@ feasibility_filter = ReactionFeasibilityFilter(
 # Filters by similarity score, uses default RDKit fingerprints and tanimoto by default
 
 # Apply this filter?
-similarity_filter = False
+similarity_filter = similarity_filter
 
 # Methods to calculate similarity by, default is RDkit and Tanimoto
 # Supports Morgan Fingerprints and Dice similarity as well.
@@ -250,7 +286,7 @@ weight_representation = "score^4"
 # Maximum common substructure (MCS) filter
 
 # Apply this filter?
-mcs_filter = False
+mcs_filter = mcs_filter
 
 # Finds the MCS of the target and compound and identifies fraction of target
 # the MCS composes
@@ -260,7 +296,7 @@ crit_mcs = [0.3, 0.8, 0.95]
 # Metabolomics Filter Options
 
 # Apply this filter?
-metabolomics_filter = False
+metabolomics_filter = metabolomics_filter
 
 # Path to csv with list of detected masses (and optionally, retention times).
 # For example: Peak ID, Retention Time, Aggregate M/Z, Polarity, Compound Name,
@@ -298,7 +334,7 @@ rt_important_features = ["nAcid", "ETA_dEpsilon_D", "NsNH2", "MDEO-11"]
 
 ###############################################################################
 # Verbose output
-print_parameters = True
+print_parameters = print_parameters
 
 
 def print_run_parameters():

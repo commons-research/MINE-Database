@@ -55,3 +55,5 @@ Then, run the following command:
 ```python
 python pickaxe_run_template.py
 ```
+
+For now you will need to edit all your parameters directly inside the corresponding script.
