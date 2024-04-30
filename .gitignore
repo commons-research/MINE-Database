@@ -2,7 +2,6 @@
 poetry.lock
 
 #ignore only our files
-data/
 !mine_database/data
 
 # Created by .ignore support plugin (hsz.mobi)
