@@ -31,7 +31,7 @@ You need Poetry (https://python-poetry.org/)
 Also be sure to install MongoDB (https://docs.mongodb.com/manual/installation/) if you are using the `write_db = True` option in Pickaxe.
  
 
-## Running Pickaxe
+## Running Pickaxe (legacy)
 ### Running Pickaxe through a python file (recommended)
 An example file, [pickaxe_run_template.py](https://github.com/tyo-nu/MINE-Database/blob/master/pickaxe_run_template.py), provides a framework for running pickaxe through a python file. Feel free to download it and change it to your needs. The starting compounds, rules and cofactors, optional database information, and Pickaxe run options are specified. After running the results are stored in a specified database or written to .tsv files.
 
@@ -42,3 +42,16 @@ Pickaxe.py can be called independently to generate predictions with or
 without database storage. To list all options call `python -m minedatabase.pickaxe -h`. Note that due to relative imports, it needs to be run as a module (-m flag) from the MINE-Database directory. To predict metacyc reactions for one generation on compounds in the iML1515 model one would call 
 
 `python pickaxe.py -C ./data/metacyc_generalized_rules.tsv -r ./data metacyc_coreactants.tsv -g 1 -c ../example_data/iML1515_ecoli_GEM.csv`
+
+## Running Pickaxe (current)
+### Running Pickaxe through the CLI (recommended)
+
+Activate the poetry shell:
+
+`poetry shell`
+
+Then, run the following command:
+
+```python
+python pickaxe_run_template.py
+```
