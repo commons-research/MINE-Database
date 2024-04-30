@@ -29,6 +29,7 @@ You need Poetry (https://python-poetry.org/)
 `poetry install`
 
 Also be sure to install MongoDB (https://docs.mongodb.com/manual/installation/) if you are using the `write_db = True` option in Pickaxe.
+Installation information on Ubuntu system https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
  
 
 ## Running Pickaxe (legacy)
@@ -41,7 +42,7 @@ This is all explained in more detail in the [documentation](https://mine-databas
 Pickaxe.py can be called independently to generate predictions with or 
 without database storage. To list all options call `python -m minedatabase.pickaxe -h`. Note that due to relative imports, it needs to be run as a module (-m flag) from the MINE-Database directory. To predict metacyc reactions for one generation on compounds in the iML1515 model one would call 
 
-`python pickaxe.py -C ./data/metacyc_generalized_rules.tsv -r ./data metacyc_coreactants.tsv -g 1 -c ../example_data/iML1515_ecoli_GEM.csv`
+`python pickaxe.py -C ./data/metacyc_rules/metacyc_generalized_rules.tsv -r ./data/metacyc_rules/metacyc_coreactants.tsv -g 1 -c ../example_data/iML1515_ecoli_GEM.csv`
 
 ## Running Pickaxe (current)
 ### Running Pickaxe through the CLI (recommended)
@@ -57,3 +58,38 @@ python pickaxe_run_template.py
 ```
 
 For now you will need to edit all your parameters directly inside the corresponding script.
+
+
+We now try to clean the previous messy command.
+
+`python pickaxe.py -C ./data/metacyc_rules/metacyc_generalized_rules.tsv -r ./data/metacyc_rules/metacyc_coreactants.tsv -g 1 -c ../example_data/iML1515_ecoli_GEM.csv`
+
+Should be
+
+```python
+python mine_database/pickaxe.py -C ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv -r ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv  -g 1 -c ./example_data/iML1515_ecoli_GEM.csv -o ./data/
+```
+
+```python
+python mine_database/pickaxe.py -C ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv -r ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv  -g 1 -c ./example_data/iML1515_ecoli_GEM.csv -o ./data/
+```
+
+
+### Accessing the mongodb database
+
+To access the mongodb database, you can use the following command:
+
+```bash
+mongosh
+```
+
+Then, you can use the following commands to access the database:
+
+```bash
+use example_db
+db.compounds.find()
+```
+
+Optionally the DB can be observed using MongoDB Compass. See https://www.mongodb.com/docs/compass/current/install/
+
+

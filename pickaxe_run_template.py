@@ -47,14 +47,14 @@ start = time.time()
 
 
 # Database writing options
-write_db = False
+write_db = True
 # Database name and message to print in metadata
 database = "example_db"
 message = "Example run to show how pickaxe is run."
 # Whether to write compounds to core compound database with extra info
 write_core = True
 # Force overwrite existing database
-database_overwrite = False
+database_overwrite = True
 # Use local DB, i.e. localhost:27017
 use_local = True
 
@@ -81,7 +81,7 @@ rule_list, coreactant_list, rule_name = metacyc_intermediate(
     n_rules=None,
     fraction_coverage=0.2,
     anaerobic=True,
-    # exclude_containing = ["aromatic", "halogen"]
+    #exclude_containing = ["aromatic", "halogen"]
 )
 
 ###############################################################################
