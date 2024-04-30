@@ -60,7 +60,14 @@ use_local = True
 
 # Writing compound and reaction csv files locally
 write_to_csv = True
-output_dir = "./data"
+
+# metacy intermediate or generalized choice (choose from "intermediate" or "generalized")
+
+metacyc_choice = "intermediate"
+
+# Output directory for csv files
+output_dir = "./data/output/metacyc_" + metacyc_choice
+
 ###############################################################################
 
 ###############################################################################
@@ -70,19 +77,31 @@ output_dir = "./data"
 # input_cpds = "./example_data/target_list_many.csv"
 # input_cpds = "./example_data/starting_cpds_three.csv"
 # input_cpds = "./data/top_10_smiles_2D.csv"
-input_cpds = "./example_data/starting_cpds_ten.csv"
+input_cpds = "./example_data/genus_penicillium_20_for_mines.csv"
 
 # Rule specification and generation. Rules can be manually created or
 # metacyc_intermediate or metacyc_generalized can provide correctly formatted
 # biological reactions derived from metacyc.
 
-# See the documentation for description of options.
-rule_list, coreactant_list, rule_name = metacyc_intermediate(
-    n_rules=None,
-    fraction_coverage=0.2,
-    anaerobic=True,
-    #exclude_containing = ["aromatic", "halogen"]
-)
+# # See the documentation for description of options.
+
+if metacyc_choice == "intermediate":
+
+    rule_list, coreactant_list, rule_name = metacyc_intermediate(
+        n_rules=None,
+        fraction_coverage=0.5,
+        anaerobic=True,
+        #exclude_containing = ["aromatic", "halogen"]
+    )
+
+elif metacyc_choice == "generalized":
+    
+    rule_list, coreactant_list, rule_name = metacyc_generalized(
+        n_rules=None,
+        fraction_coverage=0.5,
+        anaerobic=True,
+        #exclude_containing = ["aromatic", "halogen"]
+    )
 
 ###############################################################################
 
