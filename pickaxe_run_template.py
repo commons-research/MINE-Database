@@ -72,7 +72,7 @@ filename_compounds = "/compounds"
 filename_reactions = "/reactions"
 
 print(f'Arguments given: {sys.argv[1:]}')
-if sys.argv[1:] is not None:
+if len(sys.argv) > 1:
     metacyc_choice = sys.argv[1]
     fraction_coverage = float(sys.argv[2])
     filename_compounds = sys.argv[3]
