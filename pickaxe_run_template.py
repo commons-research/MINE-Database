@@ -10,6 +10,7 @@ The general format of a script will be:
    6. Write results
 """
 
+import sys
 import datetime
 import multiprocessing
 import pickle
@@ -31,8 +32,8 @@ from mine_database.rules import metacyc_generalized, metacyc_intermediate
 
 
 # Uncomment to use these. Pickaxe doesn't come packaged with dependencies by default.
-from mine_database.filters import ThermoFilter
-from mine_database.filters import ReactionFeasibilityFilter
+# from mine_database.filters import ThermoFilter
+# from mine_database.filters import ReactionFeasibilityFilter
 
 
 start = time.time()
@@ -62,11 +63,21 @@ use_local = True
 write_to_csv = True
 
 # metacy intermediate or generalized choice (choose from "intermediate" or "generalized")
-
-metacyc_choice = "intermediate"
+metacyc_choice = "generalized"
+fraction_coverage = 1
 
 # Output directory for csv files
 output_dir = "./data/output/metacyc_" + metacyc_choice
+filename_compounds = "/compounds"
+filename_reactions = "/reactions"
+
+print(f'Arguments given: {sys.argv[1:]}')
+if sys.argv[1:] is not None:
+    metacyc_choice = sys.argv[1]
+    fraction_coverage = float(sys.argv[2])
+    filename_compounds = sys.argv[3]
+    filename_reactions = sys.argv[4]
+    output_dir = "./data/output/metacyc_" + metacyc_choice
 
 ###############################################################################
 
@@ -86,19 +97,17 @@ input_cpds = "./example_data/genus_penicillium_20_for_mines.csv"
 # # See the documentation for description of options.
 
 if metacyc_choice == "intermediate":
-
     rule_list, coreactant_list, rule_name = metacyc_intermediate(
         n_rules=None,
-        fraction_coverage=0.5,
+        fraction_coverage=fraction_coverage,
         anaerobic=True,
         #exclude_containing = ["aromatic", "halogen"]
     )
 
 elif metacyc_choice == "generalized":
-    
     rule_list, coreactant_list, rule_name = metacyc_generalized(
         n_rules=None,
-        fraction_coverage=0.5,
+        fraction_coverage=fraction_coverage,
         anaerobic=True,
         #exclude_containing = ["aromatic", "halogen"]
     )
@@ -584,10 +593,15 @@ if __name__ == "__main__":
                 }
             )
 
+
+    # add runtime to filename
+    runtime = str(round(time.time() - start, 2))
+
+
     if write_to_csv:
         pk.assign_ids()
-        pk.write_compound_output_file(output_dir + "/compounds.tsv")
-        pk.write_reaction_output_file(output_dir + "/reactions.tsv")
+        pk.write_compound_output_file(output_dir + filename_compounds + "_" + runtime + "_.tsv")
+        pk.write_reaction_output_file(output_dir + filename_reactions + "_" + runtime + "_.tsv")
 
     print("----------------------------------------")
     print(f"Overall run took {round(time.time() - start, 2)} seconds.")
