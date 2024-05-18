@@ -18,15 +18,15 @@ import time
 
 import pymongo
 
-# Make sure you have minedatabase installed! (either from GitHub or via pip)
-from mine_database.filters import (
-    AtomicCompositionFilter,
-    MCSFilter,
-    MetabolomicsFilter,
-    MWFilter,
-    SimilarityFilter,
-    SimilaritySamplingFilter,
-)
+## Make sure you have minedatabase installed! (either from GitHub or via pip)
+# from mine_database.filters import (
+#     AtomicCompositionFilter,
+#     MCSFilter,
+#     MetabolomicsFilter,
+#     MWFilter,
+#     SimilarityFilter,
+#     SimilaritySamplingFilter,
+# )
 from mine_database.pickaxe import Pickaxe
 from mine_database.rules import metacyc_generalized, metacyc_intermediate
 
@@ -88,7 +88,7 @@ if len(sys.argv) > 1:
 # input_cpds = "./example_data/target_list_many.csv"
 # input_cpds = "./example_data/starting_cpds_three.csv"
 # input_cpds = "./data/top_10_smiles_2D.csv"
-input_cpds = "./example_data/genus_penicillium_20_for_mines.csv"
+input_cpds = "./example_data/Solanum_1000.csv" #./example_data/genus_penicillium_20_for_mines.csv"
 
 # Rule specification and generation. Rules can be manually created or
 # metacyc_intermediate or metacyc_generalized can provide correctly formatted
@@ -602,6 +602,8 @@ if __name__ == "__main__":
         pk.assign_ids()
         pk.write_compound_output_file(output_dir + filename_compounds + "_" + runtime + "_.tsv")
         pk.write_reaction_output_file(output_dir + filename_reactions + "_" + runtime + "_.tsv")
+
+
 
     print("----------------------------------------")
     print(f"Overall run took {round(time.time() - start, 2)} seconds.")
