@@ -487,11 +487,13 @@ if __name__ == "__main__":
     )
 
     
-    if os.path.isfile("/pickles/" + filename_pickle + ".pk"):
+    if os.path.isfile("./pickles/" + filename_pickle + ".pk"):
         # load pickle, if available
-        pk.load_pickled_pickaxe("/pickles/" + filename_pickle + ".pk")
+        print(f"loaded pickles: {filename_pickle}")
+        pk.load_pickled_pickaxe("./pickles/" + filename_pickle + ".pk")
     else:
         # Load compounds
+        print(f"loaded compounds: {input_cpds}")
         pk.load_compound_set(compound_file=input_cpds)
 
     # Load target compounds for filters
@@ -610,7 +612,7 @@ if __name__ == "__main__":
     runtime = str(round(time.time() - start, 2))
 
     # Write results in a pickled format
-    pk.pickle_pickaxe("/pickles/" + filename_pickle + ".pk")
+    pk.pickle_pickaxe("./pickles/" + filename_pickle + ".pk")
     
     
     if write_to_csv:

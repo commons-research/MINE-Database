@@ -21,9 +21,6 @@
 # run generalized rulset
 cd /home/pamrein/2024_masterthesis/MINE-Database
 
-# split the dataset to let pickaxe run in parallel (only do ones!)
-# split -l 50000 ./example_data/230106_frozen_metadata_for_MINES.csv 230106_frozen_metadata_for_MINES_split_
-
 
 FILE=$1
 FILTER=$2
@@ -33,7 +30,7 @@ FILENAME=$(basename ${FILE})
 fraction=1
 
 
-file_name_compound="/compounds_"${fraction}"_generalized"${FILENAME}
-file_name_reaction="/reactions_"${fraction}"_generalized"${FILENAME}
+file_name_compound="/compounds_"${fraction}"_generalized_"${FILENAME}
+file_name_reaction="/reactions_"${fraction}"_generalized_"${FILENAME}
 echo "$fraction | $file_name_compound | $file_name_reaction | ${FILE}"
 poetry run python pickaxe_run_template.py ${FILTER} $fraction $file_name_compound $file_name_reaction ${FILE}
