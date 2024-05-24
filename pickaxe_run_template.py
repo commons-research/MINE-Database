@@ -10,7 +10,7 @@ The general format of a script will be:
    6. Write results
 """
 
-import sys
+import sys, os
 import datetime
 import multiprocessing
 import pickle
@@ -18,7 +18,7 @@ import time
 
 import pymongo
 
-## Make sure you have minedatabase installed! (either from GitHub or via pip)
+# Make sure you have minedatabase installed! (either from GitHub or via pip)
 # from mine_database.filters import (
 #     AtomicCompositionFilter,
 #     MCSFilter,
@@ -71,8 +71,7 @@ output_dir = "./data/output/metacyc_" + metacyc_choice
 filename_compounds = "/compounds"
 filename_reactions = "/reactions"
 
-# Input filename
-input_cpds = "./example_data/Solanum_1000.csv"
+input_cpds = "./example_data/genus_penicillium_20_for_mines.csv"
 
 print(f'Arguments given: {sys.argv[1:]}')
 if len(sys.argv) > 1:
@@ -82,9 +81,11 @@ if len(sys.argv) > 1:
     filename_reactions = sys.argv[4]
     output_dir = "./data/output/metacyc_" + metacyc_choice
 
-    if len(sys.argv) > 5:
-        input_cpds = sys.argv[5]
-###############################################################################
+if len(sys.argv) == 6:
+    input_cpds = sys.argv[5]
+
+filename_pickle = os.path.splitext(os.path.basename(input_cpds))[0]
+###############################################################################   
 
 ###############################################################################
 #### Starting Compounds, Cofactors, and Rules
@@ -93,7 +94,7 @@ if len(sys.argv) > 1:
 # input_cpds = "./example_data/target_list_many.csv"
 # input_cpds = "./example_data/starting_cpds_three.csv"
 # input_cpds = "./data/top_10_smiles_2D.csv"
-# input_cpds = "./example_data/Solanum_1000.csv" #./example_data/genus_penicillium_20_for_mines.csv"
+
 
 # Rule specification and generation. Rules can be manually created or
 # metacyc_intermediate or metacyc_generalized can provide correctly formatted
@@ -485,8 +486,13 @@ if __name__ == "__main__":
         filter_after_final_gen=filter_after_final_gen,
     )
 
-    # Load compounds
-    pk.load_compound_set(compound_file=input_cpds)
+    
+    if os.path.isfile("/pickles/" + filename_pickle + ".pk"):
+        # load pickle, if available
+        pk.load_pickled_pickaxe("/pickles/" + filename_pickle + ".pk")
+    else:
+        # Load compounds
+        pk.load_compound_set(compound_file=input_cpds)
 
     # Load target compounds for filters
     if (
@@ -563,6 +569,7 @@ if __name__ == "__main__":
     if pk.targets and prune_to_targets:
         pk.prune_network_to_targets()
 
+
     # Write results to database
     if write_db:
         pk.save_to_mine(processes=processes, indexing=indexing, write_core=write_core)
@@ -602,13 +609,14 @@ if __name__ == "__main__":
     # add runtime to filename
     runtime = str(round(time.time() - start, 2))
 
-
+    # Write results in a pickled format
+    pk.pickle_pickaxe("/pickles/" + filename_pickle + ".pk")
+    
+    
     if write_to_csv:
         pk.assign_ids()
         pk.write_compound_output_file(output_dir + filename_compounds + "_" + runtime + "_.tsv")
         pk.write_reaction_output_file(output_dir + filename_reactions + "_" + runtime + "_.tsv")
-
-
 
     print("----------------------------------------")
     print(f"Overall run took {round(time.time() - start, 2)} seconds.")
