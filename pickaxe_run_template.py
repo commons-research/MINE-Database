@@ -71,6 +71,9 @@ output_dir = "./data/output/metacyc_" + metacyc_choice
 filename_compounds = "/compounds"
 filename_reactions = "/reactions"
 
+# Input filename
+input_cpds = "./example_data/Solanum_1000.csv"
+
 print(f'Arguments given: {sys.argv[1:]}')
 if len(sys.argv) > 1:
     metacyc_choice = sys.argv[1]
@@ -79,6 +82,8 @@ if len(sys.argv) > 1:
     filename_reactions = sys.argv[4]
     output_dir = "./data/output/metacyc_" + metacyc_choice
 
+    if len(sys.argv) > 5:
+        input_cpds = sys.argv[5]
 ###############################################################################
 
 ###############################################################################
@@ -88,7 +93,7 @@ if len(sys.argv) > 1:
 # input_cpds = "./example_data/target_list_many.csv"
 # input_cpds = "./example_data/starting_cpds_three.csv"
 # input_cpds = "./data/top_10_smiles_2D.csv"
-input_cpds = "./example_data/Solanum_1000.csv" #./example_data/genus_penicillium_20_for_mines.csv"
+# input_cpds = "./example_data/Solanum_1000.csv" #./example_data/genus_penicillium_20_for_mines.csv"
 
 # Rule specification and generation. Rules can be manually created or
 # metacyc_intermediate or metacyc_generalized can provide correctly formatted

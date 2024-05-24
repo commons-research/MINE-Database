@@ -20,7 +20,7 @@ do
     file_name_compound="/compounds_"$fraction"_generalized"
     file_name_reaction="/reactions_"$fraction"_generalized"
     echo "$fraction | $file_name_compound | $file_name_reaction"
-    poetry run python pickaxe_run_template.py generalized $fraction $file_name_compound $file_name_reaction
+    poetry run python pickaxe_run_template.py generalized $fraction $file_name_compound $file_name_reaction 
 done
 
 # run intermediate rulset
