@@ -1,3 +1,4 @@
+id,smiles
 """Template for a pickaxe run.
 
 This python script provides a skeleton to build Pickaxe runs around

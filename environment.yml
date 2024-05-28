@@ -1,3 +1,4 @@
+id,smiles
 name: minedb
 channels:
   - conda-forge

@@ -22,7 +22,7 @@ def read_arg(argv):
     '''
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 
+        opts, args = getopt.getopt(argv[1:], 
             "h:s:r:c:o:a:b:", 
             [
                 "help",
@@ -30,7 +30,7 @@ def read_arg(argv):
                 "reactions=",
                 "compounds=",
                 "output_file=",
-                "reaction_rules_col="
+                "reaction_rules_col=",
                 "compounds_col=",
             ],
         )
@@ -39,12 +39,12 @@ def read_arg(argv):
         print(arg_help)  
         sys.exit(2)
 
-    df_start_components_path = str()
-    df_reactions_path = str()
-    df_compounds_path = str()
-    output_file = str()
-    reaction_rules_col = str()
-    compounds_col = int()
+    df_start_components_path = ""
+    df_reactions_path = ""
+    df_compounds_path = ""
+    output_file = ""
+    reaction_rules_col = ""
+    compounds_col = ""
 
     # If argument values given, overwrite the default values
     for o, a in opts:
@@ -71,8 +71,8 @@ def read_arg(argv):
             "df_reactions_path" : df_reactions_path, 
             "df_compounds_path" : df_compounds_path, 
             "output_file" : output_file,
-            "reaction_col" : reaction_rules_col , 
-            "compounds_col" : compounds_col, 
+            "reaction_col" : reaction_rules_col, 
+            "compounds_col" : compounds_col
             }
 
 

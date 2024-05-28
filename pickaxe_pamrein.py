@@ -1,3 +1,4 @@
+id,smiles
 input_cpds = "./data/top_10_smiles_2D.csv"  # "./example_data/Agaricomycetes_20.csv"
 target_cpds = "./data/top_10_smiles_2D.csv"  # "./example_data/target_list_many_pam.csv"  # "./data/top_10_smiles.csv"
 generations = 1
