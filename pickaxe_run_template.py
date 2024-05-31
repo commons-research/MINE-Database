@@ -1,4 +1,3 @@
-id,smiles
 """Template for a pickaxe run.
 
 This python script provides a skeleton to build Pickaxe runs around
@@ -85,7 +84,7 @@ if len(sys.argv) > 1:
 if len(sys.argv) == 6:
     input_cpds = sys.argv[5]
 
-filename_pickle = os.path.splitext(os.path.basename(input_cpds))[0]
+# filename_pickle = os.path.splitext(os.path.basename(input_cpds))[0]
 ###############################################################################   
 
 ###############################################################################
@@ -488,14 +487,9 @@ if __name__ == "__main__":
     )
 
     
-    if os.path.isfile("./pickles/" + filename_pickle + ".pk"):
-        # load pickle, if available
-        print(f"loaded pickles: {filename_pickle}")
-        pk.load_pickled_pickaxe("./pickles/" + filename_pickle + ".pk")
-    else:
-        # Load compounds
-        print(f"loaded compounds: {input_cpds}")
-        pk.load_compound_set(compound_file=input_cpds)
+    # Load compounds
+    print(f"loaded compounds: {input_cpds}")
+    pk.load_compound_set(compound_file=input_cpds)
 
     # Load target compounds for filters
     if (
@@ -612,8 +606,6 @@ if __name__ == "__main__":
     # add runtime to filename
     runtime = str(round(time.time() - start, 2))
 
-    # Write results in a pickled format
-    pk.pickle_pickaxe("./pickles/" + filename_pickle + ".pk")
     
     
     if write_to_csv:

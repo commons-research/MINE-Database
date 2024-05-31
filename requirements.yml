@@ -1,4 +1,3 @@
-id,smiles
 name: rdkit-env
 channels:
   - rdkit

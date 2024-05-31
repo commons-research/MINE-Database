@@ -22,7 +22,7 @@ FILE=$1
 OUTPUT=$2
 LINES_PER_FILE=$3
 
-mkdir ${OUTPUT}
+mkdir -p ${OUTPUT}
 cd ${OUTPUT}
 
 # get the filename without suffix (generally it is *.csv)

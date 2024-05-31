@@ -1,4 +1,3 @@
-id,smiles
 import setuptools
 from setuptools import setup
 

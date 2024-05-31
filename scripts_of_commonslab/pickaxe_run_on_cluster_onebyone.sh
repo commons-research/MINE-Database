@@ -8,8 +8,8 @@
 
 #SBATCH --cpus-per-task=10
 #SBATCH --partition=pibu_el8
-#SBATCH --mem=250G
-#SBATCH --time=3-1:00:00
+#SBATCH --mem=500G
+#SBATCH --time=2-1:00:00
 #SBATCH --job-name="all MINEs"
 #SBATCH --mail-user=pascal.amrein@unifr.ch
 #SBATCH --mail-type=begin,end,fail
@@ -23,6 +23,8 @@ cd /home/pamrein/2024_masterthesis/MINE-Database
 
 
 FILE=$1
+
+# generalized or intermediate
 FILTER=$2
 
 FILENAME=$(basename ${FILE})
