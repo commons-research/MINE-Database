@@ -1,3 +1,5 @@
+# poetry run python scripts_of_commonslab/combine_to_original_dataset.py 
+
 # Variables to set
 folder_path = './data/output/metacyc_generalized/20240601_lotus_generalized_n45/results/'
 pattern="result_*.tsv"

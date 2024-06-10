@@ -2,7 +2,7 @@
 
 # Example to run:
 # . splits_to_one_file.sh <folder_with_compounds_and_reactions> <inputfile_full>
-# . ../scripts_of_commonslab/splits_to_one_file.sh /data/output/metacyc_generalized/20240601_lotus_generalized_n45/ ./example_data/230106_frozen_metadata_for_MINES.csv
+# . ./scripts_of_commonslab/splits_to_one_file.sh /data/output/metacyc_generalized/20240601_lotus_generalized_n45/ ./example_data/230106_frozen_metadata_for_MINES.csv
 
 # Description:
 # splitt a MINES_file and add the header for MINES
