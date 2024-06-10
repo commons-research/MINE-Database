@@ -9,7 +9,7 @@
 #SBATCH --cpus-per-task=10
 #SBATCH --partition=pibu_el8
 #SBATCH --mem=500G
-#SBATCH --time=2-1:00:00
+#SBATCH --time=4-1:00:00
 #SBATCH --job-name="all MINEs"
 #SBATCH --mail-user=pascal.amrein@unifr.ch
 #SBATCH --mail-type=begin,end,fail

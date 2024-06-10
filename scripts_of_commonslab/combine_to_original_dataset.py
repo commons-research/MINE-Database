@@ -1,8 +1,9 @@
 # Variables to set
-folder_path = './data/output/metacyc_generalized/240527_lotus_generalized_n89/results/'
+folder_path = './data/output/metacyc_generalized/20240601_lotus_generalized_n45/results/'
 pattern="result_*.tsv"
 
-import polars as pl
+# import libraries
+import polars as pl     #for dataframe managemante and calculation
 import glob
 import os
 

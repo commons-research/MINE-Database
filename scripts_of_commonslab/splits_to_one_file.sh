@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # Example to run:
-# . splitter.sh <file_to_be_splitted> <output_folder> <lines_per_file>
-# . ../scripts_of_commonslab/splitter.sh 230106_frozen_metadata_for_MINES.csv 230106_frozen_metadata_splitted_n100 2500
+# . splits_to_one_file.sh <folder_with_compounds_and_reactions> <inputfile_full>
+# . ../scripts_of_commonslab/splits_to_one_file.sh /data/output/metacyc_generalized/20240601_lotus_generalized_n45/ ./example_data/230106_frozen_metadata_for_MINES.csv
 
 # Description:
 # splitt a MINES_file and add the header for MINES
 
 #SBATCH --partition=pibu_el8
 #SBATCH --mem=250G
-#SBATCH --time=3-1:00:00
+#SBATCH --time=1-1:00:00
 #SBATCH --job-name="all MINEs"
 #SBATCH --mail-user=pascal.amrein@unifr.ch
 #SBATCH --mail-type=begin,end,fail
