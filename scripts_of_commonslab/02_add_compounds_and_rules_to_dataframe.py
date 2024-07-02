@@ -76,8 +76,6 @@ def read_arg(argv):
             }
 
 
-
-
 if __name__ == "__main__":
 
     # if arguments in the CLI are given, they will be loaded
