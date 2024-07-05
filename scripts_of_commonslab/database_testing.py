@@ -10,17 +10,17 @@ pl.Config(fmt_str_lengths=550)
 def unique_filter(lazy_df, colname = "", show_df = True):
     """unique values
 
-    Filters out the unique values of specific columns and prints the size and dataframe, if wished.
+    Filters out the unique values of specific columns and prints the size and dataframe (if wished).
 
     Args:
-        lazy_df:    dataframe to be manipulated
-        colname:    columnnames, where the operations takes place. 
-                    If empty, it will go through each one by one.
-                    If args given, he will take all at ones in account.
-        show_df:    If true, also a part of the dataframe will be printed.
+        lazy_df(str):   dataframe to be manipulated
+        colname(str, list of str):  columnnames, where the operations takes place. 
+                                    If empty, it will go through each one by one.
+                                    If args given, he will take all at ones in account.
+        show_df(bool):  If true, also a part of the dataframe will be printed.
 
     Returns:
-        returns 0, if operation succeeded.
+        bool: 0 if succeeded.
 
     """
     if not colname:
@@ -32,7 +32,7 @@ def unique_filter(lazy_df, colname = "", show_df = True):
                 print(f'{col_name} : {num_uni.shape}')
     else: 
         num_uni = lazy_df.select(pl.col(colname)).unique().collect(streaming = True)
-        print(f'----{colname}----\n {num_uni}\n \n')
+        
         if show_df:
             print(f'----{colname}----\n {num_uni}\n \n')
         else:
@@ -79,13 +79,13 @@ def lazyread_mines_parquet(parquet_file):
 # unique_filter(df, colname = ["InChIKey", "SMILES"], show_df = False)
 
 
-# path = "/home/pamrein/2024_masterthesis/MINE-Database/data/output/metacyc_generalized/20240601_lotus_generalized_n45/reactions_1_generalized_230106_frozen_metadata_for_MINES_split_*.csv_77226.91_.parquet"
-# df = lazyread_mines_parquet(path) 
-# # reactions columns: ["ID", "Name", "ID equation", "SMILES equation", "Rxn hash", "Reaction rules"]
-# unique_filter(df, colname = ["ID", "Name", "ID equation", "SMILES equation", "Rxn hash", "Reaction rules"],  show_df = False)
-# unique_filter(df, colname = ["ID equation", "SMILES equation", "Rxn hash", "Reaction rules"],  show_df = False)
-
-path = "/home/pamrein/2024_masterthesis/MINE-Database/data/output/metacyc_generalized/20240601_lotus_generalized_n45/results/*.parquet"
+path = "/home/pamrein/2024_masterthesis/MINE-Database/data/output/metacyc_generalized/20240601_lotus_generalized_n45/reactions_1_generalized_230106_frozen_metadata_for_MINES_split_*.parquet"
 df = lazyread_mines_parquet(path) 
 # reactions columns: ["ID", "Name", "ID equation", "SMILES equation", "Rxn hash", "Reaction rules"]
-unique_filter(df, show_df = False)
+unique_filter(df, colname = ["ID", "Name", "ID equation", "SMILES equation", "Rxn hash", "Reaction rules"],  show_df = False)
+unique_filter(df, colname = ["ID equation", "SMILES equation", "Rxn hash", "Reaction rules"],  show_df = False)
+
+# path = "/home/pamrein/2024_masterthesis/MINE-Database/data/output/metacyc_generalized/20240601_lotus_generalized_n45/results/*.parquet"
+# df = lazyread_mines_parquet(path) 
+# # reactions columns: ["ID", "Name", "ID equation", "SMILES equation", "Rxn hash", "Reaction rules"]
+# unique_filter(df, show_df = False)
