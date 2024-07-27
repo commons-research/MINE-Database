@@ -81,8 +81,11 @@ if len(sys.argv) > 1:
     filename_reactions = sys.argv[4]
     output_dir = "./data/output/metacyc_" + metacyc_choice
 
-if len(sys.argv) == 6:
+if len(sys.argv) >= 6:
     input_cpds = sys.argv[5]
+
+if len(sys.argv) >= 7:
+    output_dir = sys.argv[6]
 
 # filename_pickle = os.path.splitext(os.path.basename(input_cpds))[0]
 ###############################################################################   
