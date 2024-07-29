@@ -153,8 +153,8 @@ class Pickaxe:
         database_overwrite: bool = False,
         mongo_uri: bool = "mongodb://localhost:27017",
         image_dir: str = None,
-        quiet: bool = True,
-        react_targets: bool = True,
+        quiet: bool = False,
+        react_targets: bool = False,
         filter_after_final_gen: bool = True,
         prune_between_gens: bool = False,
     ) -> None:
@@ -304,7 +304,7 @@ class Pickaxe:
                 mol = self._mol_from_dict(cpd_dict)
                 if not mol:
                     continue
-                RemoveStereochemistry(mol)
+                # RemoveStereochemistry(mol)
                 # Add compound to internal dictionary as a starting
                 # compound and store SMILES string to be returned
                 smi = MolToSmiles(mol, True)
@@ -1644,7 +1644,7 @@ if __name__ == "__main__":
         "-H",
         "--explicit_h",
         action="store_true",
-        default=False,
+        default=True,
         help="Specify explicit hydrogen for use in reaction rules.",
     )
     parser.add_argument(

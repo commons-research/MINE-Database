@@ -1,0 +1,21 @@
+CNc1nc(SC)nc2ccccc12	GSK353069A
+Cc1nc2ccccn2c1C(=O)NCc1ccc2OCOc2c1	GSK498315A
+CNc1nc(SC)nc2ccsc12	GSK353496A (DHFR)
+Cc1nc2ccccn2c1C(=O)NCc1ccccc1	GSK957094A
+CCc1ccc(Nc2nnc(SCc3cc(C)on3)s2)cc1	GSK1742694A (GlpK)
+COc1ccc(cc1OC)-c1nc(no1)-c1cccc(NC(=O)Cc2ccc(F)cc2)c1	GSK2043267A (MmpL3)
+CC(C)(C)c1ccc(cc1)-c1nnc(SCC(=O)OC2CCCCC2)o1	GW859039X (FbpA)
+O=C(C=Cc1cccs1)N1CCN(Cc2ccc3OCOc3c2)CC1	GW861072X
+CC(C)OC(=O)COc1ccc(cc1)-c1cnc(nc1)N(C)CCc1ccncc1	GSK831784A (MurC)
+Cc1nc2ccc(C)cn2c1-c1ccn(Cc2ccccc2)n1	GSK847920A (MurC)
+O=C(Nc1ccccc1N1CCOCC1)C(Cc1ccccc1)NC(=O)c1cccs1	GSK1055950A
+FC(F)(F)c1nc2ccccn2c1C(=O)NCc1ccc(Oc2ccccc2)cc1	GSK1829676A
+Cc1ccc2nc(c(C(=O)NCc3cccs3)n2c1)C(F)(F)F	GSK1829729A
+Cc1ccc2nc(c(C(=O)NCc3ccc4OCOc4c3)n2c1)C(F)(F)F	GSK1829732A
+Cc1ccc2nc(c(C(=O)NCc3cc(Cl)cc(Cl)c3)n2c1)C(F)(F)F	GSK1829736A
+Cc1nc2ccc(C)cn2c1C(=O)NCc1ccco1	GSK1829819A
+Cc1nc2ccc(C)cn2c1C(=O)NCc1cccs1	GSK1829820A (QcrB)
+Cc1ccccc1CN1CCC(O)(CC1)c1ccc(Cl)c(c1)C(F)(F)F	GSK1985270A
+CCCCS(=O)(=O)Nc1ccc2cnn(C)c2c1	GSK3011724A (kasA)
+O=C(C1CCN(CC1)c1nnc(s1)-n1cccc1)N1CCC(Cc2ccccc2)CC1	GSK2032710A (DprE1)
+COc1ccccc1-c1cccc(CNC(=O)c2cc3ccccc3cc2OC)c1	GSK695914A

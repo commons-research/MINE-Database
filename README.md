@@ -70,8 +70,39 @@ Should be
 python mine_database/pickaxe.py -C ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv -r ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv  -g 1 -c ./example_data/iML1515_ecoli_GEM.csv -o ./data/
 ```
 
-```python
-python mine_database/pickaxe.py -C ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv -r ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv  -g 1 -c ./example_data/iML1515_ecoli_GEM.csv -o ./data/
+Quick example:
+
+Using MetaCyc rules and coreactants.
+
+```bash
+python mine_database/pickaxe_commons.py -C ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv -r ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv  -g 1 -c ./example_data/lotus_10.csv -o ./data/
+```
+
+Using original rules and coreactants (Enzymatic)
+
+```bash
+python mine_database/pickaxe_commons.py -C ./mine_database/data/original_rules/EnzymaticCoreactants.tsv -r ./mine_database/data/original_rules/EnzymaticReactionRules.tsv  -g 1 -c ./example_data/lotus_10.csv -o ./data/
+```
+
+```bash
+python mine_database/pickaxe_commons.py -C ./mine_database/data/original_rules/EnzymaticCoreactants.tsv -r ./mine_database/data/original_rules/EnzymaticReactionRules.tsv  -g 1 -c ./example_data/lotus_1000.csv -o ./data/ -m 60
+```
+Legacy example:
+
+```bash
+python minedatabase/pickaxe_commons.py -C ./minedatabase/data/EnzymaticCoreactants.tsv -r ./minedatabase/data/EnzymaticReactionRules.tsv  -g 1 -c ./minedatabase/data/DNP_01.tsv -o ./data/
+```
+
+Complete command (writing to database):
+
+```bash
+python mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv --generations 1 --compound_file ./example_data/230106_frozen_metadata_for_mines.csv --output_dir ./data/ --processes 60 --verbose --explicit_h --database lotus_mines
+```
+
+Command without writing to database:
+
+```bash
+python mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv --generations 1 --compound_file ./example_data/lotus_10.csv --output_dir ./data/ --processes 60 --verbose --explicit_h
 ```
 
 
