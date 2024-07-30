@@ -11,7 +11,7 @@
 # 1000 SMILES ~1h
 
 
-#SBATCH --cpus-per-task=20
+#SBATCH --cpus-per-task=60
 #SBATCH --partition=pibu_el8
 #SBATCH --mem=500G
 #SBATCH --time=4-1:00:00
@@ -23,26 +23,38 @@
 
 
 
-# run generalized rulset
-cd /home/pamrein/2024_masterthesis/MINE-Database
+# # run generalized rulset
+# cd /home/pamrein/2024_masterthesis/MINE-Database
 
 # Inputfiles can be choosed with wildcards (exp.: folder/*)
 FILE=$(pwd $1)/$1
 
 
-# generalized or intermediate
-FILTER=$2
+# # generalized or intermediate
+# FILTER=$2
 
-# location to save results
-OUTPUT_FOLDER=$3
-mkdir -p ${OUTPUT_FOLDER}
+# # location to save results
+# OUTPUT_FOLDER=$3
+# mkdir -p ${OUTPUT_FOLDER}
 
-# Remove any known extension
-FILENAME="${FILE%.*}"
+# # Remove any known extension
+# FILENAME="${FILE%.*}"
 
-fraction=1
+# fraction=1
 
-file_name_compound="/compounds_"${fraction}"_generalized_"${FILENAME}
-file_name_reaction="/reactions_"${fraction}"_generalized_"${FILENAME}
-echo "$fraction | $file_name_compound | $file_name_reaction | ${FILE}.csv"
-poetry run python pickaxe_run_template.py ${FILTER} $fraction $file_name_compound $file_name_reaction ${FILE} ${OUTPUT_FOLDER}
+# file_name_compound="/compounds_"${fraction}"_generalized_"${FILENAME}
+# file_name_reaction="/reactions_"${fraction}"_generalized_"${FILENAME}
+# echo "$fraction | $file_name_compound | $file_name_reaction | ${FILE}.csv"
+# poetry run python pickaxe_run_template.py ${FILTER} $fraction $file_name_compound $file_name_reaction ${FILE} ${OUTPUT_FOLDER}
+
+
+poetry run python mine_database/pickaxe_commons.py \
+--coreactant_list ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv \
+--rule_list \
+./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv \
+--generations 1 \
+--compound_file ${FILE} \
+--output_dir ./data/output/ \
+--processes 60 \
+--verbose \
+--explicit_h
