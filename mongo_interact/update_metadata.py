@@ -18,7 +18,7 @@ metadata_df = read_gz_csv(metadata_file_path)
 
 # Connect to MongoDB
 client = MongoClient(connection_string)
-db = client['test-mines']  # Replace with your actual database name
+db = client['lotus_mines']  # Replace with your actual database name
 compounds_col = db['compounds']
 
 # Step 1: List all Starting Compounds' InChIKeys
