@@ -106,6 +106,13 @@ python mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/o
 ```
 
 
+Command with generalized rules and full LOTUS dataset without writing to database:
+
+```bash
+python mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv --rule_list ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv --generations 1 --compound_file ./data/LOTUS_inputfiles/230106_frozen_metadata_inchy_smiles.csv --output_dir ./data/ --processes 60 --verbose --explicit_h
+```
+
+
 ### Accessing the mongodb database
 
 To access the mongodb database, you can use the following command:
