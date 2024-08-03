@@ -11,7 +11,7 @@ metadata_file_path = './example_data/230106_frozen_metadata.csv.gz'
 # Function to read a gzip compressed CSV file into a DataFrame
 def read_gz_csv(file_path):
     with gzip.open(file_path, 'rt') as f:
-        df = pd.read_csv(f)
+        df = pd.read_csv(f, low_memory=False)
     return df
 
 metadata_df = read_gz_csv(metadata_file_path)
@@ -21,12 +21,16 @@ client = MongoClient(connection_string)
 db = client['lotus_mines']  # Replace with your actual database name
 compounds_col = db['compounds']
 
-# Step 1: List all Starting Compounds' InChIKeys
-starting_compounds_inchikeys = compounds_col.find({"Type": "Starting Compound"}, {"InChI_key": 1, "_id": 0})
-starting_compounds_inchikeys = [doc['InChI_key'] for doc in starting_compounds_inchikeys]
+# # Step 1: List all Starting Compounds' InChIKeys
+# starting_compounds_inchikeys = compounds_col.find({"Type": "Starting Compound"}, {"InChI_key": 1, "_id": 0})
+# starting_compounds_inchikeys = [doc['InChI_key'] for doc in starting_compounds_inchikeys]
+
+# Step 1: List all Starting Compounds' IDs
+starting_compounds_ids = compounds_col.find({"Type": "Starting Compound"}, {"ID": 1, "_id": 0})
+starting_compounds_ids = [doc['ID'] for doc in starting_compounds_ids]
 
 # Step 2: Subset the metadata DataFrame for these InChIKeys
-metadata_subset_df = metadata_df[metadata_df['structure_inchikey'].isin(starting_compounds_inchikeys)]
+metadata_subset_df = metadata_df[metadata_df['structure_inchikey'].isin(starting_compounds_ids)]
 
 # Step 3: Iterate over the rows of the subset DataFrame and update MongoDB documents
 for index, row in metadata_subset_df.iterrows():
@@ -75,6 +79,6 @@ for index, row in metadata_subset_df.iterrows():
     }
     
     # Update the document in MongoDB
-    compounds_col.update_one({'InChI_key': inchi_key}, {'$set': metadata}, upsert=False)
+    compounds_col.update_one({'ID': inchi_key}, {'$set': metadata}, upsert=False)
 
 print("Metadata update completed.")
