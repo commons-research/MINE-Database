@@ -50,8 +50,7 @@ FILE=$(pwd $1)/$1
 
 poetry run python mine_database/pickaxe_commons.py \
 --coreactant_list ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv \
---rule_list \
-./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv \
+--rule_list ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv \
 --generations 1 \
 --compound_file ${FILE} \
 --output_dir ./data/output/ \
