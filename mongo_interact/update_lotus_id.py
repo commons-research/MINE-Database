@@ -11,7 +11,7 @@ data = pl.read_csv(file_path)
 
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/')
-db = client['lotus_mines_test_25']
+db = client['lotus_mines_enzymatic']
 
 # Fetch the compounds collection
 compounds_collection = db['compounds']
