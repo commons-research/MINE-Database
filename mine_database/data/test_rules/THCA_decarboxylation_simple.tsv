@@ -1,2 +1,2 @@
 Name	Reactants	SMARTS	Products	Comments
-rule420	Any	[#8]-[#6](-[$([#1,*])])=O>>O=C=O.[$([#1,*])][H]	CO2;Any
+rule420	Any	[#6:2]-[#6:1](-[#8:4])=[O:3]>>[O:3]=[C:1]=[O:4].[#6:2][H]	CO2;Any
