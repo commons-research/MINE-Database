@@ -14,7 +14,7 @@ from pathlib import Path, PosixPath, WindowsPath
 from sys import exit
 from typing import List, Set, Tuple, Union
 
-import libsbml
+# import libsbml
 import lxml.etree as etree
 from rdkit.Chem import RemoveStereochemistry
 from rdkit.Chem.AllChem import (
