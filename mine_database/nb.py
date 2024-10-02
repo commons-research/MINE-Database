@@ -31,3 +31,12 @@ df = df[['id', 'smiles']]
 # Save the NPC dataframe as a csv file called 'npc_dataset.tsv'
 
 df.to_csv('data/npc_dataset.csv', index=False)
+
+
+## We can then run the following command to generate the rules for the NPC dataset
+
+# python mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv --generations 1 --compound_file ./data/npc_dataset.csv --output_dir ./data/output/npc --processes 60 --verbose --explicit_h --database npc_mines
+
+
+### Here we try to visualize the SMARTS 
+

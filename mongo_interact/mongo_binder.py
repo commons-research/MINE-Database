@@ -2,7 +2,7 @@ from pymongo import MongoClient
 
 # Connect to MongoDB
 client = MongoClient('mongodb://localhost:27017/')  # Update with your MongoDB connection string
-db = client['test_minesss']  # Update with your database name
+db = client['lotus_mines']  # Update with your database name
 
 # Collections
 compounds_col = db['compounds']
@@ -24,7 +24,7 @@ def get_compound_metadata(compound_id):
 reactions = reactions_col.find()
 results = []
 
-for reaction in reactions:
+for reaction in reactions[:5]:  # Limit to 5 reactions for demonstration
     reaction_data = {
         'Reaction ID': reaction['ID'],
         'SMILES Reaction': reaction['SMILES_rxn'],

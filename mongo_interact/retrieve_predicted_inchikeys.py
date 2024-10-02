@@ -3,6 +3,8 @@ from pymongo import MongoClient
 
 taxonomy_rank = "organism_taxonomy_03phylum"
 taxonomy_value = "Streptophyta"
+connection_string = "mongodb://localhost:27017/"
+database_name = "lotus_mines"
 
 def retrieve_predicted_inchikeys(connection_string, database_name, taxonomy_rank, taxonomy_value):
     # Connect to MongoDB
