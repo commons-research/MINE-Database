@@ -1,0 +1,251 @@
+Name	Reactants	SMARTS	Products	Comments
+1.1.1_01	cpd00003;Any	[#]	cpd00067;Any;cpd00004
+1.1.1_02	Any;cpd00003	[#]-;!@[#]	cpd00067;cpd00011;Any;cpd00004	
+1.1.1_02.rev	Any;cpd00004;cpd00011;cpd00067	[#]	cpd00003;Any	
+1.1.1_03	Any;cpd00001;cpd00003	[#]	cpd00067;cpd00004;Any
+1.1.1_04	Any;cpd00003	[#]	cpd00004;cpd00067;Any	
+1.1.1_04.rev	cpd00004;Any;cpd00067	[#]	cpd00003;Any	
+1.1.1_05	Any;cpd00003	[#]	cpd00004;cpd00067;Any	
+1.1.1_05.rev	cpd00067;Any;cpd00004	[#]	cpd00003;Any	
+1.1.1_06	Any;cpd00003	[#]	cpd00004;cpd00067;Any	
+1.1.1_06.rev	cpd00067;Any;cpd00004	[#]	cpd00003;Any	
+1.1.1_07	Any;cpd00001;cpd00003;cpd00003	[#]	Any;cpd00004;cpd00004;cpd00067;cpd00067	
+1.1.1_08	cpd00004;cpd00067;Any	[#][#6;D4R0;H2,H3:12]([#])([R0;#6;H3D4,#1D1:13])[#]	cpd00003;Any	
+1.1.1_09	Any	[#][#6;D4;H0,H1,H2:3][#6;D4;H0,H1,H2:4][#6;D4;H0,H1,H2:5][#6;D4;H0,H1,H2:6][#6;D3R0;H0,H1AR0:7]([#]-1	Any	
+1.1.1_09.rev	Any	[#]	Any	
+1.1.1_10	Any	[#][#6;D4;H0,H1,H2:3][#6;D4;H0,H1,H2:4][#6;D4;H0,H1,H2:5][#6;D3R0;H0,H1:6]([#]-1	Any
+1.1.1_10.rev	Any	[#]	Any	
+1.1.1_11	cpd00003;Any	[#][#6;D4;H1,H2,H3AR0:5]([#]	cpd00067;Any;cpd00004	
+1.1.1_11.rev	cpd00004;cpd00067;Any	[#][#6;D3;H0,H1,H2:7]([#]	cpd00003;Any	
+1.1.3_01	Any;cpd00007	[#]	cpd00025;Any
+1.1.3_02	Any;cpd00007	[#]	cpd00025;Any	
+1.1.3_03	Any;cpd00007	[#]	cpd00025;Any	
+1.1.99_01	Any;Any	[#]	Any;Any	
+1.1.99_02	Any;cpd00003	[#]	Any;cpd00004;cpd00067	
+1.13.11_01	cpd00007;Any	[#][#6;D3;H0,H1:9]([#]	Any	
+1.13.11_02	cpd00007;Any	[#][#6;D3;H0,H1:3]=;@[#])	Any	
+1.13.11_03	cpd00007;Any	[#][#6;D3;H0,H1:3]=;!@[#]	Any;Any	
+1.13.11_04	cpd00007;Any	[#]=[#6;D3;H0,H1,H0:10][#]	Any	
+1.13.11_05	cpd00007;Any	[#]=[#6;D3;H0,H1:10][#]	Any	
+1.13.11_06	cpd00007;Any	[#]1=[#6;D3;H0,H1:8][#6;D3;H0,H1:7]=[#6;D3;H0,H1:6][#6;D3;H0,H1:5]=[#]-1	Any	
+1.13.11_07	Any;cpd00007	[#]([#6;D3;H0,H1:4])=[#]([#6;D3;H0,H1:3])[#]	Any	
+1.13.11_08	cpd00007;Any	[#]1=[#6;D3;H0,H1:5][#]	Any	
+1.13.11_09	cpd00007;Any	[#]	Any	
+1.13.11_10	cpd00007;Any	[#]	Any	
+1.13.12_01	cpd00067;cpd00004;cpd00007;Any	[#])-;@[#]	cpd00001;Any;cpd00003
+1.13.12_02	cpd00067;cpd00004;cpd00007;Any	[#])-;!@[#]	cpd00001;Any;Any;cpd00003	Changed by Andrew Stine on 8/14/2012, atom 9 changed from being able to be a carbon or a nitrogen to having to be a nitrogen. This was to better reflect real reactions.
+1.14.11_01	Any;cpd00024;cpd00007	[#][#6;a;H0D3R1:1].[#]	cpd00011;Any;Any;Any	Covers 1.14.11.32, - and others
+1.14.12_01	cpd00067;cpd00004;cpd00007;Any	[#]([#6;D3;H1,H0:11])=[#]([#6;D3;H1,H0:12])[H0R0;#16;D4,#7D3:13]=[#]	Any;cpd00003;Any
+1.14.12_02	cpd00004;cpd00067;cpd00007;Any	[#]1=[#6;D3;H0,H1:11][#6;D3;H0,H1:12]=[#6;D3;H0,H1:13][#6;D3;H0,H1:14]=[#]1[R0;#7;H2D3,ClH0D1:15]>>[#]	Any;cpd00003;Any
+1.14.12_03	cpd00004;cpd00067;cpd00007;Any	[#]([R0;#7;H2D3,ClH0D1:15])[#6;D3;H0,H1:14]=[#6;D3;H0,H1:13][#6;D3;H0,H1:12]=[#6;D3;H0,H1:11]1>>[#]-1	Any;cpd00003;Any
+1.14.12_04	cpd00067;cpd00004;cpd00007;Any	[#].[#6;D3;H1,H0:9]1=[#][#6;D3;H1,H0:13]=[#6;D3;H1,H0:12][#]=[#6;D3;H1,H0:10]1>>[#]	cpd00003;Any
+1.14.12_05	cpd00067;cpd00004;cpd00007;Any	[#].[#6;D3;H1,H0:9]1=[#6;D3;H1,H0:10][#]=[#6;D3;H1,H0:12][#6;D3;H1,H0:13]=[#]	cpd00003;Any
+1.14.13_01	cpd00067;cpd00004;cpd00007;Any	[#][#6;D4;H3AR0,H2:9][#]-;!@[#6;D4;H3AR0,H2:12]>>[#]	Any;cpd00001;Any;cpd00003
+1.14.13_02	cpd00004;cpd00007;Any;cpd00067	[#][#7;D3R0;H1,H2:8][#]	cpd00001;Any;cpd00003	
+1.14.13_03	cpd00067;cpd00067;cpd00004;cpd00004;cpd00007;Any	[#]-;!@[H0;#16;D4,#7D3:16]=[#]	Any;cpd00001;Any;cpd00003;cpd00003	
+1.14.13_04	cpd00067;cpd00004;cpd00007;Any	[#]	cpd00001;Any;cpd00003
+1.14.13_05	cpd00067;cpd00004;cpd00007;Any	[#]	cpd00001;Any;cpd00003
+1.14.13_06	cpd00067;cpd00004;cpd00007;Any	[#]	cpd00001;Any;cpd00003	
+1.14.13_07	cpd00067;cpd00067;cpd00004;cpd00004;cpd00007;Any	[#]1=[#6;D3;H0,H1:17][#6;D3;H0,H1:19]=[#6;D3;H0,H1:21][#6;D3;H0,H1:20]=[#6;D3;H0,H1:18]1>>[#]-1	Any;cpd00003;cpd00003;cpd00001;Any	
+1.14.13_08	cpd00067;cpd00004;cpd00007;Any	[#]	cpd00001;Any;cpd00003	
+1.14.13_09	cpd00067;cpd00004;cpd00007;Any	[#]	cpd00011;Any;cpd00003;cpd00001	8 must be in an aromatic ring. (MM, 6-7-11 based on statement in SF thesis)
+1.14.13_10	cpd00067;cpd00004;cpd00007;Any	[#]	cpd00001;Any;cpd00003	If 8 is CH or CH2, it must be in a ring. (MM, 6-7-11, based on note in SF thesis)
+1.14.15_01	cpd00067;cpd00067;cpd00007;Any	[#]([#6;D4;H2,H1:8])=[#]	cpd00001;Any
+1.14.15_02	cpd00067;cpd00067;cpd00007;Any	[#][#6;!r3;D4;H2,H1:5]([#]	cpd00001;Any	6,7 must be in a ring of some form.
+1.2.1_01	Any;cpd00010;cpd00003	[#]	cpd00004;cpd00067;cpd00011;Any	
+1.2.1_02	cpd00003;cpd00009;Any	[#]	cpd00067;cpd00004;Any	
+1.2.1_02.rev	cpd00004;cpd00067;Any	[#]	cpd00003;cpd00009;Any	
+1.2.1_03	Any;cpd00001	[#]	Any	
+1.2.1_03.rev	Any	[#]	cpd00001;Any	
+1.2.1_04	cpd00003;Any;cpd00001	[#][#6;D3R0;H1,H2:6]([#]	cpd00067;Any;cpd00004	
+1.2.3_01	Any;cpd00010;cpd00007	[#]	cpd00025;cpd00011;Any	
+1.2.3_01.rev	Any;cpd00011;cpd00025	[#]	Any;cpd00007;Any	
+1.2.3_02	Any;cpd00007;cpd00001	[#]	cpd00025;Any	
+1.2.3_03	Any;cpd00009;cpd00007	[#]	cpd00025;cpd00011;Any	
+1.2.4_01	Any;Any	[#]-1	Any;Any	
+1.2.7_01	Any;cpd00001	[#]	cpd00067;cpd00067;Any	
+1.2.7_02	Any;cpd00001;cpd00003	[#]	cpd00004;cpd00067;Any	
+1.2.7_03	Any;cpd00010	[#]	cpd00067;cpd00067;Any;cpd00011	
+1.2.7_04	Any;cpd00003;cpd00010	[#])[#6;D3;H0,H1AR0:1]=[#]	cpd00067;Any;cpd00011;cpd00004	
+1.3.1_01	cpd00003;Any	[#]	cpd00004;cpd00067;Any	
+1.3.1_02	cpd00004;cpd00067;Any	[#][#6;H0D3;!r3:9]([#]	cpd00003;Any
+1.3.1_03	cpd00003;Any	[#]	cpd00067;Any;cpd00004	
+1.3.1_04	cpd00003;Any	[#])[#6;D4;H0,H1:9]1[#6;D3;H0,H1:10]=[#6;D3;H0,H1:11][#6;D4;H2,H1:12]([#])[#6;D3;H0,H1:14]=[#6;D3;H0,H1:15]1>>[#]-1	cpd00067;cpd00011;cpd00004;Any	
+1.3.1_05	cpd00003;Any	[#][#6;D4;!r3!r4;H1,H2,H3AR0:5][#6;!r3;D4;H1,H2:7]([#]	cpd00067;Any;cpd00004	"This operator describes the hydrogenation of a carbon carbon double bond. This is mechanism 1.1.1.K from Andy's report although andy uses H2. Let us acknowledge that a variety of redox agents could be used here. I'm not sure if this is reversible, but I donot know if the reverse requires ATP."
+1.3.1_05.rev	cpd00067;cpd00004;Any	[#]	cpd00003;Any	Exact reverse of 1.3.1.a
+1.4.1_01	cpd00003;Any;cpd00001	[#][#6;D4!r3;H1,H2:6](-;!@[#7;D3;H1,H2AR0:9])([#]	cpd00067;Any;Any;cpd00004
+1.4.1_01.rev	cpd00004;Any;cpd00013;cpd00067	[#][#6;D3;H0,H1AR0,H2AR0:7]([#].[#7;D3;H2,H3AR0:10][#]	cpd00003;cpd00001;Any	
+1.4.3_01	Any;cpd00001;cpd00007	[#]	Any;Any;cpd00025	Covers 1.4.3.4, 7, 15, 19, 21 and others
+1.5.1_01	cpd00003;Any	[#]	cpd00067;Any;cpd00004	Covers 1.5.1.2, 3, 18, 32, 40, 47 and others
+1.5.1_02	cpd00003;Any	[#][#6;H1,H2;D4:6]>>[#]	Any;cpd00004	Covers 1.5.1.5, 15, 31 and others
+1.5.1_03	cpd00003;Any	[#][#7;H1D3R1;!r5:5][#]	cpd00067;cpd00004;Any	Covers 1.5.1.30, 36, 37, 38, 39, 41, 42, 45 and others
+1.5.1_04	cpd00003;Any	[#]	cpd00067;cpd00004;Any	Covers 1.5.1.1, 21, 25 and others
+1.5.1_05	cpd00003;cpd00001;Any	[#]	cpd00067;Any;cpd00004;Any	Covers 1.5.1.7, 8, 9, 10, 11, 16 and others
+1.7.1_01	cpd00067;cpd00067;cpd00004;cpd00004;Any	[#]=;!@[#]	Any;Any;cpd00003;cpd00003
+1.7.1_02	cpd00067;cpd00004;Any	[#]	cpd00001;Any;cpd00003
+1.7.1_03	cpd00067;cpd00067;cpd00004;cpd00004;Any	[#]	cpd00003;cpd00003;cpd00001;Any	
+1.97.1_01	cpd00067;cpd00067;Any	[#]	cpd00001;Any	
+1.97.1_02	cpd00067;cpd00067;Any	[#]	Any;Any
+1.97.1_03	cpd00067;cpd00067;Any	[#][#6;D3;H0,H1:3]([#]	Any;Any	
+2.1.1_01	cpd00017;Any	[#]	cpd00067;cpd00019;Any	
+2.1.1_02	cpd00017;Any	[#]	cpd00067;cpd00019;Any	R01883, R01349
+2.1.2_01	Any;cpd00071	[#][#6;D4R0;H1,H2:2]([#]	Any	
+2.1.2_02	cpd00055;Any	[#6;D3R0;H0,H1,H2:2]=[#][#6;D4R0;H1,H2:4]([#]	Any	
+2.1.2_02.rev	Any	[#][#6;D4R0;H0,H1:4]([#]	cpd00055;Any	
+2.2.1_01	Any;Any	[#]-1	Any;Any	
+2.2.1_02	Any;Any	[#])[#6;D3;H0,H1AR0:9]([#]	cpd00011;Any	
+2.2.1_03	Any;cpd00011	[#][H1;#8;D2AR0,#6D4:5][#]([#6;D3;H1,H0AR0:6])[#]	Any;Any	Covers 2.2.1.5, 6, 7, 9 and others
+2.2.1_03.rev	Any;Any	[#]	Any;Any	
+2.3.1_01	Any;cpd00010	[#6;D4;H3AR0,H2:3][#]	Any;Any	
+2.3.1_02	Any;cpd00010	[#6;D4;H3AR0,H2:3][#]([H0;#16;D2,#6D3AR0:4])=[#]	Any;Any	
+2.3.1_02.rev	cpd00022;Any	[#6;D4;H3AR0,H2:3][#]	cpd00010;Any
+2.3.1_03	cpd00895;Any	[#]	Any;cpd00936	
+2.3.1_04	Any;cpd00022	[#]	cpd00010;Any	
+2.3.1_05	cpd00010;Any	[#][#6;D4;H1,H2:6]([#])[#6;D4;H1,H2:5]-;!@[#6;D3;H1,H0:4]([#]	Any;Any	
+2.3.1_06	Any;cpd00010	[#][#6;D3;H0,H1:2](=[#])-;!@[#6;D4;H1,H2:3][#6;D3;H0,H1:4]([#]	Any;Any	
+2.3.1_07	cpd00022;Any	[#6;D4;H3AR0,H2:3][#]	cpd00010;Any	
+2.3.2_01	Any;cpd00001	[#]	Any;Any	Covers 1.14.11.13 and others
+2.3.3_01	cpd00001;cpd00022;Any	[#][#6;D4;H3,H2,H1:7][#6;D4;H0,H1,H2:6][#].[#6;D3;H0,H1AR0:9]=[#]	cpd00010;Any	
+2.3.3_02	Any;cpd00010	[#]-;!@[#]	cpd00001;Any;Any	
+2.3.3_03	Any;cpd00001;cpd00022	[#][#6;D3;H0,H1AR0,H2AR0:2]([#]	Any;Any	
+2.3.3_03.rev	cpd00010;cpd00002;cpd00001;Any	[#][#6;D4;H0,H1,H2:5]([#]	Any;Any;cpd00001;cpd00008;cpd00009	
+2.4.1_01	Any;Any	[#])[#6;D4;H1,H2:3]([#])[#6;D4;H1,H2:4]([#])[#6;D4;H1,H2:5]1[#]	Any;cpd00008	Actual KEGG reaction generates GDP.
+2.4.1_02	Any;cpd00009	[#]1[#6;D4;H1,H2:7]([#])[#6;D4;H1,H2:8]([#]([#6;D4;H2,H3AR0:2][#]([#6;D4;H2,H3:22][#])[#6;D4;H1,H2:16]([#])[#6;D4;H1,H2:17]([#]	Any;Any	
+2.4.1_03	Any;Any	[#][#8;D2;H0,H1AR0:11])[#6;D4;H1,H2:5]([#])[#6;D4;H1,H2:4]1[#]([#6;D4;H2,H3AR0:15][#])[#6;D4;H1,H2:17]([#])[#6;D4;H1,H2:18]([#])[#6;D4;H1,H2:19]1[#]	Any;Any	
+2.4.1_03.rev	Any;Any	[#].[#8;D2;H0,H1AR0:13][#]([#6;D4;H2,H3AR0:17][#])[#6;D4;H1,H2:19]([#])[#6;D4;H1,H2:20]([#])[#6;D4;H1,H2:21]2[#])[#6;D4;H1,H2:6]([#])[#6;D4;H1,H2:7]1[#]	Any;Any	
+2.4.1_04	cpd00009;Any	[#]	Any;Any	
+2.4.1_05	Any;cpd00018	[#]([#6;D4;H2,H3AR0:7][#])[#6;D4;H1,H2:3]([#])[#6;D4;H1,H2:4]([#])[#6;D4;H1,H2:5]1[#]	Any;Any	GMP to GTP is the actual KEGG reaction cofactor
+2.4.1_06	Any;Any	[#]([#8;D2R0;H1,H0:11][#])[#6;D4;H1,H2:6]([#])[#6;D4;H1,H2:5]([#])[#6;D4;H1,H2:4]1[#]	Any;Any	
+2.4.2_01	Any;Any	[#]	Any;Any	Reverse of hydrolysis
+2.5.1_01	Any;cpd00113	[#6;D4R0;H2,H3:1][#]	cpd00012;Any	Terpenoid Extention See 2.5.1.28 2.5.1.82 2.5.1.92 ect
+2.6.1_01	cpd00023;Any	[#][#7;R0;H2D3,H3D4:1].[#][#6;D3;H0,H1,H2AR0:5]([#]	cpd00024;Any	
+2.6.1_01.rev	cpd00024;Any	[#][#6;D4!r3;H3AR0,H2,H1:6]([#7;R0;H2D3,H3D4:7])([#]	Any;cpd00023
+2.7.1_01	Any;cpd00002	[#]	cpd00008;Any	KEGG indicates that this can be any NTP
+2.7.1_02	Any;Any	[#]	Any;cpd00119	
+2.7.1_02.rev	Any;Any	[#]	Any;Any	
+2.7.1_03	Any;Any	[#]	Any;cpd00119	
+2.7.1_04	Any;cpd00002	[#][#6;D4;H1,H2:5]([#])[#6;D4;H1,H2:4]1[#]	cpd00008;Any	
+2.7.1_04.rev	Any;cpd00008	[#])[#6;D4;H1,H2:4]([#])[#6;D4;H1,H2:5]([#]	cpd00002;Any	
+2.7.1_05	Any;cpd00002	[#]	cpd00008;Any
+2.7.1_05.rev	Any;cpd00008	[#]	cpd00002;Any	
+2.7.1_06	cpd00008;Any	[#][#6;D4;H0,H1:8][#][#6;D4;H1,H2:14][#8;D2;H0,H1AR0:15][#]	cpd00018;Any	
+2.7.1_07	Any;Any	[#]	cpd00119;Any	
+2.7.1_07.rev	Any;Any	[#]	Any;Any	
+2.7.1_08	cpd00002;Any	[#]	Any;cpd00008	
+2.7.4_01	cpd00002;Any	[#]	cpd00008;Any	Dante Pertusi, based off ECs 2.7.4.2, 2.7.4.16
+2.7.7_01	Any;Any;cpd00002	[#]	Any;cpd00009;cpd00008	
+2.7.7_02	cpd00008;Any	[#][#6;D4;H0,H1:12]1[#6;D4;H1,H2:11][#6;D4;H1,H2:10][#6;D4;H1,H2:9][#6;D4;H1,H2:8][#]-1	cpd00009;Any	This chemistry can be performed on many different NTP/NDP-based compounds
+2.7.7_03	cpd00002;Any	[#][#6;D4;H0,H1:12]1[#6;D4;H1,H2:11][#6;D4;H1,H2:10][#6;D4;H1,H2:9][#6;D4;H1,H2:8][#]-1	cpd00012;Any	This chemistry can be performed on many different NTP/NDP-based compounds
+2.7.8_01	Any;Any	[#].[#6;D4;H1,H2AR0:18][#]	Any;Any	Covers 2.7.8.13, 15, 33 and others
+2.8.2_01	cpd00044;Any	[#]	Any;cpd00045	Based on: 2.5.1.5, 27, 6 ect.
+2.8.3_01	Any;cpd00022	[#])[#6;D4;H3AR0,H2,H1:4][#].[#6;D4;H3AR0,H2,H1:9][#]	Any;Any	
+3.1.1_01	Any	[#]([#8;H1;D2R0:11])[#]	Any;cpd00001	
+3.1.1_01.rev	Any;cpd00001	[#]	Any	
+3.1.1_02	cpd00001;Any	[#])-;!@[#]-;!@[#]	Any;Any;Any	
+3.1.1_03	cpd00001;Any	[#])-;!@[#]	Any;Any;Any	
+3.1.1_04	cpd00001;Any	[#]-;!@[#6;D3;H0,H1AR0:3]=[#6;D3;H0,H1,H2AR0:4]>>[#]	Any;Any	
+3.1.1_05	cpd00001;Any	[#][#6;D3;H0,H1:4]([#]	Any;Any	
+3.1.1_06	cpd00001;Any	[#][#8;R1!r3;H0D2:5]-;@[#])	Any
+3.1.2_01	cpd00003;cpd00010;Any	[#][#6;D3R0;H1,H2:7]([#]	cpd00067;Any;cpd00003
+3.1.2_02	cpd00001;Any	[#]	Any;Any
+3.1.3_01	cpd00001;Any	[#]	Any;Any
+3.1.4_01	cpd00001;Any	[#]	Any;Any	Covers 3.1.4.2, 13, 38, 43, 44, 46, and others
+3.1.6_01	Any;cpd00001	[#]	Any;Any	Covers 3.1.6.1, 2, 3, 6, 9, 10, 11, 16, 17 and others
+3.1.7_01	cpd00001;Any	[#]	Any;cpd00012
+3.13.1_01	cpd00001;Any	[#]	Any;Any
+3.2.1_01	cpd00001;Any	[#]	Any;Any	Based on: pretty much all 5.1.3 rxns
+3.2.2_01	Any;cpd00001	[#])-;!@[#6;H1D4r5;!r6!r4:2][#8;r5;!r6!r4:1].[#]	Any;Any	
+3.3.2_01	cpd00001;Any	[#].[#6;D4;H0,H1,H2:3]1[#6;D4;H0,H1,H2:5][#]	Any	
+3.5.1_01	cpd00001;Any	[#]-;@[#6;D3;H0,H1AR0:3]=[#])	Any	
+3.5.1_02	cpd00001;Any	[#]-;!@[#6;D3;H0,H1AR0:3]=[#]	Any;Any	
+3.5.3_01	cpd00001;Any	[#]	Any;Any	
+3.5.3_02	cpd00001;Any	[#]	Any;Any	
+3.5.4_01	Any;cpd00001	[#]	cpd00013;Any	
+3.5.5_01	cpd00001;cpd00001;Any	[#]	Any;cpd00013	Covers 3.5.5 all, and others
+3.6.1_01	Any;cpd00001	[#8;D2;H0,H1AR0:2][#]	Any;Any	Covers 3.6.1.8, 12, 19, 23, 31, - and others
+3.6.1_02	Any;cpd00001	[#]-1	Any;Any	KEGG reactions actually produce several different NMPs (A,U,G)
+3.7.1_01	cpd00001;Any	[#]@[#6D3;!r3;!r4;H1,H0:6]([#])	Any
+3.7.1_02	cpd00001;Any	[#]-;!@[#6;D3;H1,H0:6]([#]	Any;Any	
+3.7.1_03	cpd00001;Any	[#][#6;D3;H0,H1:7](=[#])-;@[#6;!r5;!r4;!r3D3;H0,H1:6]=[#6;D3;H0,H1:5][#6;D3;H0,H1:4]=[#])	Any
+3.7.1_04	cpd00001;Any	[#][#6;D3;H0,H1:7](=[#])-;!@[#6;D3;H0,H1:6]=[#6;D3;H0,H1:5][#6;D3;H0,H1:4]=[#]	Any;Any	
+3.8.1_01	cpd00001;Any	[#][#6;D3;H1,H0:4]=[#]	Any;Any	
+3.8.1_02	cpd00001;Any	[#]	Any;Any;Any	
+3.8.1_03	cpd00001;Any	[#]	Any;Any	
+4.1.1_01	Any	[#]	cpd00011;Any	
+4.1.1_02	Any	[#]	cpd00011;Any
+4.1.1_03	Any;cpd00001	[#]	cpd00011;Any	
+4.1.1_03.rev	Any;cpd00011	[#]	cpd00001;Any	
+4.1.1_04	Any;cpd00001	[#]	cpd00011;Any
+4.1.1_05	Any;cpd00002	[#]	cpd00008;cpd00011;Any	KEGG also works with ITP, GTP.
+4.1.1_05.rev	Any;cpd00011;cpd00008	[#]	cpd00002;Any
+4.1.1_06	Any;cpd00009	[#]	cpd00011;cpd00001;Any	
+4.1.1_07	Any	[#]-1	Any;Any
+4.1.1_08	Any	[#])[#6;D3;H0,H1:1]([#]	cpd00011;Any	
+4.1.1_09	Any	[#])[#6;!r3D4;H1,H2:1]([#]	cpd00011;Any
+4.1.1_10	Any	[#]	Any;cpd00011	
+4.1.1_11	Any;cpd00010;cpd00003	[#]	cpd00011;Any;cpd00004;cpd00067	
+4.1.1_12	Any	[#][#6;D3;H0,H1:6]=[#6;D3;H0,H1:5][#6;D4;H0,H1AR0,H2AR0:1]([#7;R0;H2D3,H3D4:2])([#]	cpd00011;Any	
+4.1.1_13	Any	[#])-;!@[#6;D4;H0,H1,H2AR0:5][#6;D3;H0,H1:6]=[#6;D3;H0,H1:7][#6;D4;H0,H1,H2:8][#8;D2;!r5;H0,H1AR0:9]>>[#]	Any;cpd00011;Any
+4.1.1_14	Any	[#]	cpd00011;Any	
+4.1.2_01	Any;cpd00009	[#]	cpd00001;Any;Any	
+4.1.2_02	cpd00001;Any	[#]([#6;D3;H0,H1:6])=[#6;D3;H0,H1:4][#6;D3;H0,H1:15]>>[#]	Any;Any	
+4.1.2_03	Any	[#][#6;D4;H0,H1,H2AR0:3]-;!@[#6;D4;H0,H1,H2AR0:1][#]	Any;Any	
+4.1.2_04	Any	[#][#6;D4;H0,H1,H2AR0:5]-;!@[#][#6;D3;H0,H1AR0:1]([#]	Any;Any	
+4.1.2_05	Any	[#][#6;D4;H2AR0,H1,H0:3]-;!@[#6;D3;H0,H1AR0:4]([#]	Any;Any	
+4.1.2_06	Any;cpd00055	[#]	Any	
+4.1.3_01	Any	[#]-,:[#](-,:[#])(-,:[#])-,:[#])-,:[#])(-,:[#])-,:[#]	Any;Any	
+4.1.3_02	Any	[#]	Any;Any	
+4.1.3_02.rev	Any;Any	[#]	Any	
+4.2.1_01	Any;cpd00001	[#]	Any;Any	Covers 4.2.1.- and others
+4.2.1_02	Any;cpd00001	[#][#6;D3R0;H0,H1:4]=[#][#6;D3R0;H1,H0:2]=[#6;D3;H2AR0,H1AR0,H0:1].[#]	Any	Covers 4.2.1.80, 132, - and others
+4.2.1_03	Any	[#]	Any	Covers 4.2.1.3, -33, 114 and others
+4.2.1_04	Any	[#]	cpd00001;Any	Covers 4.2.1.5, 8, 12, 40, 81, 90, 109, - and others
+4.2.1_05	Any;cpd00001	[#][#6;D3R0;H1,H0:2]=[#]	Any	Covers 4.2.1.56, 127, -  and others
+4.2.1_06	Any;cpd00001	[#]	Any	Covers 4.2.1.131, -95, -97  and others
+4.2.1_07	Any	[#]	cpd00001;Any	
+4.2.1_07.rev	cpd00001;Any	[#]	Any	
+4.2.1_08	Any	[#])-,:[#])(-,:[#])-,:[#]	cpd00001;Any	
+4.2.1_08.rev	Any;cpd00001	[#]	Any	
+4.2.1_09	Any	[#]	cpd00001;cpd00011;Any	
+4.2.1_09.rev	Any;cpd00011;cpd00001	[#]	Any	
+4.2.1_10	Any	[#]-1	cpd00001;Any	
+4.2.1_11	cpd00001;Any	[#]	Any	
+4.2.1_11.rev	Any	[#]	Any;cpd00001	
+4.2.1_12	cpd00001;Any	[#].[#6;D2;H0,H1:4]#[#]	Any	
+4.2.1_13	Any	[#][#6;D4R0;H1,H2:7]([#]	cpd00001;Any	
+4.2.1_13.rev	Any;cpd00001	[#]([#6;D3R0;H0,H1:6]([#]	Any	
+4.2.1_14	Any;cpd00001	[#]([#6;D4;H2AR0,H1AR0,H0:6]-;!@[#]-1	Any;cpd00127	
+4.2.1_14.rev	Any;cpd00127	[#]([#6;D4;H0,H1,H2AR0:6]-;!@[#]	Any;Any	
+4.2.1_15	Any	[#][#6;D4;H1,H2,H3AR0:6][#6;D4;H1,H0:4]([#]([D2R0;#16;H0,#8H1:3])=[#]	cpd00001;Any	
+4.2.1_16	Any	[#][#6;D4;H1,H2:4]([#6;D4;H0,H1,H2AR0:6]-;!@[#8;D2;H1AR0,H0:7])[#6;D3;H0,H1AR0:1]([#]	Any;Any	
+4.2.1_16.rev	Any;cpd00001	[#][#6;D3;H0,H1:2](=[#])[#6;D3;H0,H1:4]=[#6;D3;H0,H1,H2AR0:5].[#]	Any	
+4.2.1_17	Any;cpd00001	[#]	Any;Any	Covers 4.2.1.-22, -50 and others
+4.2.1_18	Any;cpd00001	[#]([#6;D4;H2AR0,H1AR0,H0:6][#]-2	Any;cpd00359	
+4.2.2_01	cpd00001;Any	[#].[#6;D4;H0,H1,H2,H3AR0:7][#][#6;D4;H0,H1,H2:5][#]	Any;Any	Covers 4.2.1.- and others
+4.2.3_01	Any	[#][#6;D4;H1,H2,H3AR0:2][#6;D3;H0,H1:3]=[#6;D3;H0,H1:4][#6;D4;H0,H1,H2:5][#]	Any;Any	
+4.2.3_02	Any	[#][#6;D4;H1,H2AR0:2]([#])[#6;D4;H0,H1,H2:4][#]	Any;Any	
+4.3.1_01	Any	[#][#6;D4;H1,H2AR0:5][#6;D4;H1,H2AR0:2]([#]	cpd00013;Any	
+4.3.1_02	Any	[#][#6;D4;H2,H1:2]([#6;a;R1:1])[#6;D4;H1,H2,H0:4][#]	cpd00013;Any	
+4.3.1_02.rev	Any;cpd00013	[#6;a;R1:1][#6;D3;H1,H0:2]=[#6;D3;H1,H0,H2AR0:3].[#7;R0;H3D3,H4D4:5][#]	Any	
+4.3.1_03	Any	[#][#6;D4;H2,H1:5]([#6;D4;H1,H2,H0:7]-;!@[#]	Any;Any
+4.3.1_03.rev	Any;cpd00013	[#6;D3!r5;H1,H0,H2AR0:6]=[#6;D3!r5;H1,H0:5][#].[#7;R0;H3D3,H4D4:8][#]	Any
+4.3.1_04	Any	[#][#6;D4;H2,H1:3]([#6;D4;H1,H2,H0:5]-;!@[#]	Any;Any
+4.3.1_04.rev	Any;cpd00013	[#6;D3;H0,H1,H2AR0:4]=[#6;D3;H0,H1:3][#].[#7;R0;H3D3,H4D4:6][#]	Any	
+4.3.2_01	Any	[#][#6;D4;H0,H1,H2AR0:4]-;!@[#][#6;D3;H0,H1AR0:2]=[#]	Any;Any
+4.3.2_02	Any	[#][#6;D4;H0,H1,H2AR0:4]-;@[#][#6;D3;H0,H1AR0:2]=[#])	Any
+4.4.1_01	Any;cpd00001	[#][D2R0;#16;H0,#16H1,SeH0:1])[#]	Any;cpd00013;Any	Covers 4.4.1, 11, and others
+4.4.1_02	Any;cpd00001	[#]	Any;cpd00013;Any	Covers 4.4.1, 8, 15, - and others
+4.5.1_01	Any	[#])[#6;D4;H0,H1,H2:5][#]-1	Any;Any	
+4.5.1_02	Any	[#]	Any;Any
+4.99.1_01	Any	[#]=[#6;D3;H1,H2:1][#]	Any;cpd00001	
+5.2.1_01	Any	[#]	Any	
+5.3.1_01	Any	[#]-1	Any	Covers 5.3.1.4, 5, 6, 12, and others
+5.3.1_02	Any	[#]	Any	Covers 5.3.1.6, 16, 23, 24, and others
+5.3.2_01	Any	[#][#6;D4;H2,H1:3]([#6;D3;H0,H1:5]=[#6;D3;H0,H2AR0,H1:6])[#6;D3;H0,H1AR0:2]=[#]	Any	
+5.3.2_01.rev	Any	[#][#6;D4;H1,H2,H3:5][#6;D3;H0,H1:4]=[#6;D3;H1,H0:3][#6;D3;H0,H1:2]=[#]	Any	
+5.3.2_02	Any	[#][#6;D3;H0,H1,H2AR0:2]=[#6;D3;H0,H2AR0,H1:1]>>[#]	Any	
+5.3.99_01	Any	[#]	Any	
+5.3.99_02	Any	[#]	Any	
+5.4.2_01	Any	[#]	Any	
+5.4.2_01.rev	Any	[#]	Any	
+5.4.2_02	Any	[#]	Any	
