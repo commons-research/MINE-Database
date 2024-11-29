@@ -1,37 +1,15 @@
-[tool.poetry]
+[project]
 name = "mine-database"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Add your description here"
 readme = "README.md"
+requires-python = ">=3.9.18"
+dependencies = [
+    "pymongo>=4.10.1",
+    "rdkit>=2024.3.6",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.9,<3.11"
-keras = ">=2.11.0,<2.12"
-lxml = "4.9"
-levenshtein = "0.25.0"
-mordred = "1.2"
-numpy = "^1.26.4"
-pandas = "^2.2.1"
-pymongo = "^4.6.2"
-pytest = "^8.1.1"
-pytest-cov = "^4.1.0"
-python-libsbml = "^5.20.2"
-scikit-learn = "^1.4.1.post1"
-scipy = "^1.12.0"
-sphinxcontrib-napoleon = "^0.7"
-tensorflow = "2.11.0"
-torch = "2.2.0"
-numpydoc = "^1.6.0"
-rdkit = "^2023.9.5"
-equilibrator-api = "^0.6.0"
-equilibrator-assets = "^0.6.0"
-jupyter = "^1.0.0"
-polars = "^0.20.28"
-inquirerpy = "^0.3.4"
-matplotlib = "^3.9.1"
-downloaders = "^1.0.20"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "pytest>=8.3.3",
+]
