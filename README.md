@@ -46,8 +46,7 @@ uv run mine_database/pickaxe_commons.py \
     --output_dir ./data/ \
     --processes 8 \
     --explicit_h \
-    --database testing-mine \
-    --database_overwrite
+    --database testing-mine
 ```
 
 or 
