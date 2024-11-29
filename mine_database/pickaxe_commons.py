@@ -1484,6 +1484,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--database_overwrite",
         default=False,
+        action="store_true",
         help="Whether or not to overwrite the database if it exists. Default is False.",
     )
     parser.add_argument(
