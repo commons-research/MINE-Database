@@ -1,5 +1,6 @@
 """Databases.py: This file contains MINE database classes including database
 loading and writing functions."""
+
 import datetime
 import multiprocessing
 import os
@@ -12,11 +13,10 @@ from subprocess import call
 from typing import List, Union
 
 import pymongo
+import utils
 from pymongo.errors import ServerSelectionTimeoutError
 from rdkit.Chem import AllChem
 from rdkit.RDLogger import logger
-
-from mine_database import utils
 
 
 # from minedatabase.NP_Score import npscorer as nps

@@ -1,4 +1,5 @@
 """Reaction.py: Methods to execute reactions."""
+
 import collections
 import multiprocessing
 from functools import partial
@@ -6,6 +7,7 @@ from typing import Tuple
 
 import rdkit.rdBase as rkrb
 import rdkit.RDLogger as rkl
+import utils
 from rdkit.Chem.AllChem import (
     AddHs,
     CalcMolFormula,
@@ -17,8 +19,6 @@ from rdkit.Chem.AllChem import (
     RemoveHs,
     SanitizeMol,
 )
-
-from mine_database import utils
 
 
 logger = rkl.logger()
@@ -364,7 +364,7 @@ def transform_all_compounds_with_full(
     )
     # par loop
     if processes > 1:
-        chunk_size = max([round(len(compound_smiles) / (processes * 10)), 1])
+        chunk_size = 1
         pool = multiprocessing.Pool(processes=processes)
         for i, res in enumerate(
             pool.imap_unordered(transform_compound_partial, compound_smiles, chunk_size)

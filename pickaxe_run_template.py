@@ -10,23 +10,15 @@ The general format of a script will be:
    6. Write results
 """
 
-import sys, os
 import datetime
 import multiprocessing
+import os
 import pickle
+import sys
 import time
 
 import pymongo
 
-# Make sure you have minedatabase installed! (either from GitHub or via pip)
-# from mine_database.filters import (
-#     AtomicCompositionFilter,
-#     MCSFilter,
-#     MetabolomicsFilter,
-#     MWFilter,
-#     SimilarityFilter,
-#     SimilaritySamplingFilter,
-# )
 from mine_database.pickaxe import Pickaxe
 from mine_database.rules import metacyc_generalized, metacyc_intermediate
 
@@ -73,7 +65,7 @@ filename_reactions = "/reactions"
 
 input_cpds = "./example_data/genus_penicillium_20_for_mines.csv"
 
-print(f'Arguments given: {sys.argv[1:]}')
+print(f"Arguments given: {sys.argv[1:]}")
 if len(sys.argv) > 1:
     metacyc_choice = sys.argv[1]
     fraction_coverage = float(sys.argv[2])
@@ -88,7 +80,7 @@ if len(sys.argv) >= 7:
     output_dir = sys.argv[6]
 
 # filename_pickle = os.path.splitext(os.path.basename(input_cpds))[0]
-###############################################################################   
+###############################################################################
 
 ###############################################################################
 #### Starting Compounds, Cofactors, and Rules
@@ -110,7 +102,7 @@ if metacyc_choice == "intermediate":
         n_rules=None,
         fraction_coverage=fraction_coverage,
         anaerobic=True,
-        #exclude_containing = ["aromatic", "halogen"]
+        # exclude_containing = ["aromatic", "halogen"]
     )
 
 elif metacyc_choice == "generalized":
@@ -118,7 +110,7 @@ elif metacyc_choice == "generalized":
         n_rules=None,
         fraction_coverage=fraction_coverage,
         anaerobic=True,
-        #exclude_containing = ["aromatic", "halogen"]
+        # exclude_containing = ["aromatic", "halogen"]
     )
 
 ###############################################################################
@@ -267,7 +259,6 @@ else:
     feasibility_filter = ReactionFeasibilityFilter(
         generation_list=generation_list, last_generation_only=last_generation_only
     )
-
 
 
 ##########################################
@@ -489,7 +480,6 @@ if __name__ == "__main__":
         filter_after_final_gen=filter_after_final_gen,
     )
 
-    
     # Load compounds
     print(f"loaded compounds: {input_cpds}")
     pk.load_compound_set(compound_file=input_cpds)
@@ -569,7 +559,6 @@ if __name__ == "__main__":
     if pk.targets and prune_to_targets:
         pk.prune_network_to_targets()
 
-
     # Write results to database
     if write_db:
         pk.save_to_mine(processes=processes, indexing=indexing, write_core=write_core)
@@ -605,16 +594,17 @@ if __name__ == "__main__":
                 }
             )
 
-
     # add runtime to filename
     runtime = str(round(time.time() - start, 2))
 
-    
-    
     if write_to_csv:
         pk.assign_ids()
-        pk.write_compound_output_file(output_dir + filename_compounds + "_" + runtime + "_.tsv")
-        pk.write_reaction_output_file(output_dir + filename_reactions + "_" + runtime + "_.tsv")
+        pk.write_compound_output_file(
+            output_dir + filename_compounds + "_" + runtime + "_.tsv"
+        )
+        pk.write_reaction_output_file(
+            output_dir + filename_reactions + "_" + runtime + "_.tsv"
+        )
 
     print("----------------------------------------")
     print(f"Overall run took {round(time.time() - start, 2)} seconds.")

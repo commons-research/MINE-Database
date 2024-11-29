@@ -1,4 +1,3 @@
-id,smiles
 input_cpds = "./data/top_10_smiles_2D.csv"  # "./example_data/Agaricomycetes_20.csv"
 target_cpds = "./data/top_10_smiles_2D.csv"  # "./example_data/target_list_many_pam.csv"  # "./data/top_10_smiles.csv"
 generations = 1
@@ -23,23 +22,9 @@ import time
 
 import pymongo
 
-
 # Make sure you have mine_database installed! (either from GitHub or via pip)
-from mine_database.filters import (
-    AtomicCompositionFilter,
-    MCSFilter,
-    MetabolomicsFilter,
-    MWFilter,
-    SimilarityFilter,
-    SimilaritySamplingFilter,
-)
 from mine_database.pickaxe import Pickaxe
 from mine_database.rules import metacyc_generalized, metacyc_intermediate
-
-
-# Uncomment to use these. Pickaxe doesn't come packaged with dependencies by default.
-from mine_database.filters import ThermoFilter
-from mine_database.filters import ReactionFeasibilityFilter
 
 
 start = time.time()

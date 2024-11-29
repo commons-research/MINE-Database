@@ -15,6 +15,14 @@ from pathlib import Path, PosixPath, WindowsPath
 from sys import exit
 from typing import List, Set, Tuple, Union
 
+import utils
+from databases import (
+    MINE,
+    write_compounds_to_mine,
+    write_core_compounds,
+    write_reactions_to_mine,
+    write_targets_to_mine,
+)
 from rdkit.Chem import RemoveStereochemistry
 from rdkit.Chem.AllChem import (
     AddHs,
@@ -31,16 +39,7 @@ from rdkit.Chem.Draw import MolToFile, rdMolDraw2D
 from rdkit.Chem.rdchem import Mol
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.RDLogger import logger
-
-from mine_database import utils
-from mine_database.databases import (
-    MINE,
-    write_compounds_to_mine,
-    write_core_compounds,
-    write_reactions_to_mine,
-    write_targets_to_mine,
-)
-from mine_database.reactions import transform_all_compounds_with_full
+from reactions import transform_all_compounds_with_full
 
 
 # Default to no errors
@@ -1483,6 +1482,11 @@ if __name__ == "__main__":
         " mongodb://localhost:27017",
     )
     parser.add_argument(
+        "--database_overwrite",
+        default=False,
+        help="Whether or not to overwrite the database if it exists. Default is False.",
+    )
+    parser.add_argument(
         "-i",
         "--image_dir",
         default=None,
@@ -1511,6 +1515,7 @@ if __name__ == "__main__":
         quiet=OPTIONS.quiet,
         database=OPTIONS.database,
         mongo_uri=OPTIONS.mongo_uri,
+        database_overwrite=OPTIONS.database_overwrite,
     )
     # Create a directory for image output file if it doesn't already exist
     if OPTIONS.image_dir and not os.path.exists(OPTIONS.image_dir):
