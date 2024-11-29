@@ -38,9 +38,19 @@ uv run mine_database/pickaxe_commons.py -C ./mine_database/data/metacyc_rules/me
 Using original rules and coreactants (Enzymatic)
 
 ```bash
-uv run mine_database/pickaxe_commons.py -C ./mine_database/data/original_rules/EnzymaticCoreactants.tsv -r ./mine_database/data/original_rules/EnzymaticReactionRules.tsv  -g 1 -c ./example_data/lotus_10.csv -o ./data/
+uv run mine_database/pickaxe_commons.py \
+    --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv \
+    --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv \
+    --generations 1 \
+    --compound_file ./example_data/Solanum_1000.csv \
+    --output_dir ./data/ \
+    --processes 8 \
+    --explicit_h \
+    --database testing-mine \
+    --database_overwrite
 ```
 
+or 
 ```bash
 uv run mine_database/pickaxe_commons.py -C ./mine_database/data/original_rules/EnzymaticCoreactants.tsv -r ./mine_database/data/original_rules/EnzymaticReactionRules.tsv  -g 1 -c ./example_data/lotus_1000.csv -o ./data/ -m 60
 ```
