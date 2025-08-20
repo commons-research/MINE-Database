@@ -4,7 +4,7 @@ import collections
 import multiprocessing
 from functools import partial
 from typing import Tuple
-
+from tqdm.auto import tqdm
 import rdkit.rdBase as rkrb
 import rdkit.RDLogger as rkl
 import utils
@@ -367,7 +367,7 @@ def transform_all_compounds_with_full(
         chunk_size = 1
         pool = multiprocessing.Pool(processes=processes)
         for i, res in enumerate(
-            pool.imap_unordered(transform_compound_partial, compound_smiles, chunk_size)
+            tqdm(pool.imap_unordered(transform_compound_partial, compound_smiles, chunk_size), total=len(compound_smiles), leave=False)
         ):
             new_cpds, new_rxns = res
             new_cpds_master.update(new_cpds)
@@ -382,7 +382,7 @@ def transform_all_compounds_with_full(
             print_progress(i, len(compound_smiles))
 
     else:
-        for i, smiles in enumerate(compound_smiles):
+        for i, smiles in enumerate(tqdm(compound_smiles, total=len(compound_smiles), leave=False)):
             new_cpds, new_rxns = transform_compound_partial(smiles)
             # new_cpds as cpd_id:cpd_dict
             # new_rxns as rxn_id:rxn_dict

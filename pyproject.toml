@@ -5,14 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.9.18"
 dependencies = [
+    "downloaders>=1.0.22",
     "pandas>=2.2.3",
     "pymongo>=4.10.1",
     "rdkit>=2024.3.6",
+    "tqdm>=4.67.1",
 ]
 
 [dependency-groups]
 dev = [
     "ipython>=8.18.1",
+    "jupyterlab>=4.4.6",
     "mine-database",
     "pytest>=8.3.3",
 ]

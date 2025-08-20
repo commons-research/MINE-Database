@@ -40,6 +40,7 @@ from rdkit.Chem.rdchem import Mol
 from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.RDLogger import logger
 from reactions import transform_all_compounds_with_full
+from rules import metacyc_generalized, metacyc_intermediate
 
 
 # Default to no errors
@@ -1378,13 +1379,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "-C",
         "--coreactant_list",
-        default="./tests/data/test_coreactants.tsv",
+        default=None,
         help="Specify a list of coreactants as a .tsv",
     )
     parser.add_argument(
         "-r",
         "--rule_list",
-        default="./tests/data/test_reaction_rules.tsv",
+        default=None,
         help="Specify a list of reaction rules as a .tsv",
     )
     parser.add_argument(
@@ -1500,7 +1501,63 @@ if __name__ == "__main__":
         help="Whether or not to write results into core database.",
     )
 
+    # we want to add the coreactant list
+    parser.add_argument(
+        "--metacyc_rules",
+        default=None,
+        choices=["general", "intermediate"],
+        help="Specify the type of MetaCyc rules to use.",
+    )
+    parser.add_argument(
+        "--rule_coverage",
+        default=None,
+        type=float,
+        help="Specify the coverage threshold for reaction rules.",
+    )
+    parser.add_argument(
+        "--rule_count",
+        default=None,
+        type=int,
+        help="Specify the number of reaction rules to apply.",
+    )
+
     OPTIONS = parser.parse_args()
+    if not any([OPTIONS.rule_list, OPTIONS.metacyc_rules]):
+        exit("No reaction rules specified, terminating run.")
+
+    if all([OPTIONS.rule_list, OPTIONS.metacyc_rules]):
+        exit("Conflicting reaction rules specified, terminating run.")
+
+    if all([OPTIONS.rule_coverage, OPTIONS.rule_count]):
+        exit(
+            "Conflicting MetaCyc rule options specified. Either choose coverage or a number of rules."
+        )
+    if OPTIONS.metacyc_rules and not any([OPTIONS.rule_coverage, OPTIONS.rule_count]):
+        exit("No rule options specified for MetaCyc rules, terminating run.")
+
+    if OPTIONS.metacyc_rules == "general":
+        if OPTIONS.rule_coverage:
+            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = metacyc_generalized(
+                fraction_coverage=OPTIONS.rule_coverage
+            )
+        elif OPTIONS.rule_count:
+            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = metacyc_generalized(
+                n_rules=OPTIONS.rule_count
+            )
+        else:
+            exit("No rule options specified for MetaCyc rules, terminating run.")
+
+    if OPTIONS.metacyc_rules == "intermediate":
+        if OPTIONS.rule_coverage:
+            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = (
+                metacyc_intermediate(fraction_coverage=OPTIONS.rule_coverage)
+            )
+        elif OPTIONS.rule_count:
+            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = (
+                metacyc_intermediate(n_rules=OPTIONS.rule_count)
+            )
+        else:
+            exit("No rule options specified for MetaCyc rules, terminating run.")
 
     if not any([OPTIONS.database, OPTIONS.output_dir]):
         exit("No output selected, terminating run.")
