@@ -1246,15 +1246,17 @@ class Pickaxe:
             Number of processes to run.
         """
 
-        def update_cpds_rxns(new_cpds, new_rxns):
+        def update_cpds_rxns(new_cpds: dict, new_rxns: dict):
             # Save results to self.compounds / self.reactions
             # ensuring there are no collisions and updating information
             #  if there are
-            for cpd_id, cpd_dict in new_cpds.items():
+            for cpd_id in list(new_cpds):
+                cpd_dict = new_cpds.pop(cpd_id)
                 if cpd_id not in self.compounds:
                     self.compounds[cpd_id] = cpd_dict
 
-            for rxn_id, rxn_dict in new_rxns.items():
+            for rxn_id in list(new_rxns):
+                rxn_dict = new_rxns.pop(rxn_id)
                 if rxn_id not in self.reactions:
                     self.reactions[rxn_id] = rxn_dict
                 else:

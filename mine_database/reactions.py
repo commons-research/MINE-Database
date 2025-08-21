@@ -229,7 +229,7 @@ def _transform_ind_compound_with_full(
     generation: int,
     explicit_h: bool,
     kekulize: bool,
-    compound_smiles: list,
+    compound_smiles: str,
 ) -> Tuple[dict, dict]:
     """Transform a compound with the full reaction operators.
 
@@ -249,8 +249,8 @@ def _transform_ind_compound_with_full(
         Whether or not to use explicit hydrogen.
     kekulize : bool
         Whether or not to kekulize molecules.
-    compound_smiles : list
-        List of compound smiles.
+    compound_smiles : str
+        SMILES representation of the compound.
 
     Returns
     -------
@@ -365,29 +365,27 @@ def transform_all_compounds_with_full(
     # par loop
     if processes > 1:
         chunk_size = 1
-        pool = multiprocessing.Pool(processes=processes)
-        for i, res in enumerate(
-            tqdm(
-                pool.imap_unordered(
-                    transform_compound_partial, compound_smiles, chunk_size
-                ),
-                total=len(compound_smiles),
-                leave=False,
-            )
-        ):
-            new_cpds, new_rxns = res
-            new_cpds_master.update(new_cpds)
+        with multiprocessing.Pool(processes=processes) as pool:
+            for i, res in enumerate(
+                tqdm(
+                    pool.imap_unordered(
+                        transform_compound_partial, compound_smiles, chunk_size
+                    ),
+                    total=len(compound_smiles),
+                    leave=False,
+                )
+            ):
+                new_cpds, new_rxns = res
+                new_cpds_master.update(new_cpds)
 
-            # Need to check if reactions already exist to update operators list
-            for rxn, rxn_dict in new_rxns.items():
-                if rxn in new_rxns_master:
-                    ops_set = rxn_dict["Operators"]
-                    new_rxns_master[rxn]["Operators"].union(ops_set)
-                else:
-                    new_rxns_master.update({rxn: rxn_dict})
-            print_progress(i, len(compound_smiles))
-            if i == 100:
-                break
+                # Need to check if reactions already exist to update operators list
+                for rxn, rxn_dict in new_rxns.items():
+                    if rxn in new_rxns_master:
+                        ops_set = rxn_dict["Operators"]
+                        new_rxns_master[rxn]["Operators"].union(ops_set)
+                    else:
+                        new_rxns_master.update({rxn: rxn_dict})
+                print_progress(i, len(compound_smiles))
 
     else:
         for i, smiles in enumerate(
