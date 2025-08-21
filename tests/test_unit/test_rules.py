@@ -1,6 +1,5 @@
 """Tests for rules.py using pytest."""
 
-
 import json
 from pathlib import Path
 

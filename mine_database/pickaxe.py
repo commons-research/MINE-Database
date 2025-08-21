@@ -328,8 +328,7 @@ class Pickaxe:
 
         print(f"{len(compound_smiles)} compounds loaded...")
         print(
-            f"({len(self.compounds) - initial_cpds_n} "
-            f"after removing stereochemistry)"
+            f"({len(self.compounds) - initial_cpds_n} after removing stereochemistry)"
         )
 
         return compound_smiles
@@ -409,9 +408,7 @@ class Pickaxe:
                             coreactant_name not in self.coreactants
                             and coreactant_name != "Any"
                         ):
-                            raise ValueError(
-                                "Undefined coreactant:" f"{coreactant_name}"
-                            )
+                            raise ValueError(f"Undefined coreactant:{coreactant_name}")
                     # Create ChemicalReaction object from SMARTS string
                     rxn = ReactionFromSmarts(rule["SMARTS"])
                     rule.update(
@@ -437,7 +434,7 @@ class Pickaxe:
                     # Update reaction rules dictionary
                     self.operators[rule["Name"]] = (rxn, rule)
                 except Exception as e:
-                    raise ValueError(f"{str(e)}\nFailed to parse" f"{rule['Name']}")
+                    raise ValueError(f"{str(e)}\nFailed to parse{rule['Name']}")
         if skipped:
             print(f"WARNING: {skipped} rules skipped")
 
@@ -594,7 +591,6 @@ class Pickaxe:
                         with open(
                             os.path.join(self.image_dir, cpd_id + ".svg"), "w"
                         ) as outfile:
-
                             mol = MolFromSmiles(cpd_dict["SMILES"])
                             nmol = rdMolDraw2D.PrepareMolForDrawing(mol)
                             d2d = rdMolDraw2D.MolDraw2DSVG(1000, 1000)
@@ -623,7 +619,6 @@ class Pickaxe:
         while self.generation < generations or (
             self.generation == generations and self.filter_after_final_gen
         ):
-
             for _filter in self.filters:
                 _filter.apply_filter(self, processes, generation=generations)
 
@@ -674,7 +669,7 @@ class Pickaxe:
 
                 print(
                     f"Generation {self.generation + 1} finished in"
-                    f" {time.time()-time_init} s and contains:"
+                    f" {time.time() - time_init} s and contains:"
                 )
                 print(f"\t\t{len(self.compounds) - n_comps} new compounds")
                 print(f"\t\t{len(self.reactions) - n_rxns} new reactions")
@@ -1144,7 +1139,7 @@ class Pickaxe:
         path = utils.prevent_overwrite(path)
         with open(path, "w") as outfile:
             outfile.write(
-                "ID\tName\tID equation\tSMILES equation\tRxn hash\t" "Reaction rules\n"
+                "ID\tName\tID equation\tSMILES equation\tRxn hash\tReaction rules\n"
             )
             for rxn in sorted(self.reactions.values(), key=lambda x: x["ID"]):
                 outfile.write(
@@ -1206,7 +1201,7 @@ class Pickaxe:
             print("--------------- Targets ----------------")
             target_start = time.time()
             write_targets_to_mine(self.targets.values(), db)
-            print(f"Wrote Target Compounds in {time.time() - target_start}" " seconds.")
+            print(f"Wrote Target Compounds in {time.time() - target_start} seconds.")
         else:
             print("No targets to write to MINE.")
         # Save operators

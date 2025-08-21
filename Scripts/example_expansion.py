@@ -39,14 +39,12 @@ input_cpds = "./example_data/starting_cpds_ten.csv"
 # biological reactions derived from metacyc.
 #
 # See the documentation for description of options.
-rule_list, coreactant_list, rule_name = metacyc_intermediate(
-    fraction_coverage=0.2
-)
+rule_list, coreactant_list, rule_name = metacyc_intermediate(fraction_coverage=0.2)
 
 # Core Pickaxe Run Options
-generations = 1              # Total rounds of rule applications
-processes = 1                # Number of processes for parallelization
-verbose = False              # Display RDKit warnings and errors
+generations = 1  # Total rounds of rule applications
+processes = 1  # Number of processes for parallelization
+verbose = False  # Display RDKit warnings and errors
 
 
 if __name__ == "__main__":
@@ -64,7 +62,7 @@ if __name__ == "__main__":
 
     # Transform compounds (the main step)
     pk.transform_all(processes, generations)
- 
+
     if write_to_csv:
         pk.assign_ids()
         pk.write_compound_output_file(output_dir + "/compounds.tsv")

@@ -1,5 +1,6 @@
 """Provides functionality to interact with metabolomics datasets and search
 MINE databases for metabolomics hits."""
+
 from __future__ import annotations
 
 import math
@@ -364,7 +365,6 @@ class MetabolomicsDataset:
             Core database containing spectra info.
         """
         for i, peak in enumerate(self.unknown_peaks):
-
             positive = (
                 peak.charge == "+"
                 or peak.charge == "Positive"
@@ -1089,7 +1089,6 @@ def ms2_search(
         min_logp, max_logp = (-1000, 1000)
 
     for peak in dataset.unknown_peaks:
-
         if ms_params.scoring_function == "jaccard":
             if not ms_params.ppm:
                 peak.score_isomers(

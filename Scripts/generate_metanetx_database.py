@@ -18,6 +18,7 @@ The data version used is based on the description in the header:
 #DATE:      2020/09/17
 #URL:       https://www.metanetx.org
 """
+
 from pathlib import Path
 
 import pandas as pd
@@ -29,6 +30,7 @@ pwd = Path(__file__)
 pwd = pwd.parent
 METANETX_PATH = (pwd / "../local_data/metanetx").resolve()
 
+
 def get_cross_references(row):
     current_reference = {}
 
@@ -39,18 +41,17 @@ def get_cross_references(row):
         current_reference["source"] = row["#source"]
         current_reference["source_id"] = row["#source"]
     current_reference["description"] = (
-        row["description"] if not pd.isna(row["description"])
-        else None
+        row["description"] if not pd.isna(row["description"]) else None
     )
     cross_ref_dict[row.ID].append(current_reference)
 
 
 def get_db_entry(row):
     dict_for_db[row["#ID"]] = {
-            "mnxm_id": row["#ID"],
-            "Inchikey": row.InChIKey,
-            "primary_reference": row.reference,
-            "cross_references": cross_ref_dict[row["#ID"]]
+        "mnxm_id": row["#ID"],
+        "Inchikey": row.InChIKey,
+        "primary_reference": row.reference,
+        "cross_references": cross_ref_dict[row["#ID"]],
     }
 
 
@@ -58,17 +59,13 @@ if __name__ == "__main__":
     # First step: Generate panda dfs of the xref and props
     skiprows = 347
     chem_prop_df = pd.read_csv(
-        METANETX_PATH / "chem_prop.tsv",
-        delimiter="\t",
-        skiprows=skiprows
+        METANETX_PATH / "chem_prop.tsv", delimiter="\t", skiprows=skiprows
     )
     chem_prop_df = chem_prop_df[~chem_prop_df["InChIKey"].isna()]
     chem_prop_df = chem_prop_df[~chem_prop_df["formula"].isna()]
 
     chem_xref_df = pd.read_csv(
-        METANETX_PATH / "chem_xref.tsv",
-        delimiter="\t",
-        skiprows=skiprows
+        METANETX_PATH / "chem_xref.tsv", delimiter="\t", skiprows=skiprows
     )
 
     # Map functions on pandas dataframes to populate dictionaries

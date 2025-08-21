@@ -32,6 +32,7 @@ file_dir = file_path.parent
 
 DATA_DIR = (file_dir / "../data/").resolve()
 
+
 # -------------------------------- Fixtures --------------------------------- #
 @pytest.fixture
 def known_peaks():
@@ -240,14 +241,14 @@ def test_peak_score_isomers(unknown_peaks):
     THEN make sure they are in the correct order
     """
     # In reality pos and neg spectra would be different, but this is just for testing
-    isomer1 = {'Spectra':
-        {
+    isomer1 = {
+        "Spectra": {
             "Positive": {"20V": [(10, 100), (20, 300), (25, 10)]},
             "Negative": {"20V": [(10, 100), (20, 300), (25, 10)]},
         }
     }
-    isomer2 = {'Spectra':
-        {
+    isomer2 = {
+        "Spectra": {
             "Positive": {"20V": [(10, 10), (20, 55), (25, 100)]},
             "Negative": {"20V": [(10, 10), (20, 55), (25, 100)]},
         }

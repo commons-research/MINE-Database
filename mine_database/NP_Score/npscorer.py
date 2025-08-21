@@ -72,7 +72,6 @@ def processMols(fscore, suppl):
 
 
 if __name__ == "__main__":
-
     fscore = readNPModel()  # fills fscore
 
     suppl = Chem.SmilesMolSupplier(

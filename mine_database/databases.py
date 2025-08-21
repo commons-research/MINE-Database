@@ -56,7 +56,7 @@ def establish_db_client(uri: str = None) -> pymongo.MongoClient:
             client = pymongo.MongoClient(ServerSelectionTimeoutMS=5)
     except ServerSelectionTimeoutError:
         raise IOError(
-            "Failed to load database client. Please verify that " "mongod is running"
+            "Failed to load database client. Please verify that mongod is running"
         )
     return client
 
@@ -140,8 +140,7 @@ class MINE:
                     )["Mass"]
                 except (TypeError, KeyError):
                     raise ValueError(
-                        f"A mass value for {_id} was not found in "
-                        "compounds collection"
+                        f"A mass value for {_id} was not found in compounds collection"
                     )
             return self._mass_cache["_id"]
 
@@ -232,7 +231,7 @@ class MINE:
         os.remove(structure_file)
 
         for i, _id in enumerate(ids):
-            old = os.path.join(path, f"{i+1}.{extension}")
+            old = os.path.join(path, f"{i + 1}.{extension}")
             new = path
             for j in range(0, dir_depth):
                 new = os.path.join(new, _id[j])
@@ -277,7 +276,7 @@ def write_reactions_to_mine(
     n_rxns = len(reactions)
     for i, rxn_chunk in enumerate(utils.Chunks(reactions, chunk_size)):
         if i % 20 == 0:
-            print(f"Writing Reactions: Chunk {i} of {int(n_rxns/chunk_size) + 1}")
+            print(f"Writing Reactions: Chunk {i} of {int(n_rxns / chunk_size) + 1}")
         rxn_requests = [
             pymongo.InsertOne(utils.convert_sets_to_lists(rxn_dict))
             for rxn_dict in rxn_chunk
@@ -311,7 +310,7 @@ def write_compounds_to_mine(
 
     for i, cpd_chunk in enumerate(utils.Chunks(compounds, chunk_size)):
         if i % 20 == 0:
-            print(f"Writing Compounds: Chunk {i} of {int(n_cpds/chunk_size) + 1}")
+            print(f"Writing Compounds: Chunk {i} of {int(n_cpds / chunk_size) + 1}")
 
         cpd_requests = []
         reactant_in_requests = []
@@ -505,7 +504,7 @@ def write_core_compounds(
 
     for i, cpd_chunk in enumerate(utils.Chunks(compounds, chunk_size)):
         if i % 20 == 0:
-            print(f"Writing Compounds: Chunk {i} of {int(n_cpds/chunk_size) + 1}")
+            print(f"Writing Compounds: Chunk {i} of {int(n_cpds / chunk_size) + 1}")
 
         # Capture annoying RDKit output
 
@@ -597,6 +596,6 @@ def write_targets_to_mine(
     n_cpds = len(targets)
     for i, target_chunk in enumerate(utils.Chunks(targets, chunk_size)):
         if i % 20 == 0:
-            print(f"Writing Targets: Chunk {i} of {int(n_cpds/chunk_size) + 1}")
+            print(f"Writing Targets: Chunk {i} of {int(n_cpds / chunk_size) + 1}")
         cpd_requests = [_get_cpd_insert(cpd_dict) for cpd_dict in target_chunk]
         db.target_compounds.bulk_write(cpd_requests, ordered=False)

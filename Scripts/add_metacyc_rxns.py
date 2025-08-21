@@ -10,59 +10,67 @@ from rdkit.Chem import AllChem
 
 def make_hash_dict(db, key_field):
     hash_dict = {}
-    for comp in db.compounds.find({key_field: {'$exists': 1}}, {key_field: 1}):
+    for comp in db.compounds.find({key_field: {"$exists": 1}}, {key_field: 1}):
         for name in utils.get_dotted_field(comp, key_field):
-            hash_dict[name] = comp['_id']
+            hash_dict[name] = comp["_id"]
     return hash_dict
+
 
 def dict_from_sdf(path):
     suppl = AllChem.SDMolSupplier(path)
     comp_dict = {}
     for mol in suppl:
         if mol:
-            comp_dict[mol.GetProp('FRAME-ID')] = mol
+            comp_dict[mol.GetProp("FRAME-ID")] = mol
     return comp_dict
 
 
 def add_metacyc_rxns(mine_db, csv_path, metacyc2hash):
     inserted = set()
+
     def parse_comps(field):
         atoms = collections.Counter()
-        compounds = collections.Counter(field.split(' // '))
+        compounds = collections.Counter(field.split(" // "))
         half_rxn = []
         for comp, stoich in compounds.items():
             if comp in metacyc2hash:
                 mol = metacyc2hash[comp]
-                for pair in re.findall('([A-Z][a-z]*)(\d*)', AllChem.CalcMolFormula(mol)):
+                for pair in re.findall(
+                    "([A-Z][a-z]*)(\d*)", AllChem.CalcMolFormula(mol)
+                ):
                     if pair[1]:
                         atoms[pair[0]] += int(pair[1]) * stoich
                     else:
                         atoms[pair[0]] += 1 * stoich
                 if comp not in inserted:
-                    mine_db.insert_compound(mol, {'Generation': 0})
+                    mine_db.insert_compound(mol, {"Generation": 0})
                     inserted.add(comp)
-                half_rxn.append(utils.stoich_tuple(stoich, utils.get_compound_hash(mol)))
+                half_rxn.append(
+                    utils.stoich_tuple(stoich, utils.get_compound_hash(mol))
+                )
             else:
-                raise ValueError('Undefined Compound: %s' % comp)
+                raise ValueError("Undefined Compound: %s" % comp)
         return half_rxn, atoms
 
     with open(csv_path) as infile:
-        reader = csv.DictReader(infile, delimiter='\t')
+        reader = csv.DictReader(infile, delimiter="\t")
         for row in reader:
-            rxn = {'Metabolite': '', 'Type': '', 'MetaCyc ID': row['MetaCyc ID']}
-            if isinstance(row['Citations'], str):
-                rxn['References'] = [x.strip('"[]"') for x in row['Citations'].split(' // ')]
+            rxn = {"Metabolite": "", "Type": "", "MetaCyc ID": row["MetaCyc ID"]}
+            if isinstance(row["Citations"], str):
+                rxn["References"] = [
+                    x.strip('"[]"') for x in row["Citations"].split(" // ")
+                ]
             else:
-                rxn['References'] = [str(row['Citations'])]
-            rxn['References'].append("MetaCyc: %s" % row['MetaCyc ID'])
+                rxn["References"] = [str(row["Citations"])]
+            rxn["References"].append("MetaCyc: %s" % row["MetaCyc ID"])
             try:
-                rxn['Reactants'], r_atoms = parse_comps(row['Reactants of reaction'])
-                rxn['Products'], p_atoms = parse_comps(row['Products of reaction'])
+                rxn["Reactants"], r_atoms = parse_comps(row["Reactants of reaction"])
+                rxn["Products"], p_atoms = parse_comps(row["Products of reaction"])
                 if r_atoms - p_atoms or p_atoms - r_atoms:
                     print(r_atoms, p_atoms)
-                    raise ValueError('Unbalanced Reaction: %s' % rxn['MetaCyc ID'])
-                if sorted(rxn['Reactants']) == sorted(rxn['Products']):
-                    raise ValueError('No Change: %s' % rxn['MetaCyc ID'])
+                    raise ValueError("Unbalanced Reaction: %s" % rxn["MetaCyc ID"])
+                if sorted(rxn["Reactants"]) == sorted(rxn["Products"]):
+                    raise ValueError("No Change: %s" % rxn["MetaCyc ID"])
 
             except ValueError as e:
                 print(e)
@@ -83,7 +91,7 @@ def add_metacyc_comps(metacyc_db, mine_db):
             mine_db.compounds.insert(comp)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     AllChem.WrapLogs()
     db = MINE(sys.argv[1])
     hash_dict = dict_from_sdf(sys.argv[2])

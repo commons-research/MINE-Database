@@ -240,7 +240,6 @@ def test_save_as_mine(default_rule, smiles_dict, coreactant_dict):
     mine_db = MINE("MINE_test")
 
     try:
-
         assert mine_db.compounds.estimated_document_count() == 31
         assert mine_db.reactions.estimated_document_count() == 49
         assert mine_db.operators.estimated_document_count() == 1

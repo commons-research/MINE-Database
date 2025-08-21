@@ -4,7 +4,7 @@ import collections
 import multiprocessing
 from functools import partial
 from typing import Tuple
-from tqdm.auto import tqdm
+
 import rdkit.rdBase as rkrb
 import rdkit.RDLogger as rkl
 import utils
@@ -19,6 +19,7 @@ from rdkit.Chem.AllChem import (
     RemoveHs,
     SanitizeMol,
 )
+from tqdm.auto import tqdm
 
 
 logger = rkl.logger()
@@ -345,8 +346,7 @@ def transform_all_compounds_with_full(
         print_on = max(round(0.1 * total), 1)
         if not done % print_on:
             print(
-                f"Generation {generation}: {round(done / total * 100)}"
-                " percent complete"
+                f"Generation {generation}: {round(done / total * 100)} percent complete"
             )
 
     # First transform
@@ -367,7 +367,13 @@ def transform_all_compounds_with_full(
         chunk_size = 1
         pool = multiprocessing.Pool(processes=processes)
         for i, res in enumerate(
-            tqdm(pool.imap_unordered(transform_compound_partial, compound_smiles, chunk_size), total=len(compound_smiles), leave=False)
+            tqdm(
+                pool.imap_unordered(
+                    transform_compound_partial, compound_smiles, chunk_size
+                ),
+                total=len(compound_smiles),
+                leave=False,
+            )
         ):
             new_cpds, new_rxns = res
             new_cpds_master.update(new_cpds)
@@ -380,9 +386,13 @@ def transform_all_compounds_with_full(
                 else:
                     new_rxns_master.update({rxn: rxn_dict})
             print_progress(i, len(compound_smiles))
+            if i == 100:
+                break
 
     else:
-        for i, smiles in enumerate(tqdm(compound_smiles, total=len(compound_smiles), leave=False)):
+        for i, smiles in enumerate(
+            tqdm(compound_smiles, total=len(compound_smiles), leave=False)
+        ):
             new_cpds, new_rxns = transform_compound_partial(smiles)
             # new_cpds as cpd_id:cpd_dict
             # new_rxns as rxn_id:rxn_dict

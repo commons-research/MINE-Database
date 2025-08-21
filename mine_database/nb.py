@@ -13,24 +13,24 @@ downloader.download(
 
 # Load the NPC dataframe
 
-df = pd.read_csv(npc_dataset_path, sep='\t')
+df = pd.read_csv(npc_dataset_path, sep="\t")
 
 # We rename the 'index' column to SMILES
 
-df = df.rename(columns={'index': 'smiles'})
+df = df.rename(columns={"index": "smiles"})
 
 # Generate an index for each SMILES string
 # For this we use "npc_" as a prefix and the row index as the suffix
 
-df['id'] = 'npc_' + df.index.astype(str)
+df["id"] = "npc_" + df.index.astype(str)
 
 # We now keep only the 'index' and 'SMILES' columns
 
-df = df[['id', 'smiles']]
+df = df[["id", "smiles"]]
 
 # Save the NPC dataframe as a csv file called 'npc_dataset.tsv'
 
-df.to_csv('data/npc_dataset.csv', index=False)
+df.to_csv("data/npc_dataset.csv", index=False)
 
 
 ## We can then run the following command to generate the rules for the NPC dataset
@@ -38,5 +38,4 @@ df.to_csv('data/npc_dataset.csv', index=False)
 # python mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv --generations 1 --compound_file ./data/npc_dataset.csv --output_dir ./data/output/npc --processes 60 --verbose --explicit_h --database npc_mines
 
 
-### Here we try to visualize the SMARTS 
-
+### Here we try to visualize the SMARTS

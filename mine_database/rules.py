@@ -1,4 +1,5 @@
 """Generate rules to use in pickaxe runs."""
+
 from bisect import bisect_right
 from io import StringIO
 from pathlib import Path
@@ -112,7 +113,7 @@ def metacyc_generalized(
     # Attach rules to this DF
     rule_df = pd.read_csv(
         rules,
-        delimiter="\t"
+        delimiter="\t",
         # usecols=["Name", "Reactants", "SMARTS", "Prod"]
     )
     removed_df = pd.DataFrame()

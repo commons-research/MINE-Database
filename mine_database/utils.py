@@ -1,5 +1,6 @@
 """Utils.py: contains basic functions reused in various contexts in other
 modules"""
+
 import collections
 import csv
 import hashlib
@@ -340,6 +341,7 @@ def get_reaction_hash(
     Tuple[str, str]
         Reaction hash and SMILES.
     """
+
     # Get text reaction to be hashed
     # this is a combination of two functions
     def to_str(half_rxn):
@@ -349,7 +351,7 @@ def get_reaction_hash(
             else f"(1) {x}"
             for x in sorted(half_rxn)
         ]
-    
+
     # # modified version
     # def to_str(half_rxn):
     #     return [
@@ -366,7 +368,7 @@ def get_reaction_hash(
         cpd_tups.sort(key=lambda x: x[1])
         smiles = []
         for cpd in cpd_tups:
-            #smiles.append(f"({cpd[0]}) {cpd[2]}")
+            # smiles.append(f"({cpd[0]}) {cpd[2]}")
 
             # remove the amount of molecules
             smiles.append(f"{cpd[2]}")
@@ -376,9 +378,7 @@ def get_reaction_hash(
     product_ids = [product[1]["_id"] for product in products]
     reactant_ids.sort()
     product_ids.sort()
-    text_ids_rxn = (
-        ".".join(to_str(reactant_ids)) + ">>" + ".".join(to_str(product_ids))
-    )
+    text_ids_rxn = ".".join(to_str(reactant_ids)) + ">>" + ".".join(to_str(product_ids))
     # Hash text reaction
     rhash = "R" + hashlib.sha256(text_ids_rxn.encode()).hexdigest()
 
@@ -443,7 +443,7 @@ def neutralise_charges(
         if _REACTIONS is None:
             _REACTIONS = _initialise_neutralisation_reactions()
         reactions = _REACTIONS
-    for (reactant, product) in reactions:
+    for reactant, product in reactions:
         while mol.HasSubstructMatch(reactant):
             rms = AllChem.ReplaceSubstructs(mol, reactant, product)
             mol = rms[0]
@@ -588,7 +588,7 @@ def mongo_ids_to_mine_ids(mongo_ids: List[str], core_db) -> int:
             mine_id = cpd_doc["MINE_id"]
         else:
             mine_id = None
-            print(f'Warning: {cpd_doc["MINE_id"]} not found in core DB.')
+            print(f"Warning: {cpd_doc['MINE_id']} not found in core DB.")
         mongo_to_mine[cpd_doc["_id"]] = mine_id
     return mongo_to_mine
 
