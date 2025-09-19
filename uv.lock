@@ -1253,7 +1253,7 @@ wheels = [
 [[package]]
 name = "mine-database"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "downloaders" },
     { name = "matplotlib" },
@@ -1285,7 +1285,7 @@ requires-dist = [
 dev = [
     { name = "ipython", specifier = ">=8.18.1" },
     { name = "jupyterlab", specifier = ">=4.4.6" },
-    { name = "mine-database", virtual = "." },
+    { name = "mine-database", editable = "." },
     { name = "pytest", specifier = ">=8.3.3" },
 ]
 

@@ -14,12 +14,11 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = [
-    "ipython>=8.18.1",
-    "jupyterlab>=4.4.6",
-    "mine-database",
-    "pytest>=8.3.3",
-]
+dev = ["ipython>=8.18.1", "jupyterlab>=4.4.6", "mine-database", "pytest>=8.3.3"]
 
 [tool.uv.sources]
 mine-database = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

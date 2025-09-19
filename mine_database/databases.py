@@ -13,10 +13,11 @@ from subprocess import call
 from typing import List, Union
 
 import pymongo
-import utils
 from pymongo.errors import ServerSelectionTimeoutError
 from rdkit.Chem import AllChem
 from rdkit.RDLogger import logger
+
+import mine_database.utils as utils
 
 
 # from minedatabase.NP_Score import npscorer as nps

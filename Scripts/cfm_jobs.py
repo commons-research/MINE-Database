@@ -3,10 +3,14 @@
 import os
 import re
 import sys
+import typing as T
 from copy import deepcopy
 from subprocess import call
 
-from minedatabase.databases import MINE
+from tqdm.auto import tqdm
+
+from mine_database.databases import MINE
+
 
 # pylint: disable=redefined-outer-name
 
@@ -63,8 +67,8 @@ def start_cfm_jobs(
     else:
         raise ValueError("invalid spectrum spec_type")
 
-    for compound in db.compounds.find(search, {"SMILES": 1, "Inchikey": 1}):
-        con_block = compound["Inchikey"].split("-")[0]
+    for compound in db.compounds.find(search, {"SMILES": 1, "InChI_key": 1}):
+        con_block = compound["InChI_key"].split("-")[0]
         if con_block not in inchi_set:
             out_file.write("%s %s\n" % (con_block, compound["SMILES"]))
             i += 1
@@ -105,7 +109,7 @@ def start_cfm_jobs(
                 os.remove(job_file)
 
 
-def load_cfm_results(result_dir, db_list, spec_type, cleanup=False):
+def load_cfm_results(result_dir, db_list: T.List[MINE], spec_type, cleanup=False):
     """Insert CFM-predict results into MINE DB.
 
     Parameters
@@ -120,7 +124,7 @@ def load_cfm_results(result_dir, db_list, spec_type, cleanup=False):
         Whether to delete all spectra (in result_dir) after loading them into
         the MongoDB.
     """
-    for spec_file in os.listdir(result_dir):
+    for spec_file in tqdm(os.listdir(result_dir)):
         if ("param" in spec_file) or (spec_file[-4:] != ".log"):
             continue
         with open(os.path.join(result_dir, spec_file)) as infile:
@@ -134,7 +138,7 @@ def load_cfm_results(result_dir, db_list, spec_type, cleanup=False):
                 for db in db_list:
                     if spec_type == "pos":
                         db.compounds.update_many(
-                            {"Inchikey": {"$regex": "^" + spec_file[:-4]}},
+                            {"InChI_key": {"$regex": "^" + spec_file[:-4]}},
                             {
                                 "$set": {
                                     "Pos_CFM_spectra": {
@@ -147,7 +151,7 @@ def load_cfm_results(result_dir, db_list, spec_type, cleanup=False):
                         )
                     elif spec_type == "neg":
                         db.compounds.update_many(
-                            {"Inchikey": {"$regex": "^" + spec_file[:-4]}},
+                            {"InChI_key": {"$regex": "^" + spec_file[:-4]}},
                             {
                                 "$set": {
                                     "Neg_CFM_spectra": {
@@ -160,7 +164,7 @@ def load_cfm_results(result_dir, db_list, spec_type, cleanup=False):
                         )
                     elif spec_type == "ei":
                         db.compounds.update_many(
-                            {"Inchikey": {"$regex": "^" + spec_file[:-4]}},
+                            {"InChI_key": {"$regex": "^" + spec_file[:-4]}},
                             {"$set": {"EI_CFM_spectra": {"70 V": data[0]}}},
                         )
                     else:
@@ -194,6 +198,7 @@ if __name__ == "__main__":
         )
 
     if sys.argv[1] == "load":
+        print("running load")
         result_dir = sys.argv[2]
         spec_type = sys.argv[3]
         dbs = [MINE(x) for x in sys.argv[4:]]
