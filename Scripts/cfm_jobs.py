@@ -198,7 +198,6 @@ if __name__ == "__main__":
         )
 
     if sys.argv[1] == "load":
-        print("running load")
         result_dir = sys.argv[2]
         spec_type = sys.argv[3]
         dbs = [MINE(x) for x in sys.argv[4:]]
