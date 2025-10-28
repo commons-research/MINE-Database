@@ -1,6 +1,9 @@
+import gzip
+
 import pandas as pd
 from pymongo import MongoClient
-import gzip
+from tqdm.auto import tqdm
+
 
 # Replace with your MongoDB connection string
 connection_string = "mongodb://localhost:27017/"
@@ -20,8 +23,9 @@ metadata_df = read_gz_csv(metadata_file_path)
 
 # Connect to MongoDB
 client = MongoClient(connection_string)
-db = client["lotus_mines"]  # Replace with your actual database name
+db = client["lotus_expanded"]  # Replace with your actual database name
 compounds_col = db["compounds"]
+print(compounds_col.count_documents({}))
 
 # # Step 1: List all Starting Compounds' InChIKeys
 # starting_compounds_inchikeys = compounds_col.find({"Type": "Starting Compound"}, {"InChI_key": 1, "_id": 0})
@@ -32,15 +36,20 @@ starting_compounds_ids = compounds_col.find(
     {"Type": "Starting Compound"}, {"ID": 1, "_id": 0}
 )
 starting_compounds_ids = [doc["ID"] for doc in starting_compounds_ids]
+metadata_df["structure_inchikey_2D"] = (
+    metadata_df["structure_inchikey"].str.split("-").str[0]
+)
 
 # Step 2: Subset the metadata DataFrame for these InChIKeys
 metadata_subset_df = metadata_df[
-    metadata_df["structure_inchikey"].isin(starting_compounds_ids)
+    metadata_df["structure_inchikey_2D"].isin(starting_compounds_ids)
 ]
 
 # Step 3: Iterate over the rows of the subset DataFrame and update MongoDB documents
-for index, row in metadata_subset_df.iterrows():
-    inchi_key = row["structure_inchikey"]
+for index, row in tqdm(
+    metadata_subset_df.iterrows(), total=metadata_subset_df.shape[0]
+):
+    inchi_key = row["structure_inchikey_2D"]
 
     # Create a dictionary of the metadata
     metadata = {
