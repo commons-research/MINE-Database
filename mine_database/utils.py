@@ -590,7 +590,7 @@ def mongo_ids_to_mine_ids(mongo_ids: List[str], core_db) -> int:
             mine_id = cpd_doc["_id"]
         else:
             mine_id = None
-            print(f"Warning: {cpd_doc["Inchikey"]} not found in core DB.")
+            print(f"Warning: {cpd_doc['Inchikey']} not found in core DB.")
         mongo_to_mine[cpd_doc["_id"]] = mine_id
     return mongo_to_mine
 
