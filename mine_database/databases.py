@@ -15,14 +15,13 @@ from typing import List, Union
 import pymongo
 from pymongo.errors import ServerSelectionTimeoutError
 from rdkit.Chem import AllChem
+from rdkit.Contrib.NP_Score import npscorer
 from rdkit.RDLogger import logger
 
 import mine_database.utils as utils
 
 
-# from minedatabase.NP_Score import npscorer as nps
-
-# nps_model = nps.readNPModel()
+FSCORE = npscorer.readNPModel()
 
 lg = logger()
 lg.setLevel(4)
@@ -562,7 +561,7 @@ def _get_core_cpd_insert(cpd_dict: dict) -> pymongo.UpdateOne:
     core_dict["logP"] = AllChem.CalcCrippenDescriptors(mol_object)[0]
     core_dict["RDKit_fp"] = rdk_fp
     core_dict["len_RDKit_fp"] = len(rdk_fp)
-    # core_dict['NP_likeness'] = nps.scoreMol(mol_object, nps_model)
+    core_dict["NP_likeness"] = npscorer.scoreMol(mol_object, FSCORE)
     core_dict["Spectra"] = {}
     # Record which expansion it's coming from
     core_dict["MINES"] = []

@@ -209,14 +209,18 @@ class MetabolomicsDataset:
         """
         # find nominal mass for a given m/z for each adduct and the max and
         # min values for db
-        potential_masses = [(peak.mz - adduct[2]) / adduct[1] for adduct in adducts]
+        potential_masses = np.array(
+            [(peak.mz - adduct[2]) / adduct[1] for adduct in adducts]
+        )
 
         if self.ppm:
             precision = (self.tolerance / 100000.0) * potential_masses
+            upper_bounds = [pm + p for pm, p in zip(potential_masses, precision)]
+            lower_bounds = [pm - p for pm, p in zip(potential_masses, precision)]
         else:
             precision = self.tolerance * 0.001  # convert to mDa
-        upper_bounds = [pm + precision for pm in potential_masses]
-        lower_bounds = [pm - precision for pm in potential_masses]
+            upper_bounds = [pm + precision for pm in potential_masses]
+            lower_bounds = [pm - precision for pm in potential_masses]
 
         # search database for hits in the each adducts mass range that have no
         # innate charge.

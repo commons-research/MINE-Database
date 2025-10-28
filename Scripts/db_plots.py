@@ -1,12 +1,16 @@
 import matplotlib
+import pandas as pd
+
 
 matplotlib.use("Agg")
-import seaborn
-import pandas
-import matplotlib.pyplot as plt
-from mine_database.databases import MINE
-from collections import defaultdict, Counter
 import sys
+from collections import Counter, defaultdict
+
+import matplotlib.pyplot as plt
+import pandas
+import seaborn
+
+from mine_database.databases import MINE
 
 
 def make_violin_plots(db_list, prop_list=("Mass", "logP", "NP_likeness")):
@@ -21,7 +25,7 @@ def make_violin_plots(db_list, prop_list=("Mass", "logP", "NP_likeness")):
         for x in cursor:
             x["DB"] = str(db_name.strip("exp2"))
             l.append(x)
-        df = df.append(l)
+        df = pd.concat([df, pd.DataFrame(l)], ignore_index=True)
     f, ax = plt.subplots(1, len(prop_list))
     for i, prop in enumerate(prop_list):
         seaborn.violinplot(split=True, hue="Type", x="DB", y=prop, data=df, ax=ax[i])

@@ -346,9 +346,11 @@ def get_reaction_hash(
     # this is a combination of two functions
     def to_str(half_rxn):
         return [
-            f"({x[0]}) {x[1]})"
-            if (len(x) == 2 and not isinstance(x, str))
-            else f"(1) {x}"
+            (
+                f"({x[0]}) {x[1]})"
+                if (len(x) == 2 and not isinstance(x, str))
+                else f"(1) {x}"
+            )
             for x in sorted(half_rxn)
         ]
 
@@ -584,11 +586,11 @@ def mongo_ids_to_mine_ids(mongo_ids: List[str], core_db) -> int:
     mongo_to_mine = {}
     cpd_docs = core_db.compounds.find({"_id": {"$in": mongo_ids}})
     for cpd_doc in cpd_docs:
-        if cpd_doc and "MINE_id" in cpd_doc:
-            mine_id = cpd_doc["MINE_id"]
+        if cpd_doc and "_id" in cpd_doc:
+            mine_id = cpd_doc["_id"]
         else:
             mine_id = None
-            print(f"Warning: {cpd_doc['MINE_id']} not found in core DB.")
+            print(f"Warning: {cpd_doc["Inchikey"]} not found in core DB.")
         mongo_to_mine[cpd_doc["_id"]] = mine_id
     return mongo_to_mine
 
