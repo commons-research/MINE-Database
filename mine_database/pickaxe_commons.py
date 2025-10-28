@@ -1494,6 +1494,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-wc",
         "--write_core",
+        action="store_true",
         default=False,
         help="Whether or not to write results into core database.",
     )

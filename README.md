@@ -57,7 +57,7 @@ uv run mine_database/pickaxe_commons.py -C ./mine_database/data/original_rules/E
 Complete command (writing to database):
 
 ```bash
-uv run mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv --generations 1 --compound_file ./data/230106_lotus_inchikey_smiles.csv --processes 20 --verbose --explicit_h --database lotus_expanded --write_core True
+uv run mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/original_rules/EnzymaticCoreactants.tsv --rule_list ./mine_database/data/original_rules/EnzymaticReactionRules.tsv --generations 1 --compound_file ./data/230106_lotus_inchikey_smiles.csv --processes 20 --verbose --explicit_h --database lotus_expanded --write_core
 ```
 
 Command without writing to database:
