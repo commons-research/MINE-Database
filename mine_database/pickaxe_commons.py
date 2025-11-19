@@ -41,6 +41,7 @@ from rdkit.Chem.rdMolDescriptors import CalcMolFormula
 from rdkit.RDLogger import logger
 from reactions import transform_all_compounds_with_full
 from rules import metacyc_generalized, metacyc_intermediate
+from tqdm.auto import tqdm
 
 
 # Default to no errors
@@ -299,7 +300,11 @@ class Pickaxe:
         initial_cpds_n = len(self.compounds)
         compound_smiles = []
         if compound_file:
-            for cpd_dict in utils.file_to_dict_list(compound_file):
+            for cpd_dict in tqdm(
+                utils.file_to_dict_list(compound_file),
+                desc="Loading Compounds",
+                leave=False,
+            ):
                 mol = self._mol_from_dict(cpd_dict)
                 if not mol:
                     continue

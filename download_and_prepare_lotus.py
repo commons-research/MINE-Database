@@ -1,5 +1,5 @@
-from downloaders import BaseDownloader
 import pandas as pd
+from downloaders import BaseDownloader
 
 
 def main():
@@ -22,6 +22,11 @@ def main():
     df = df[df["structure_smiles_2D"].str.contains("C", case=False)].reset_index(
         drop=True
     )  # Keep only rows with 'C' or 'c' in the smiles
+
+    # we also remove the molecules containing Helium like this "[He]"
+    df = df[~df["structure_smiles_2D"].str.contains(r"\[He\]", regex=True)].reset_index(
+        drop=True
+    )
     df.drop_duplicates(subset="structure_inchikey", inplace=True)
 
     df.columns = ["id", "smiles"]
