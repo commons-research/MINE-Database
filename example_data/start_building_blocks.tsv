@@ -1,0 +1,16 @@
+id	SMILES
+L-phenylalanine	C1=CC=C(C=C1)C[C@@H](C(=O)O)N
+L-tyrosine	C1=CC(=CC=C1C[C@@H](C(=O)O)N)O
+L-tryptophan	C1=CC=C2C(=C1)C(=CN2)C[C@@H](C(=O)O)N
+L-ornithine	C(C[C@@H](C(=O)O)N)CN
+L-lysine	C(CCN)C[C@@H](C(=O)O)N
+L-methionine	CSCC[C@@H](C(=O)O)N
+L-histidine	C1=C(NC=N1)C[C@@H](C(=O)O)N
+anthranilic_acid	C1=CC=C(C(=C1)C(=O)O)N
+nicotinic_acid	C1=CC(=CN=C1)C(=O)O
+shikimic_acid	C1[C@H]([C@@H]([C@@H](C=C1C(=O)O)O)O)O
+chorismic_acid	C=C(C(=O)O)O[C@@H]1C=C(C=C[C@H]1O)C(=O)O
+R-mevalonic_acid	C[C@@](CCO)(CC(=O)O)O
+MEP	C[C@](CO)([C@@H](COP(=O)(O)O)O)O
+IPP	CC(=C)CCOP(=O)(O)OP(=O)(O)O
+D-glucose	C([C@@H]1[C@H]([C@@H]([C@H](C(O1)O)O)O)O)O
