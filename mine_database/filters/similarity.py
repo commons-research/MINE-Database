@@ -25,6 +25,7 @@ from rdkit.Chem import rdFMCS as mcs
 from rdkit.Chem.rdmolfiles import MolFromSmiles
 from rdkit.DataStructs import FingerprintSimilarity
 from scipy.stats import rv_discrete
+from tqdm.auto import tqdm
 
 from filters.base_filter import Filter
 from utils import Chunks
@@ -684,14 +685,6 @@ class SimilarityFilter(Filter):
         processes: int,
         this_crit_similarity: float,
     ) -> List[Tuple[str, float]]:
-        def print_progress(done: int, total: int, section: str) -> None:
-            # Use print_on to print % completion roughly every 5 percent
-            # Include max to print no more than once per compound (e.g. if
-            # less than 20 compounds)
-            print_on = max(round(0.1 * total), 1)
-            if not (done % print_on):
-                print(f"{section} {round(done / total * 100)} percent complete")
-
         # compound_info = [(smiles, id)]
         cpds_to_filter = list()
         compare_target_fps_partial = partial(
@@ -702,27 +695,24 @@ class SimilarityFilter(Filter):
             # Set up parallel computing of compounds to
             chunk_size = max([round(len(compounds_info) / (processes * 4)), 1])
             with multiprocessing.Pool(processes) as pool:
-                for i, res in enumerate(
+                for res in tqdm(
                     pool.imap_unordered(
                         compare_target_fps_partial, compounds_info, chunk_size
-                    )
+                    ),
+                    total=len(compounds_info),
+                    leave=False,
                 ):
                     # If the result of comparison is false, compound is not expanded
                     # Default value for a compound is True, so no need to
                     # specify expansion
                     if res:
                         cpds_to_filter.append(res)
-                    print_progress(
-                        i, len(compounds_info), "Similarity filter progress:"
-                    )
 
         else:
-            for i, cpd in enumerate(compounds_info):
+            for cpd in tqdm(compounds_info, total=len(compounds_info), leave=False):
                 res = compare_target_fps_partial(cpd)
                 if res:
                     cpds_to_filter.append(res)
-                print_progress(i, len(compounds_info), "Similarity filter progress:")
-        print("Similarity filter progress: 100 percent complete")
 
         return cpds_to_filter
 

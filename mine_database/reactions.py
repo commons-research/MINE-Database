@@ -21,7 +21,6 @@ from rdkit.Chem.AllChem import (
 )
 from tqdm.auto import tqdm
 
-
 logger = rkl.logger()
 logger.setLevel(rkl.ERROR)
 rkrb.DisableLog("rdApp.error")
@@ -338,16 +337,6 @@ def transform_all_compounds_with_full(
         Returns a tuple of New Compounds and New Reactants.
     """
 
-    def print_progress(done, total):
-        # Use print_on to print % completion roughly every 2.5 percent
-        # Include max to print no more than once per compound (e.g. if
-        # less than 20 compounds)
-        print_on = max(round(0.1 * total), 1)
-        if not done % print_on:
-            print(
-                f"Generation {generation}: {round(done / total * 100)} percent complete"
-            )
-
     # First transform
     new_cpds_master = {}
     new_rxns_master = {}
@@ -384,7 +373,6 @@ def transform_all_compounds_with_full(
                         new_rxns_master[rxn]["Operators"].union(ops_set)
                     else:
                         new_rxns_master.update({rxn: rxn_dict})
-                print_progress(i, len(compound_smiles))
 
     else:
         for i, smiles in enumerate(
@@ -401,7 +389,6 @@ def transform_all_compounds_with_full(
                     new_rxns_master[rxn]["Operators"].union(ops_set)
                 else:
                     new_rxns_master.update({rxn: rxn_dict})
-            print_progress(i, len(compound_smiles))
 
     return new_cpds_master, new_rxns_master
 
