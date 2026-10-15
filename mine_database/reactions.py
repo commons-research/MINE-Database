@@ -3,7 +3,7 @@
 import collections
 import multiprocessing
 from functools import partial
-from typing import Tuple
+from typing import Tuple, Union
 
 import rdkit.rdBase as rkrb
 import rdkit.RDLogger as rkl
@@ -19,6 +19,7 @@ from rdkit.Chem.AllChem import (
     RemoveHs,
     SanitizeMol,
 )
+from rdkit.Chem.rdchem import Mol
 from tqdm.auto import tqdm
 
 logger = rkl.logger()
@@ -41,6 +42,24 @@ rkrb.DisableLog("rdApp.error")
 # output format back to the pickaxe object.
 
 
+_MISSING = object()
+
+
+def _canonicalize_product(mol: Mol) -> Union[tuple, None]:
+    """Canonicalize a sanitized product into the data a compound dict needs.
+
+    Returns (cpd_id, SMILES, InChI key, atom count, formula), or None for
+    fragmented products and products that cannot be hashed.
+    """
+    mol_smiles = MolToSmiles(mol, True)
+    if "." in mol_smiles:
+        return None
+    cpd_id, inchi_key = utils.get_compound_hash(mol_smiles, "Predicted")
+    if not cpd_id:
+        return None
+    return cpd_id, mol_smiles, inchi_key, utils.get_atom_count(mol), CalcMolFormula(mol)
+
+
 def _run_reaction(
     rule_name: str,
     rule: tuple,
@@ -51,6 +70,7 @@ def _run_reaction(
     local_rxns: dict,
     generation: int,
     explicit_h: bool,
+    canon_cache: dict,
 ) -> Tuple[dict, dict]:
     """Apply reaction rules to a list of compounds.
 
@@ -77,6 +97,9 @@ def _run_reaction(
         Which generation this reaction is.
     explicit_h : bool
         Whether or not to explicitly use hydrogens.
+    canon_cache : dict
+        Canonicalized products keyed by raw product SMILES, shared by all
+        rules applied to one compound.
 
     Returns
     -------
@@ -118,6 +141,11 @@ def _run_reaction(
         return cpd_returns, atom_counts
 
     def _gen_compound(mol):
+        # Products recur across symmetric matches and across rules, so the
+        # canonicalization below runs once per raw product SMILES; the cache
+        # holds the result, or None for a product that failed.
+        raw_smiles = None
+        canon = _MISSING
         # Silence the expected sanitization errors for infeasible products
         # ("Explicit valence greater than permitted"). BlockLogs restores the
         # previous log state afterwards; EnableLog("rdApp.*") here used to
@@ -126,47 +154,48 @@ def _run_reaction(
             try:
                 if explicit_h:
                     mol = RemoveHs(mol)
-
-                # resolve potential tautomers and choose first one
-                mol_smiles = MolToSmiles(mol, True)
-                if "n" in mol_smiles:
-                    mol_smiles = utils.postsanitize_smiles([mol_smiles])[0][0]
-                    mol = MolFromSmiles(mol_smiles)
-
-                SanitizeMol(mol)
+                raw_smiles = MolToSmiles(mol, True)
+                canon = canon_cache.get(raw_smiles, _MISSING)
+                if canon is _MISSING:
+                    # resolve potential tautomers and choose first one
+                    if "n" in raw_smiles:
+                        mol = MolFromSmiles(
+                            utils.postsanitize_smiles([raw_smiles])[0][0]
+                        )
+                    SanitizeMol(mol)
             except BaseException:
+                if raw_smiles is not None:
+                    canon_cache[raw_smiles] = None
                 return None
 
-        mol_smiles = MolToSmiles(mol, True)
-        if "." in mol_smiles:
+        if canon is _MISSING:
+            canon = _canonicalize_product(mol)
+            canon_cache[raw_smiles] = canon
+        if canon is None:
             return None
 
-        cpd_id, inchi_key = utils.get_compound_hash(mol_smiles, "Predicted")
-        if cpd_id:
-            if cpd_id not in local_cpds:
-                cpd_dict = {
-                    "ID": None,
-                    "_id": cpd_id,
-                    "SMILES": mol_smiles,
-                    "InChI_key": inchi_key,
-                    "Type": "Predicted",
-                    "Generation": generation,
-                    "atom_count": utils.get_atom_count(mol),
-                    "Reactant_in": [],
-                    "Product_of": [],
-                    "Expand": True,
-                    "Formula": CalcMolFormula(mol),
-                    "last_tani": 0,
-                }
-            else:
-                cpd_dict = local_cpds[cpd_id]
-
-            return cpd_dict
-        else:
-            return None
+        cpd_id, mol_smiles, inchi_key, atom_count, formula = canon
+        if cpd_id in local_cpds:
+            return local_cpds[cpd_id]
+        return {
+            "ID": None,
+            "_id": cpd_id,
+            "SMILES": mol_smiles,
+            "InChI_key": inchi_key,
+            "Type": "Predicted",
+            "Generation": generation,
+            "atom_count": atom_count,
+            "Reactant_in": [],
+            "Product_of": [],
+            "Expand": True,
+            "Formula": formula,
+            "last_tani": 0,
+        }
 
     try:
         product_sets = rule[0].RunReactants(reactant_mols, maxProducts=10000)
+        if not product_sets:
+            return local_cpds, local_rxns
         reactants, reactant_atoms = _make_half_rxn(reactant_mols, rule[1]["Reactants"])
     except BaseException:
         reactants = None, None
@@ -257,6 +286,7 @@ def _transform_ind_compound_with_full(
     """
     local_cpds = dict()
     local_rxns = dict()
+    canon_cache = dict()
 
     mol = MolFromSmiles(compound_smiles)
     mol = RemoveHs(mol)
@@ -275,9 +305,9 @@ def _transform_ind_compound_with_full(
         reactant_mols = tuple(
             [mol if x == "Any" else coreactant_mols[x][0] for x in rule[1]["Reactants"]]
         )
-        # Perform chemical reaction on reactants for each rule
-        # try:
-        generated_cpds, generated_rxns = _run_reaction(
+        # Perform chemical reaction on reactants for each rule; results are
+        # accumulated in local_cpds / local_rxns in place.
+        _run_reaction(
             rule_name,
             rule,
             reactant_mols,
@@ -287,14 +317,24 @@ def _transform_ind_compound_with_full(
             local_rxns,
             generation,
             explicit_h,
+            canon_cache,
         )
 
-        local_cpds.update(generated_cpds)
-        for rxn, vals in generated_rxns.items():
-            if rxn in local_rxns:
-                local_rxns[rxn]["Operators"].union(vals["Operators"])
-
     return local_cpds, local_rxns
+
+
+# Per-worker transform function, installed once per pool process by
+# _init_transform_worker so the operators are not re-sent with every compound.
+_worker_transform = None
+
+
+def _init_transform_worker(*transform_args) -> None:
+    global _worker_transform  # pylint: disable=global-statement
+    _worker_transform = partial(_transform_ind_compound_with_full, *transform_args)
+
+
+def _transform_in_worker(compound_smiles: str) -> Tuple[dict, dict]:
+    return _worker_transform(compound_smiles)
 
 
 def transform_all_compounds_with_full(
@@ -337,12 +377,19 @@ def transform_all_compounds_with_full(
         Returns a tuple of New Compounds and New Reactants.
     """
 
-    # First transform
     new_cpds_master = {}
     new_rxns_master = {}
 
-    transform_compound_partial = partial(
-        _transform_ind_compound_with_full,
+    def merge(new_cpds: dict, new_rxns: dict) -> None:
+        new_cpds_master.update(new_cpds)
+        # The same reaction may come from several compounds; keep every rule
+        for rxn, rxn_dict in new_rxns.items():
+            if rxn in new_rxns_master:
+                new_rxns_master[rxn]["Operators"].update(rxn_dict["Operators"])
+            else:
+                new_rxns_master[rxn] = rxn_dict
+
+    transform_args = (
         coreactants,
         coreactant_dict,
         operators,
@@ -350,45 +397,23 @@ def transform_all_compounds_with_full(
         explicit_h,
         kekulize,
     )
-    # par loop
     if processes > 1:
         chunk_size = 1
-        with multiprocessing.Pool(processes=processes) as pool:
-            for i, res in enumerate(
-                tqdm(
-                    pool.imap_unordered(
-                        transform_compound_partial, compound_smiles, chunk_size
-                    ),
-                    total=len(compound_smiles),
-                    leave=False,
-                )
+        with multiprocessing.Pool(
+            processes=processes,
+            initializer=_init_transform_worker,
+            initargs=transform_args,
+        ) as pool:
+            for new_cpds, new_rxns in tqdm(
+                pool.imap_unordered(_transform_in_worker, compound_smiles, chunk_size),
+                total=len(compound_smiles),
+                leave=False,
             ):
-                new_cpds, new_rxns = res
-                new_cpds_master.update(new_cpds)
-
-                # Need to check if reactions already exist to update operators list
-                for rxn, rxn_dict in new_rxns.items():
-                    if rxn in new_rxns_master:
-                        ops_set = rxn_dict["Operators"]
-                        new_rxns_master[rxn]["Operators"].union(ops_set)
-                    else:
-                        new_rxns_master.update({rxn: rxn_dict})
-
+                merge(new_cpds, new_rxns)
     else:
-        for i, smiles in enumerate(
-            tqdm(compound_smiles, total=len(compound_smiles), leave=False)
-        ):
-            new_cpds, new_rxns = transform_compound_partial(smiles)
-            # new_cpds as cpd_id:cpd_dict
-            # new_rxns as rxn_id:rxn_dict
-            new_cpds_master.update(new_cpds)
-            # Need to check if reactions already exist to update operators list
-            for rxn, rxn_dict in new_rxns.items():
-                if rxn in new_rxns_master:
-                    ops_set = rxn_dict["Operators"]
-                    new_rxns_master[rxn]["Operators"].union(ops_set)
-                else:
-                    new_rxns_master.update({rxn: rxn_dict})
+        transform = partial(_transform_ind_compound_with_full, *transform_args)
+        for smiles in tqdm(compound_smiles, total=len(compound_smiles), leave=False):
+            merge(*transform(smiles))
 
     return new_cpds_master, new_rxns_master
 

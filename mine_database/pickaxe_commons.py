@@ -1283,8 +1283,8 @@ class Pickaxe:
                 if rxn_id not in self.reactions:
                     self.reactions[rxn_id] = rxn_dict
                 else:
-                    rxn_ops = self.reactions[rxn_id]["Operators"]
-                    rxn_ops = rxn_ops.union(rxn_dict["Operators"])
+                    ops = self.reactions[rxn_id]["Operators"]
+                    ops.update(rxn_dict["Operators"])
                     # if "Partial Operators" in self.reactions[rxn_id]:
                     #     par_ops = self.reactions[rxn_id]["Partial Operators"]
                     #     par_ops = par_ops.union(rxn_dict["Partial Operators"])
