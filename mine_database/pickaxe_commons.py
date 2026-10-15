@@ -12,7 +12,7 @@ import time
 from io import StringIO
 from pathlib import Path, PosixPath, WindowsPath
 from sys import exit
-from typing import List, Set, Tuple, Union
+from typing import List, Sequence, Set, Tuple, Union
 
 import click
 import utils
@@ -58,8 +58,8 @@ class Pickaxe:
 
     Parameters
     ----------
-    rule_list : str
-        Filepath of rules.
+    rule_list : str | Sequence[str]
+        Filepath of rules, or several filepaths whose rules are loaded together.
     coreactant_list : str
         Filepath of coreactants.
     explicit_h : bool, optional
@@ -141,7 +141,7 @@ class Pickaxe:
 
     def __init__(
         self,
-        rule_list: str | None = None,
+        rule_list: str | StringIO | Sequence[str] | None = None,
         coreactant_list: str | None = None,
         explicit_h: bool = False,
         kekulize: bool = False,
@@ -235,7 +235,11 @@ class Pickaxe:
 
         # Load rules (if any) into Pickaxe object
         if rule_list:
-            self._load_operators(rule_list)
+            if isinstance(rule_list, (list, tuple)):
+                for rule_path in rule_list:
+                    self._load_operators(rule_path)
+            else:
+                self._load_operators(rule_list)
 
         print("\nDone intializing pickaxe object")
         print("----------------------------------------\n")
@@ -1387,7 +1391,10 @@ class Pickaxe:
     help="Specify a list of coreactants as a .tsv",
 )
 @click.option(
-    "-r", "--rule_list", default=None, help="Specify a list of reaction rules as a .tsv"
+    "-r",
+    "--rule_list",
+    multiple=True,
+    help="Specify a list of reaction rules as a .tsv. Repeat to load several files.",
 )
 @click.option(
     "-c",
@@ -1537,7 +1544,7 @@ class Pickaxe:
 )
 def main(
     coreactant_list: Union[str, None],
-    rule_list: Union[str, None],
+    rule_list: Tuple[str, ...],
     compound_file: str,
     verbose: bool,
     explicit_h: bool,
