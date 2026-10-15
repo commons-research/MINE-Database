@@ -9,12 +9,12 @@ import datetime
 import os
 import pickle
 import time
-from argparse import ArgumentParser
 from io import StringIO
 from pathlib import Path, PosixPath, WindowsPath
 from sys import exit
 from typing import List, Set, Tuple, Union
 
+import click
 import utils
 from databases import (
     MINE,
@@ -1372,236 +1372,239 @@ class Pickaxe:
             print(f"Took {time.time() - start_load}")
 
 
-if __name__ == "__main__":
+@click.command()
+# Core args
+@click.option(
+    "-C",
+    "--coreactant_list",
+    default=None,
+    help="Specify a list of coreactants as a .tsv",
+)
+@click.option(
+    "-r", "--rule_list", default=None, help="Specify a list of reaction rules as a .tsv"
+)
+@click.option(
+    "-c",
+    "--compound_file",
+    default="./tests/data/test_compounds.tsv",
+    show_default=True,
+    help="Specify a list of starting compounds as .tsv or .csv",
+)
+@click.option(
+    "-v",
+    "--verbose",
+    is_flag=True,
+    default=False,
+    help="Display RDKit errors & warnings",
+)
+@click.option(
+    "-H",
+    "--explicit_h",
+    is_flag=True,
+    default=False,
+    help="Specify explicit hydrogen for use in reaction rules.",
+)
+@click.option(
+    "-k",
+    "--kekulize",
+    is_flag=True,
+    default=False,
+    help="Specify whether to kekulize compounds.",
+)
+@click.option(
+    "-n",
+    "--neutralise",
+    is_flag=True,
+    flag_value=True,
+    default=True,
+    help="Specify whether to neutralise compounds.",
+)
+@click.option(
+    "-m",
+    "--processes",
+    default=1,
+    type=int,
+    show_default=True,
+    help="Set the max number of processes.",
+)
+@click.option(
+    "-g",
+    "--generations",
+    default=1,
+    type=int,
+    show_default=True,
+    help="Set the numbers of time to apply the reaction rules to the compound set.",
+)
+@click.option(
+    "-q",
+    "--quiet",
+    is_flag=True,
+    flag_value=True,
+    default=True,
+    help="Silence warnings about imbalanced reactions",
+)
+@click.option(
+    "-s", "--smiles", default=None, help="Specify a starting compound SMILES."
+)
+# Result args
+@click.option(
+    "-p",
+    "--pruning_whitelist",
+    default=None,
+    help="Specify a list of target compounds to prune reaction network down to.",
+)
+@click.option(
+    "-o", "--output_dir", default=None, help="The directory in which to write files."
+)
+@click.option(
+    "-d",
+    "--database",
+    default=None,
+    help="The URI of the database in which to store output. If not specified, data "
+    "is written as tsv files",
+)
+@click.option(
+    "-u",
+    "--mongo_uri",
+    default="mongodb://localhost:27017",
+    show_default=True,
+    help="The URI of the mongo database to connect to.",
+)
+@click.option(
+    "--database_overwrite",
+    is_flag=True,
+    default=False,
+    help="Whether or not to overwrite the database if it exists.",
+)
+@click.option(
+    "-i",
+    "--image_dir",
+    default=None,
+    help="Specify a directory to store images of all created compounds",
+)
+@click.option(
+    "-wc",
+    "--write_core",
+    is_flag=True,
+    default=False,
+    help="Whether or not to write results into core database.",
+)
+# MetaCyc rule selection (also supplies the coreactant list)
+@click.option(
+    "--metacyc_rules",
+    default=None,
+    type=click.Choice(["general", "intermediate"]),
+    help="Specify the type of MetaCyc rules to use.",
+)
+@click.option(
+    "--rule_coverage",
+    default=None,
+    type=float,
+    help="Specify the coverage threshold for reaction rules.",
+)
+@click.option(
+    "--rule_count",
+    default=None,
+    type=int,
+    help="Specify the number of reaction rules to apply.",
+)
+def main(
+    coreactant_list: Union[str, None],
+    rule_list: Union[str, None],
+    compound_file: str,
+    verbose: bool,
+    explicit_h: bool,
+    kekulize: bool,
+    neutralise: bool,
+    processes: int,
+    generations: int,
+    quiet: bool,
+    smiles: Union[str, None],
+    pruning_whitelist: Union[str, None],
+    output_dir: Union[str, None],
+    database: Union[str, None],
+    mongo_uri: str,
+    database_overwrite: bool,
+    image_dir: Union[str, None],
+    write_core: bool,
+    metacyc_rules: Union[str, None],
+    rule_coverage: Union[float, None],
+    rule_count: Union[int, None],
+) -> None:
+    """Expand a compound set with reaction rules using Pickaxe."""
     print(os.getcwd())
     # Get initial time to calculate execution time at end
-    t1 = time.time()  # pylint: disable=invalid-name
-    # Parse all command line arguments
-    parser = ArgumentParser()  # pylint: disable=invalid-name
-    # Core args
-    parser.add_argument(
-        "-C",
-        "--coreactant_list",
-        default=None,
-        help="Specify a list of coreactants as a .tsv",
-    )
-    parser.add_argument(
-        "-r",
-        "--rule_list",
-        default=None,
-        help="Specify a list of reaction rules as a .tsv",
-    )
-    parser.add_argument(
-        "-c",
-        "--compound_file",
-        default="./tests/data/test_compounds.tsv",
-        help="Specify a list of starting compounds as .tsv or .csv",
-    )
-    parser.add_argument(
-        "-v",
-        "--verbose",
-        action="store_true",
-        default=False,
-        help="Display RDKit errors & warnings",
-    )
-    # parser.add_argument('--bnice', action='store_true', default=False,
-    #                     help="Set several options to enable compatibility "
-    #                          "with bnice operators.")
-    parser.add_argument(
-        "-H",
-        "--explicit_h",
-        action="store_true",
-        default=False,
-        help="Specify explicit hydrogen for use in reaction rules.",
-    )
-    parser.add_argument(
-        "-k",
-        "--kekulize",
-        action="store_true",
-        default=False,
-        help="Specify whether to kekulize compounds.",
-    )
-    parser.add_argument(
-        "-n",
-        "--neutralise",
-        action="store_true",
-        default=True,
-        help="Specify whether to neutralise compounds.",
-    )
+    t1 = time.time()
 
-    parser.add_argument(
-        "-m",
-        "--processes",
-        default=1,
-        type=int,
-        help="Set the max number of processes.",
-    )
+    if not any([rule_list, metacyc_rules]):
+        raise click.UsageError("No reaction rules specified, terminating run.")
 
-    parser.add_argument(
-        "-g",
-        "--generations",
-        default=1,
-        type=int,
-        help="Set the numbers of time to apply the reaction rules to the compound set.",
-    )
+    if all([rule_list, metacyc_rules]):
+        raise click.UsageError("Conflicting reaction rules specified, terminating run.")
 
-    parser.add_argument(
-        "-q",
-        "--quiet",
-        action="store_true",
-        default=True,
-        help="Silence warnings about imbalanced reactions",
-    )
-
-    parser.add_argument(
-        "-s", "--smiles", default=None, help="Specify a starting compound SMILES."
-    )
-
-    # Result args
-    parser.add_argument(
-        "-p",
-        "--pruning_whitelist",
-        default=None,
-        help="Specify a list of target compounds to prune reaction network down to.",
-    )
-    parser.add_argument(
-        "-o",
-        "--output_dir",
-        default=None,
-        help="The directory in which to write files.",
-    )
-    parser.add_argument(
-        "-d",
-        "--database",
-        default=None,
-        help="The URI of the database in which to store "
-        "output. If not specified, data is written "
-        "as tsv files",
-    )
-    parser.add_argument(
-        "-u",
-        "--mongo_uri",
-        default="mongodb://localhost:27017",
-        help="The URI of the mongo database to connect to. Defaults to"
-        " mongodb://localhost:27017",
-    )
-    parser.add_argument(
-        "--database_overwrite",
-        default=False,
-        action="store_true",
-        help="Whether or not to overwrite the database if it exists. Default is False.",
-    )
-    parser.add_argument(
-        "-i",
-        "--image_dir",
-        default=None,
-        help="Specify a directory to store images of all created compounds",
-    )
-    parser.add_argument(
-        "-wc",
-        "--write_core",
-        action="store_true",
-        default=False,
-        help="Whether or not to write results into core database.",
-    )
-
-    # we want to add the coreactant list
-    parser.add_argument(
-        "--metacyc_rules",
-        default=None,
-        choices=["general", "intermediate"],
-        help="Specify the type of MetaCyc rules to use.",
-    )
-    parser.add_argument(
-        "--rule_coverage",
-        default=None,
-        type=float,
-        help="Specify the coverage threshold for reaction rules.",
-    )
-    parser.add_argument(
-        "--rule_count",
-        default=None,
-        type=int,
-        help="Specify the number of reaction rules to apply.",
-    )
-
-    OPTIONS = parser.parse_args()
-    if not any([OPTIONS.rule_list, OPTIONS.metacyc_rules]):
-        exit("No reaction rules specified, terminating run.")
-
-    if all([OPTIONS.rule_list, OPTIONS.metacyc_rules]):
-        exit("Conflicting reaction rules specified, terminating run.")
-
-    if all([OPTIONS.rule_coverage, OPTIONS.rule_count]):
-        exit(
+    if all([rule_coverage, rule_count]):
+        raise click.UsageError(
             "Conflicting MetaCyc rule options specified. Either choose coverage or a number of rules."
         )
-    if OPTIONS.metacyc_rules and not any([OPTIONS.rule_coverage, OPTIONS.rule_count]):
-        exit("No rule options specified for MetaCyc rules, terminating run.")
+    if metacyc_rules and not any([rule_coverage, rule_count]):
+        raise click.UsageError(
+            "No rule options specified for MetaCyc rules, terminating run."
+        )
 
-    if OPTIONS.metacyc_rules == "general":
-        if OPTIONS.rule_coverage:
-            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = metacyc_generalized(
-                fraction_coverage=OPTIONS.rule_coverage
-            )
-        elif OPTIONS.rule_count:
-            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = metacyc_generalized(
-                n_rules=OPTIONS.rule_count
+    if not any([database, output_dir]):
+        raise click.UsageError("No output selected, terminating run.")
+
+    if metacyc_rules:
+        select_rules = (
+            metacyc_generalized if metacyc_rules == "general" else metacyc_intermediate
+        )
+        if rule_coverage:
+            rule_list, coreactant_list, _ = select_rules(
+                fraction_coverage=rule_coverage
             )
         else:
-            exit("No rule options specified for MetaCyc rules, terminating run.")
-
-    if OPTIONS.metacyc_rules == "intermediate":
-        if OPTIONS.rule_coverage:
-            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = (
-                metacyc_intermediate(fraction_coverage=OPTIONS.rule_coverage)
-            )
-        elif OPTIONS.rule_count:
-            OPTIONS.rule_list, OPTIONS.coreactant_list, rule_name = (
-                metacyc_intermediate(n_rules=OPTIONS.rule_count)
-            )
-        else:
-            exit("No rule options specified for MetaCyc rules, terminating run.")
-
-    if not any([OPTIONS.database, OPTIONS.output_dir]):
-        exit("No output selected, terminating run.")
+            rule_list, coreactant_list, _ = select_rules(n_rules=rule_count)
 
     pk = Pickaxe(
-        coreactant_list=OPTIONS.coreactant_list,
-        rule_list=OPTIONS.rule_list,
-        errors=OPTIONS.verbose,
-        explicit_h=OPTIONS.explicit_h,
-        kekulize=OPTIONS.kekulize,
-        neutralise=OPTIONS.neutralise,
-        image_dir=OPTIONS.image_dir,
-        quiet=OPTIONS.quiet,
-        database=OPTIONS.database,
-        mongo_uri=OPTIONS.mongo_uri,
-        database_overwrite=OPTIONS.database_overwrite,
+        coreactant_list=coreactant_list,
+        rule_list=rule_list,
+        errors=verbose,
+        explicit_h=explicit_h,
+        kekulize=kekulize,
+        neutralise=neutralise,
+        image_dir=image_dir,
+        quiet=quiet,
+        database=database,
+        mongo_uri=mongo_uri,
+        database_overwrite=database_overwrite,
     )
     # Create a directory for image output file if it doesn't already exist
-    if OPTIONS.image_dir and not os.path.exists(OPTIONS.image_dir):
-        os.mkdir(OPTIONS.image_dir)
+    if image_dir and not os.path.exists(image_dir):
+        os.mkdir(image_dir)
     # If starting compound specified as SMILES string, then add it
-    if OPTIONS.smiles:
-        pk._add_compound("Start", OPTIONS.smiles, cpd_type="Starting Compound")
+    if smiles:
+        pk._add_compound("Start", smiles, cpd_type="Starting Compound")
     else:
-        pk.load_compound_set(compound_file=OPTIONS.compound_file)
+        pk.load_compound_set(compound_file=compound_file)
     # Generate reaction network
-    pk.transform_all(processes=OPTIONS.processes, generations=OPTIONS.generations)
-    if OPTIONS.pruning_whitelist:
+    pk.transform_all(processes=processes, generations=generations)
+    if pruning_whitelist:
         mols = [
             pk._mol_from_dict(line)
-            for line in utils.file_to_dict_list(OPTIONS.pruning_whitelist)
+            for line in utils.file_to_dict_list(pruning_whitelist)
         ]
         pk.prune_network([utils.get_compound_hash(x) for x in mols if x])
 
-    if OPTIONS.output_dir:
+    if output_dir:
         pk.assign_ids()
-        pk.write_compound_output_file(OPTIONS.output_dir + "/compounds.tsv")
-        pk.write_reaction_output_file(OPTIONS.output_dir + "/reactions.tsv")
+        pk.write_compound_output_file(output_dir + "/compounds.tsv")
+        pk.write_reaction_output_file(output_dir + "/reactions.tsv")
 
-    if OPTIONS.database:
-        pk.save_to_mine(processes=OPTIONS.processes, write_core=OPTIONS.write_core)
+    if database:
+        pk.save_to_mine(processes=processes, write_core=write_core)
 
     print(f"Execution took {time.time() - t1} seconds.")
+
+
+if __name__ == "__main__":
+    main()
