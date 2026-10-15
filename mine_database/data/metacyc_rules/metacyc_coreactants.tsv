@@ -26,6 +26,7 @@ ASCORBATE_CoF	ASCORBATE	O=C1O[C@H]([C@@H](O)CO)C(O)=C1O
 Oxidized-Factor-F420_CoF	Oxidized-Factor-F420	*C(=O)[C@H](C)OP(=O)(O)OC[C@@H](O)[C@@H](O)[C@@H](O)Cn1c2nc(=O)[nH]c(=O)c-2cc2ccc(O)cc21
 Reduced-Factor-F420_CoF	Reduced-Factor-F420	*C(=O)[C@H](C)OP(=O)(O)OC[C@@H](O)[C@@H](O)[C@@H](O)CN1c2cc(O)ccc2Cc2c1[nH]c(=O)[nH]c2=O
 ACETYL-COA	ACETYL-COA	CC(=O)SCCNC(=O)CCNC(=O)[C@H](O)C(C)(C)COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O
+MALONYL-COA	MALONYL-COA	OC(=O)CC(=O)SCCNC(=O)CCNC(=O)[C@H](O)C(C)(C)COP(=O)(O)OP(=O)(O)OC[C@H]1O[C@@H](n2cnc3c(N)ncnc32)[C@H](O)[C@@H]1OP(=O)(O)O
 CO	CARBON-MONOXIDE	C#[O+]
 CO2	CARBON-DIOXIDE	O=C=O
 CO3	CO3	O=C(O)O
