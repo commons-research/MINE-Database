@@ -87,7 +87,7 @@ class Pickaxe:
         Whether to silence warnings, by default False.
     react_targets : bool, optional
         Whether or not to apply reactions to generated compounds that match
-        targets, by default True.
+        targets, by default False.
     filter_after_final_gen : bool, optional
         Whether to apply filters after final expansion, by default True.
     prune_between_gens : bool, optional
@@ -654,13 +654,19 @@ class Pickaxe:
                 n_comps = len(self.compounds)
                 n_rxns = len(self.reactions)
 
-                # Get SMILES to be expanded
+                # Get SMILES to be expanded. Generated compounds matching a
+                # target are only expanded if react_targets is set.
                 compound_smiles = [
                     cpd["SMILES"]
-                    for cpd in self.compounds.values()
+                    for cpd_id, cpd in self.compounds.items()
                     if cpd["Generation"] == self.generation
                     and cpd["Type"] not in ["Coreactant", "Target Compound"]
                     and cpd["Expand"]
+                    and (
+                        self.react_targets
+                        or cpd["Type"] != "Predicted"
+                        or f"T{cpd_id[1:]}" not in self.targets
+                    )
                 ]
                 # No compounds found
                 if not compound_smiles:
@@ -1453,6 +1459,13 @@ class Pickaxe:
     help="Specify a list of target compounds as .tsv or .csv (needs 'id' and "
     "SMILES/InChI columns).",
 )
+@click.option(
+    "--react_targets",
+    is_flag=True,
+    default=False,
+    help="Keep expanding generated compounds that match a target. By default "
+    "targets are not reacted further once generated.",
+)
 # Result args
 @click.option(
     "-p",
@@ -1535,6 +1548,7 @@ def main(
     quiet: bool,
     smiles: Union[str, None],
     target_file: Union[str, None],
+    react_targets: bool,
     pruning_whitelist: Union[str, None],
     prune_to_targets: bool,
     output_dir: Union[str, None],
@@ -1573,6 +1587,9 @@ def main(
     if prune_to_targets and not target_file:
         raise click.UsageError("--prune_to_targets requires --target_file.")
 
+    if react_targets and not target_file:
+        raise click.UsageError("--react_targets requires --target_file.")
+
     if metacyc_rules:
         select_rules = (
             metacyc_generalized if metacyc_rules == "general" else metacyc_intermediate
@@ -1593,6 +1610,7 @@ def main(
         neutralise=neutralise,
         image_dir=image_dir,
         quiet=quiet,
+        react_targets=react_targets,
         database=database,
         mongo_uri=mongo_uri,
         database_overwrite=database_overwrite,
