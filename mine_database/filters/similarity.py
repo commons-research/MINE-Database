@@ -888,14 +888,6 @@ class MCSFilter(Filter):
         this_crit_mcs: float,
         retro: bool = False,
     ) -> List[Tuple[str, float]]:
-        def print_progress(done: int, total: int, section: str) -> None:
-            # Use print_on to print % completion roughly every 5 percent
-            # Include max to print no more than once per compound (e.g. if
-            # less than 20 compounds)
-            print_on = max(round(0.1 * total), 1)
-            if not (done % print_on):
-                print(f"{section} {round(done / total * 100)} percent complete")
-
         # compound_info = [(smiles, id)]
         cpds_to_filter = list()
         compare_target_mcs_partial = partial(
@@ -909,31 +901,22 @@ class MCSFilter(Filter):
             # Set up parallel computing of compounds to
             chunk_size = max([round(len(compounds_info) / (processes * 4)), 1])
             with multiprocessing.Pool(processes) as pool:
-                for i, res in enumerate(
+                for res in tqdm(
                     pool.imap_unordered(
                         compare_target_mcs_partial, compounds_info, chunk_size
-                    )
+                    ),
+                    total=len(compounds_info),
+                    leave=False,
                 ):
                     if res:
                         cpds_to_filter.append(res)
-                    print_progress(
-                        i,
-                        len(compounds_info),
-                        "Maximum Common Substructure filter progress:",
-                    )
 
         else:
-            for i, cpd in enumerate(compounds_info):
+            for cpd in tqdm(compounds_info, total=len(compounds_info), leave=False):
                 res = compare_target_mcs_partial(cpd)
                 if res:
                     cpds_to_filter.append(res)
-                print_progress(
-                    i,
-                    len(compounds_info),
-                    "Maximum Common Substructure filter progress:",
-                )
 
-        print("Maximum Common Substructure filter progress:" " 100 percent complete")
         return cpds_to_filter
 
     def _compare_target_mcs(
