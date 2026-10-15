@@ -43,7 +43,6 @@ from reactions import transform_all_compounds_with_full
 from rules import metacyc_generalized, metacyc_intermediate
 from tqdm.auto import tqdm
 
-
 # Default to no errors
 lg = logger()
 lg.setLevel(4)
@@ -142,17 +141,17 @@ class Pickaxe:
 
     def __init__(
         self,
-        rule_list: str = None,
-        coreactant_list: str = None,
+        rule_list: str | None = None,
+        coreactant_list: str | None = None,
         explicit_h: bool = False,
         kekulize: bool = False,
         neutralise: bool = True,
         errors: bool = True,
         inchikey_blocks_for_cid: int = 1,
-        database: str = None,
+        database: str | None = None,
         database_overwrite: bool = False,
-        mongo_uri: bool = "mongodb://localhost:27017",
-        image_dir: str = None,
+        mongo_uri: str = "mongodb://localhost:27017",
+        image_dir: str | None = None,
         quiet: bool = False,
         react_targets: bool = False,
         filter_after_final_gen: bool = True,
@@ -275,7 +274,9 @@ class Pickaxe:
 
         print(f"{len(self.target_smiles)} target compounds loaded\n")
 
-    def load_compound_set(self, compound_file: str = None, id_field: str = "id") -> str:
+    def load_compound_set(
+        self, compound_file: str | None = None, id_field: str = "id"
+    ) -> list[str]:
         """Load compounds for expansion into pickaxe.
 
         Parameters
@@ -298,7 +299,7 @@ class Pickaxe:
 
         # load compounds
         initial_cpds_n = len(self.compounds)
-        compound_smiles = []
+        compound_smiles: list[str] = []
         if compound_file:
             for cpd_dict in tqdm(
                 utils.file_to_dict_list(compound_file),
