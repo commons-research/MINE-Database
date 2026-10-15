@@ -87,7 +87,7 @@ uv run mine_database/pickaxe_commons.py \
     --explicit_h
 ```
 
-`--rule_list` can be repeated to load several rule files together. `mine_database/data/metacyc_rules/metacyc_custom_rules.tsv` holds hand-written rules that are not in the published generalized set, currently chalcone synthase (`rule_CHS`: acyl-CoA + 3 malonyl-CoA → chalcone + 4 CoA + 3 CO2). It needs `metacyc_coreactants.tsv` (which defines `MALONYL-COA`) and runs without `--explicit_h`:
+`--rule_list` can be repeated to load several rule files together. `mine_database/data/metacyc_rules/metacyc_custom_rules.tsv` holds hand-written rules that are not in the published generalized set: chalcone synthase (`rule_CHS`: acyl-CoA + 3 malonyl-CoA → chalcone + 4 CoA + 3 CO2) and flavonol synthase (`rule_FLS`: dihydroflavonol + 2-oxoglutarate + O2 → flavonol + succinate + CO2 + H2O). They need `metacyc_coreactants.tsv` (which defines `MALONYL-COA` and `SUCCINATE`) and run without `--explicit_h`:
 
 ```bash
 uv run mine_database/pickaxe_commons.py \
