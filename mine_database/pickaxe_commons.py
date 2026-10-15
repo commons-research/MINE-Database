@@ -1446,12 +1446,26 @@ class Pickaxe:
 @click.option(
     "-s", "--smiles", default=None, help="Specify a starting compound SMILES."
 )
+@click.option(
+    "-t",
+    "--target_file",
+    default=None,
+    help="Specify a list of target compounds as .tsv or .csv (needs 'id' and "
+    "SMILES/InChI columns).",
+)
 # Result args
 @click.option(
     "-p",
     "--pruning_whitelist",
     default=None,
     help="Specify a list of target compounds to prune reaction network down to.",
+)
+@click.option(
+    "--prune_to_targets",
+    is_flag=True,
+    default=False,
+    help="Prune the reaction network to compounds and reactions that lead to the "
+    "targets loaded with --target_file.",
 )
 @click.option(
     "-o", "--output_dir", default=None, help="The directory in which to write files."
@@ -1520,7 +1534,9 @@ def main(
     generations: int,
     quiet: bool,
     smiles: Union[str, None],
+    target_file: Union[str, None],
     pruning_whitelist: Union[str, None],
+    prune_to_targets: bool,
     output_dir: Union[str, None],
     database: Union[str, None],
     mongo_uri: str,
@@ -1554,6 +1570,9 @@ def main(
     if not any([database, output_dir]):
         raise click.UsageError("No output selected, terminating run.")
 
+    if prune_to_targets and not target_file:
+        raise click.UsageError("--prune_to_targets requires --target_file.")
+
     if metacyc_rules:
         select_rules = (
             metacyc_generalized if metacyc_rules == "general" else metacyc_intermediate
@@ -1586,6 +1605,8 @@ def main(
         pk._add_compound("Start", smiles, cpd_type="Starting Compound")
     else:
         pk.load_compound_set(compound_file=compound_file)
+    if target_file:
+        pk.load_targets(target_file)
     # Generate reaction network
     pk.transform_all(processes=processes, generations=generations)
     if pruning_whitelist:
@@ -1594,6 +1615,8 @@ def main(
             for line in utils.file_to_dict_list(pruning_whitelist)
         ]
         pk.prune_network([utils.get_compound_hash(x) for x in mols if x])
+    if prune_to_targets:
+        pk.prune_network_to_targets()
 
     if output_dir:
         pk.assign_ids()

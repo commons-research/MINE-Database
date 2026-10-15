@@ -73,6 +73,20 @@ Command with generalized rules and full LOTUS dataset without writing to databas
 uv run mine_database/pickaxe_commons.py --coreactant_list ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv --rule_list ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv --generations 1 --compound_file ./data/LOTUS_inputfiles/230106_frozen_metadata_inchy_smiles.csv --output_dir ./data/ --processes 60 --verbose --explicit_h
 ```
 
+Command loading target compounds and pruning the network to reactions that lead to them (`--target_file` needs an `id` column and a SMILES/InChI column; `--prune_to_targets` requires `--target_file`):
+
+```bash
+uv run mine_database/pickaxe_commons.py \
+    --coreactant_list ./tests/data/test_coreactants.tsv \
+    --rule_list ./tests/data/test_single_reaction_rule.tsv \
+    --generations 2 \
+    --smiles 'Cc1cc2c(cc1C)N(CC(O)C(O)C(O)COP(=O)(O)OP(=O)(O)OCC1OC(n3cnc4c(N)ncnc43)C(O)C1O)c1nc(O)nc(O)c1N2' \
+    --target_file ./tests/data/test_targets.csv \
+    --prune_to_targets \
+    --output_dir ./data/ \
+    --explicit_h
+```
+
 
 ### Accessing the mongodb database
 
