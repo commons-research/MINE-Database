@@ -99,6 +99,33 @@ uv run mine_database/pickaxe_commons.py \
     --output_dir ./data/
 ```
 
+### Filtering and pruning between generations
+
+Filters run on every generation before it is expanded; compounds they reject are not expanded and are removed from the network when nothing else depends on them. `--prune_between_gens` additionally prunes the network after filtering to what leads to compounds that are still expanded (and targets).
+
+| Option | Filter | Notes |
+|---|---|---|
+| `--similarity_cutoff 0.3` or `0,0.26,0.29` | Tanimoto (RDKit fingerprint) to the targets | One value, or one per generation (last value reused). Needs `--target_file`. |
+| `--similarity_sample N` | Keep N compounds per generation, sampled weighted by similarity | Compounds with similarity ≤ 0.15 are never sampled. Needs `--target_file`. |
+| `--mcs_cutoff 0.5` | Maximum common substructure with the targets (fraction of atoms + bonds) | One value or one per generation; slow on large molecules. Needs `--target_file`. |
+| `--min_mw`, `--max_mw` | Molecular weight range | |
+| `--atomic_composition 'C:5-30,N:0-0'` | Atom-count ranges | Empty bound is open (`C:5-`). |
+
+Generation 0 (the starting compounds) is filtered too, so give per-generation cutoffs starting at `0` if early intermediates are dissimilar to the target. Example (naringenin chalcone → quercetin):
+
+```bash
+uv run mine_database/pickaxe_commons.py \
+    --coreactant_list ./mine_database/data/metacyc_rules/metacyc_coreactants.tsv \
+    --rule_list ./mine_database/data/metacyc_rules/metacyc_generalized_rules.tsv \
+    --rule_list ./mine_database/data/metacyc_rules/metacyc_custom_rules.tsv \
+    --smiles 'Oc1ccc(/C=C/C(=O)c2c(O)cc(O)cc2O)cc1' \
+    --generations 4 --processes 8 \
+    --target_file ./example_data/target_quercetin.tsv \
+    --similarity_cutoff 0,0.26,0.29,0.30 --similarity_sample 200 \
+    --prune_between_gens --prune_to_targets \
+    --output_dir ./data/
+```
+
 
 ### Accessing the mongodb database
 

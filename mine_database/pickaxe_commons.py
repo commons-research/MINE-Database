@@ -23,6 +23,13 @@ from databases import (
     write_reactions_to_mine,
     write_targets_to_mine,
 )
+from filters import (
+    AtomicCompositionFilter,
+    MCSFilter,
+    MWFilter,
+    SimilarityFilter,
+    SimilaritySamplingFilter,
+)
 from rdkit.Chem import RemoveStereochemistry
 from rdkit.Chem.AllChem import (
     AddHs,
@@ -1382,6 +1389,41 @@ class Pickaxe:
             print(f"Took {time.time() - start_load}")
 
 
+def _parse_cutoffs(
+    ctx: click.Context, param: click.Parameter, value: Union[str, None]
+) -> Union[float, List[float], None]:
+    """Parse '0.3' or a per-generation list '0,0,0.2,0.3' into float(s) in [0, 1]."""
+    if value is None:
+        return None
+    try:
+        cutoffs = [float(v) for v in value.split(",")]
+    except ValueError:
+        raise click.BadParameter("expected a number or comma-separated numbers")
+    if any(not 0 <= c <= 1 for c in cutoffs):
+        raise click.BadParameter("cutoffs must be between 0 and 1")
+    return cutoffs[0] if len(cutoffs) == 1 else cutoffs
+
+
+def _parse_composition(
+    ctx: click.Context, param: click.Parameter, value: Union[str, None]
+) -> Union[dict, None]:
+    """Parse 'C:5-30,N:0-0' into {'C': [5, 30], 'N': [0, 0]}; a bound may be empty."""
+    if value is None:
+        return None
+    composition = {}
+    try:
+        for item in value.split(","):
+            atom, bounds = item.split(":")
+            low, high = bounds.split("-")
+            composition[atom.strip()] = [
+                int(low) if low.strip() else None,
+                int(high) if high.strip() else None,
+            ]
+    except ValueError:
+        raise click.BadParameter("expected e.g. 'C:5-30,N:0-0' (empty bound = open)")
+    return composition
+
+
 @click.command()
 # Core args
 @click.option(
@@ -1542,6 +1584,52 @@ class Pickaxe:
     type=int,
     help="Specify the number of reaction rules to apply.",
 )
+# Filters, applied to each generation before it is expanded
+@click.option(
+    "--similarity_cutoff",
+    default=None,
+    callback=_parse_cutoffs,
+    help="Only expand compounds whose Tanimoto similarity (RDKit fingerprint) to a "
+    "target is at least this value. Give one value, or one per generation as "
+    "'0,0,0.2,0.3' (the last value is reused for later generations). "
+    "Requires --target_file.",
+)
+@click.option(
+    "--similarity_sample",
+    default=None,
+    type=click.IntRange(min=1),
+    help="Expand only N compounds per generation, sampled with probability weighted "
+    "by Tanimoto similarity to the targets (compounds with similarity <= 0.15 are "
+    "never sampled). Requires --target_file.",
+)
+@click.option(
+    "--mcs_cutoff",
+    default=None,
+    callback=_parse_cutoffs,
+    help="Only expand compounds whose maximum common substructure with a target "
+    "covers at least this fraction of the target's atoms + bonds. One value or one "
+    "per generation. Slow on large molecules (no MCS timeout). Requires --target_file.",
+)
+@click.option(
+    "--min_mw", default=None, type=float, help="Only expand compounds above this MW."
+)
+@click.option(
+    "--max_mw", default=None, type=float, help="Only expand compounds below this MW."
+)
+@click.option(
+    "--atomic_composition",
+    default=None,
+    callback=_parse_composition,
+    help="Only expand compounds within atom-count ranges, e.g. 'C:5-30,N:0-0' "
+    "(an empty bound is open: 'C:5-').",
+)
+@click.option(
+    "--prune_between_gens",
+    is_flag=True,
+    default=False,
+    help="After filtering each generation, prune the network to the compounds that "
+    "will still be expanded (and targets). Requires at least one filter.",
+)
 def main(
     coreactant_list: Union[str, None],
     rule_list: Tuple[str, ...],
@@ -1567,6 +1655,13 @@ def main(
     metacyc_rules: Union[str, None],
     rule_coverage: Union[float, None],
     rule_count: Union[int, None],
+    similarity_cutoff: Union[float, List[float], None],
+    similarity_sample: Union[int, None],
+    mcs_cutoff: Union[float, List[float], None],
+    min_mw: Union[float, None],
+    max_mw: Union[float, None],
+    atomic_composition: Union[dict, None],
+    prune_between_gens: bool,
 ) -> None:
     """Expand a compound set with reaction rules using Pickaxe."""
     print(os.getcwd())
@@ -1597,6 +1692,32 @@ def main(
     if react_targets and not target_file:
         raise click.UsageError("--react_targets requires --target_file.")
 
+    filters = []
+    if min_mw is not None or max_mw is not None:
+        filters.append(MWFilter(min_MW=min_mw, max_MW=max_mw))
+    if atomic_composition:
+        filters.append(AtomicCompositionFilter(atomic_composition))
+    if similarity_cutoff is not None:
+        filters.append(
+            SimilarityFilter(
+                crit_similarity=similarity_cutoff, increasing_similarity=False
+            )
+        )
+    if similarity_sample:
+        filters.append(SimilaritySamplingFilter(sample_size=similarity_sample))
+    if mcs_cutoff is not None:
+        filters.append(MCSFilter(crit_mcs=mcs_cutoff))
+
+    target_filters = [similarity_cutoff, similarity_sample, mcs_cutoff]
+    if any(f is not None for f in target_filters) and not target_file:
+        raise click.UsageError(
+            "--similarity_cutoff, --similarity_sample and --mcs_cutoff require "
+            "--target_file."
+        )
+
+    if prune_between_gens and not filters:
+        raise click.UsageError("--prune_between_gens requires at least one filter.")
+
     if metacyc_rules:
         select_rules = (
             metacyc_generalized if metacyc_rules == "general" else metacyc_intermediate
@@ -1621,7 +1742,9 @@ def main(
         database=database,
         mongo_uri=mongo_uri,
         database_overwrite=database_overwrite,
+        prune_between_gens=prune_between_gens,
     )
+    pk.filters.extend(filters)
     # Create a directory for image output file if it doesn't already exist
     if image_dir and not os.path.exists(image_dir):
         os.mkdir(image_dir)
