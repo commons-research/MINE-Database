@@ -119,25 +119,24 @@ def _run_reaction(
         return cpd_returns, atom_counts
 
     def _gen_compound(mol):
-        rkl.DisableLog("rdApp.*")
-        try:
-            if explicit_h:
-                mol = RemoveHs(mol)
+        # Silence the expected sanitization errors for infeasible products
+        # ("Explicit valence greater than permitted"). BlockLogs restores the
+        # previous log state afterwards; EnableLog("rdApp.*") here used to
+        # re-enable every RDKit warning for the rest of the run.
+        with rkrb.BlockLogs():
+            try:
+                if explicit_h:
+                    mol = RemoveHs(mol)
 
-            # resolve potential tautomers and choose first one
-            mol_smiles = MolToSmiles(mol, True)
-            if "n" in mol_smiles:
-                mol_smiles = utils.postsanitize_smiles([mol_smiles])[0][0]
-                mol = MolFromSmiles(mol_smiles)
+                # resolve potential tautomers and choose first one
+                mol_smiles = MolToSmiles(mol, True)
+                if "n" in mol_smiles:
+                    mol_smiles = utils.postsanitize_smiles([mol_smiles])[0][0]
+                    mol = MolFromSmiles(mol_smiles)
 
-            SanitizeMol(mol)
-
-        # TODO: logger
-        # Get lots of "Explicit valence greater than permitted" errors here
-        # This is for predicted compounds that are infeasible, so we throw them out
-        except BaseException:
-            return None
-        rkl.EnableLog("rdApp.*")
+                SanitizeMol(mol)
+            except BaseException:
+                return None
 
         mol_smiles = MolToSmiles(mol, True)
         if "." in mol_smiles:
