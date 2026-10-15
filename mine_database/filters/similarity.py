@@ -170,11 +170,13 @@ class SimilaritySamplingFilter(Filter):
         set_unreactive = False
 
         for cpd in pickaxe.compounds.values():
-            # Compounds are in generation and correct type
-            if cpd["Generation"] == pickaxe.generation and cpd["Type"] not in [
-                "Coreactant",
-                "Target Compound",
-            ]:
+            # Compounds are in generation, correct type, and not already rejected
+            # by an earlier filter
+            if (
+                cpd["Generation"] == pickaxe.generation
+                and cpd["Type"] not in ["Coreactant", "Target Compound"]
+                and cpd["Expand"]
+            ):
 
                 # Check for targets and only react if terminal
                 if pickaxe.react_targets:

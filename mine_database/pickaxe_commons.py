@@ -1703,10 +1703,11 @@ def main(
                 crit_similarity=similarity_cutoff, increasing_similarity=False
             )
         )
-    if similarity_sample:
-        filters.append(SimilaritySamplingFilter(sample_size=similarity_sample))
     if mcs_cutoff is not None:
         filters.append(MCSFilter(crit_mcs=mcs_cutoff))
+    # Sampling caps what the cutoff filters above let through, so it runs last
+    if similarity_sample:
+        filters.append(SimilaritySamplingFilter(sample_size=similarity_sample))
 
     target_filters = [similarity_cutoff, similarity_sample, mcs_cutoff]
     if any(f is not None for f in target_filters) and not target_file:

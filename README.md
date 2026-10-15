@@ -106,7 +106,7 @@ Filters run on every generation before it is expanded; compounds they reject are
 | Option | Filter | Notes |
 |---|---|---|
 | `--similarity_cutoff 0.3` or `0,0.26,0.29` | Tanimoto (RDKit fingerprint) to the targets | One value, or one per generation (last value reused). Needs `--target_file`. |
-| `--similarity_sample N` | Keep N compounds per generation, sampled weighted by similarity | Compounds with similarity ≤ 0.15 are never sampled. Needs `--target_file`. |
+| `--similarity_sample N` | Keep N compounds per generation, sampled weighted by similarity | Runs after all cutoff filters and samples only what they kept. Compounds with similarity ≤ 0.15 are never sampled. Needs `--target_file`. |
 | `--mcs_cutoff 0.5` | Maximum common substructure with the targets (fraction of atoms + bonds) | One value or one per generation; slow on large molecules. Needs `--target_file`. |
 | `--min_mw`, `--max_mw` | Molecular weight range | |
 | `--atomic_composition 'C:5-30,N:0-0'` | Atom-count ranges | Empty bound is open (`C:5-`). |
